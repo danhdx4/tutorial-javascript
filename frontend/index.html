@@ -1,42 +1,12 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Mock App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
-
 <body>
-
-    <h1>Login</h1>
-
-    <input id="username" placeholder="username" />
-    <input id="password" placeholder="password" />
-    <button onclick="login()">Login</button>
-
-    <p id="result"></p>
-
+    <h1>Hello Javascript</h1>
     <script src="./index.js"></script>
-    <script>
-        async function login() {
-            const res = await fetch("http://localhost:3000/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    username: document.getElementById("username").value,
-                    password: document.getElementById("password").value
-                })
-            });
-
-            const data = await res.json();
-
-            if (data.status === 200) {
-                document.getElementById("result").innerText = "Login Success";
-            } else {
-                document.getElementById("result").innerText = "Login Failed";
-            }
-        }
-    </script>
-
 </body>
-
 </html>
