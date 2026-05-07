@@ -47,3 +47,31 @@ console.log("Sinh năm: " + AnhTP.yearOfBirth);
 console.log("Là sinh viên: " + (AnhTP.isStudent ? "Có" : "Không"));
 console.log("Chiều cao: " + AnhTP.height + " cm");
 console.log("Sở thích: " + AnhTP.hobbies.join(", "));
+
+let data = {
+  firstname: "Sally",
+  lastname: "Brown",
+  totalprice: 111,
+  depositpaid: true,
+  bookingdates: {
+    checkin: "2013-02-23",
+    checkout: "2014-10-23",
+  },
+  additionalneeds: "Breakfast",
+};
+
+/**
+ * Tìm fulname
+ * Kiểm tra kiểu dữ liệu của các key: totalprice, depositpaid, checkin, checkout
+ * Tìm giá trị của các key: additionalneeds, checkin, checkout
+ */
+
+console.log("----".repeat(20)); // In ra dấu gạch ngang để phân cách
+console.log(`Fullname: ${data.firstname} ${data.lastname}`);
+console.log(`Kiểu dữ liệu của totalprice: ${typeof data.totalprice}`);
+console.log(`Kiểu dữ liệu của depositpaid: ${typeof data.depositpaid}`);
+console.log(`Kiểu dữ liệu của checkin: ${typeof data.bookingdates.checkin}`);
+console.log(`Kiểu dữ liệu của checkout: ${typeof data.bookingdates.checkout}`);
+console.log(`Giá trị của additionalneeds: ${data.additionalneeds}`);
+console.log(`Giá trị của checkin: ${data.bookingdates.checkin}`);
+console.log(`Giá trị của checkout: ${data.bookingdates.checkout}`);
