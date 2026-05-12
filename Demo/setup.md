@@ -1,25 +1,46 @@
-# Hướng dẫn cài đặt VS Code
+# Hướng dẫn cài đặt môi trường lập trình
 
-# 1. Format code tự động
-## Bước 1: Cài extension Prettier
+---
+
+# 1. Cài đặt VS Code
+
+- Truy cập: https://code.visualstudio.com/download
+- **Windows:** Tải file `.exe`, chạy và nhấn **Next** đến khi hoàn tất.
+- **macOS:** Tải file `.dmg`, mở và kéo **Visual Studio Code** vào thư mục **Applications**.
+
+---
+
+# 2. Cài đặt SourceTree
+
+- Truy cập: https://www.sourcetreeapp.com
+- **Windows:** Tải file `.exe`, chạy và đăng nhập bằng tài khoản Atlassian (hoặc tạo mới).
+- **macOS:** Tải file `.dmg`, mở và kéo **Sourcetree** vào thư mục **Applications**.
+
+---
+
+# 3. Cài đặt Extensions
+
+## 3.1. Prettier – Tự động format code
+
+### Cài extension
 1. Mở VS Code.
-2. Vào tab Extensions (Ctrl+Shift+X) hoặc (Cmd+Shift+X).
+2. Vào tab **Extensions** (Ctrl+Shift+X / Cmd+Shift+X).
 3. Tìm kiếm **Prettier - Code formatter**.
 4. Nhấn **Install**.
 
-## Bước 2: Bật Format on Save
-1. Mở Settings (Ctrl+,) hoặc (Cmd+,).
-2. Tìm kiếm "format on save".
+### Bật Format on Save
+1. Mở **Settings** (Ctrl+, / Cmd+,).
+2. Tìm kiếm `format on save`.
 3. Tích vào ô **Editor: Format On Save**.
 
-## Bước 3: Đặt Prettier làm formatter mặc định
-Để đảm bảo Prettier định dạng code thay vì formatter mặc định của VS Code:
-1. Trong Settings, tìm kiếm "default formatter".
+### Đặt Prettier làm formatter mặc định
+1. Trong **Settings**, tìm kiếm `default formatter`.
 2. Chọn **Prettier - Code formatter** trong danh sách.
 
-# 2. Tắt gợi ý code tự động của Copilot
-## Bước 4: Tắt Inline Suggestions
-Để tắt tính năng gợi ý code tự động (inline suggestions) của Copilot:
+---
+
+# 4. Tắt gợi ý code tự động của Copilot
+
 1. Nhấn vào **biểu tượng Copilot** ở thanh trạng thái phía dưới (mũi tên 1).
 2. Trong panel hiện ra, tìm mục **Inline Suggestions**.
 3. Bỏ tích **All files** để tắt toàn bộ, hoặc bỏ tích từng ngôn ngữ cụ thể (ví dụ: **JavaScript**) để chỉ tắt cho ngôn ngữ đó (mũi tên 2).
