@@ -1,10 +1,9 @@
-console.log("Hello JavaScript");
 
-let name = "Nguyen Thi Van Anh";
+let name = "Nguyen Thi Quynh";
 let current = 2026;
-let birth = 1995
+let birth = 1998;
 let isstudent = false
-let high = 163
+let high = 150
 let hobby = "Chơi";
 let age = current - birth;
 
@@ -25,10 +24,10 @@ console.log("Sở thích:" + hobby);
 
 console.log("................") 
 let user = {
-    name: "Nguyen Thi Van Anh",
-    age: 31,
+    name: "Nguyen Thi Quynh",
+    age: 28,
     isstudent: false,
-    high: 163,
+    high: 150,
     hobby: "Chơi"       
 };
 ////khai báo kiểu mảng
@@ -40,29 +39,8 @@ console.log("Sở thích:", user.hobby);
 
 /// kiểm tra kiểu dữ liệu
 console.log(typeof name);
-console.log(typeof age);
+console.log(typeof age); 
 
 
-let data ={
-  firstname: "Sally",
-  lastname: "Brown",
-  totalprice: 111,
-  depositpaid: true,
-  bookingdates: {
-    checkin: "2013-02-23",
-    checkout: "2014-10-23",
-  },
-  additionalneeds: "Breakfast",
-};
 
-let fullname= data.firstname + " " + data.lastname;
-console.log("Full name: " + fullname);
 
-console.log(typeof data.totalprice);
-console.log(typeof data.depositpaid);
-console.log(typeof data.checkin);
-console.log(typeof data.checkout);
-
-console.log("additional needs: " + data.additionalneeds);
-console.log("check-in date: " + data.bookingdates.checkin);
-console.log("check-out date: " + data.bookingdates.checkout);
