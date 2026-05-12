@@ -64,3 +64,24 @@ console.log("Giá trị của chekin:", data.bookingdates.checkin);
 console.log("Giá trị của chekout:", data.bookingdates.checkout);
 
 /************** Bài 2 */
+// Tạo các biến:
+// Họ tên (string),
+// Tuổi (number, và tính tuổi =(2026 - năm sinh)
+// Số năm kinh nghiệm (number)
+// Có biết automation hay không (boolean)
+
+// Yêu cầu:
+//  Phân loại
+// < 1 năm → "Fresher"
+// 1–3 năm → "Junior QA"
+// 3–5 năm → "Middle QA"
+// >5 năm → "Senior QA"
+// Kiểm tra điều kiện tuyển Senior Automation QA
+// Kinh nghiệm ≥ 3 năm
+// Biết automation = true
+// Tuổi ≤ 35
+// Nếu thỏa mãn các yêu cầu trên:
+// → "Đủ điều kiện Senior Automation QA"
+// Ngược lại:
+// → "Chưa đủ điều kiện“
+// In toàn bộ thông tin
