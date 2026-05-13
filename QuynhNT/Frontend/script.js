@@ -1,4 +1,4 @@
-
+/* 
 let name = "Nguyen Thi Quynh";
 let current = 2026;
 let birth = 1998;
@@ -44,3 +44,4 @@ console.log(typeof age);
 
 
 
+ 
