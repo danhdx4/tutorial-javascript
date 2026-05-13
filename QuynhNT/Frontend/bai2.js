@@ -1,5 +1,5 @@
 
-let data = {
+ let data = {
   firstname: "Sally",
   lastname: "Brown",
   totalprice: 111,
@@ -9,7 +9,7 @@ let data = {
     checkout: "2014-10-23",
   },
   additionalneeds: "Breakfast",
-};
+}; 
 
 
 /**
@@ -27,4 +27,6 @@ console.log("Kiểu dữ liệu của checkout: ", typeof data.bookingdates.chec
 console.log("---Tìm giá trị các key---")
 console.log("additionalneeds: ", data.additionalneeds);
 console.log("checkin: ", data.bookingdates.checkin);
-console.log("checkout: ", data.bookingdates.checkout);
+console.log("checkout: ", data.bookingdates.checkout); 
+
+
