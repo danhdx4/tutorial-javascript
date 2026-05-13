@@ -158,3 +158,17 @@ if (myExperienceYears2 >= 3 && myKnowsAutomation2 && myAge2 <= 35) {
 } else {
   console.log("Chưa đủ điều kiện");
 }
+
+console.log("----".repeat(20)); // In ra dấu gạch ngang để phân cách
+
+let myA = 10;
+let myB = "10";
+
+console.log(`so sánh giá trị sau khi ép kiểu myA == myB : ${myA == myB}`); // Kết quả: true (so sánh giá trị sau khi ép kiểu)
+console.log(`so sánh cả giá trị và kiểu dữ liệu myA === myB : ${myA === myB}`); // Kết quả: false (so sánh cả giá trị và kiểu dữ liệu)
+console.log(`so sánh giá trị sau khi ép kiểu myA != myB : ${myA != myB}`); // Kết quả: false (so sánh giá trị sau khi ép kiểu)
+console.log(`so sánh cả giá trị và kiểu dữ liệu myA !== myB : ${myA !== myB}`); // Kết quả: true (so sánh cả giá trị và kiểu dữ liệu)
+console.log(`so sánh giá trị sau khi ép kiểu myA > myB : ${myA > myB}`); // Kết quả: false (so sánh giá trị sau khi ép kiểu)
+console.log(`so sánh giá trị sau khi ép kiểu myA < myB : ${myA < myB}`); // Kết quả: false (so sánh giá trị sau khi ép kiểu)
+console.log(`so sánh giá trị sau khi ép kiểu myA >= myB : ${myA >= myB}`); // Kết quả: false (so sánh giá trị sau khi ép kiểu)
+console.log(`so sánh giá trị sau khi ép kiểu myA <= myB : ${myA <= myB}`); // Kết quả: false (so sánh giá trị sau khi ép kiểu)
