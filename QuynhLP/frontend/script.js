@@ -2,7 +2,7 @@
 
 // console.log("Checking:", response);
 // console.log("Checking:", typeof response.bookingdates.checkin);
-// Bài tập VN 2
+// Bài tập về nhà 2
 let data = {
   firstname: "Sally",
   lastname: "Brown",
@@ -76,7 +76,7 @@ if (experience >= 3 && automation == true && birth <= 35) {
 } else {
   console.log("Chưa đủ điều kiện");
 }
-/*Bài tập VN 3*/
+/*Bài tập về nhà 3*/
 let student = {
 
   info: {
