@@ -98,45 +98,48 @@ let student = {
 // Nếu math >= 9 nhưng chemistry < 5 --> in ra "Strong in Math, weak in Science"
 // Nếu extracurricular == false và attendanceRate < 85 --> in ra "Needs more participation"
 
-console.log("/************** Bài 3 */");
-let { math, physics, chemistry } = student.scores;
-let behavior = student.behavior;
-if (
-  student.info.age < 0 ||
-  student.info.age > 100 ||
-  math <= 0 ||
-  math > 10 ||
-  physics <= 0 ||
-  physics > 10 ||
-  chemistry <= 0 ||
-  chemistry > 10 ||
-  student.attendance.absentDays > student.attendance.totalDays ||
-  !["good", "average", "bad"].includes(behavior)
-) {
-  console.log("Invalid student data");
-} else {
-  console.log("Pass");
-}
-let average_score = (
-  (student.scores.math + student.scores.physics + student.scores.chemistry) /
-  3
-).toFixed(2);
-console.log("Average score: ", average_score);
-if (average_score > 8) {
-  console.log("Học lực: Giỏi");
-} else if (average_score >= 6.5) {
-  console.log("Học lực: Khá");
-} else if (average_score >= 5) {
-  console.log("Học lực: Trung bình");
-} else {
-  console.log("Học lực: Yếu");
-}
-let attendanceRate =
-  (student.attendance.absentDays / student.attendance.totalDays) * 100;
-if (student.scores.math >= 9 && student.scores.chemistry < 5) {
-  console.log("Strong in Math, weak in Science");
-} else if (student.extracurricular == false && attendanceRate < 85) {
-  console.log("Needs more participation");
-} else {
-  // do nothing
-}
+// console.log("/************** Bài 3 */");
+// let { math, physics, chemistry } = student.scores;
+// let behavior = student.behavior;
+// if (
+//   student.info.age < 0 ||
+//   student.info.age > 100 ||
+//   math <= 0 ||
+//   math > 10 ||
+//   physics <= 0 ||
+//   physics > 10 ||
+//   chemistry <= 0 ||
+//   chemistry > 10 ||
+//   student.attendance.absentDays > student.attendance.totalDays ||
+//   !["good", "average", "bad"].includes(behavior)
+// ) {
+//   console.log("Invalid student data");
+// } else {
+//   console.log("Pass");
+// }
+// let average_score = (
+//   (student.scores.math + student.scores.physics + student.scores.chemistry) /
+//   3
+// ).toFixed(2);
+// console.log("Average score: ", average_score);
+// if (average_score > 8) {
+//   console.log("Học lực: Giỏi");
+// } else if (average_score >= 6.5) {
+//   console.log("Học lực: Khá");
+// } else if (average_score >= 5) {
+//   console.log("Học lực: Trung bình");
+// } else {
+//   console.log("Học lực: Yếu");
+// }
+// let attendanceRate =
+//   (student.attendance.absentDays / student.attendance.totalDays) * 100;
+// if (student.scores.math >= 9 && student.scores.chemistry < 5) {
+//   console.log("Strong in Math, weak in Science");
+// } else if (student.extracurricular == false && attendanceRate < 85) {
+//   console.log("Needs more participation");
+// } else {
+//   // do nothing
+// }
+
+console.log("/************** Bài 4 */");
+// Viết switch kiểm tra biến userRole ("admin", "user", "guest") và in ra quyền tương ứng "Được xóa bài"/"Được đăng bài"/"Chỉ xem"/"Role không hợp lệ" (default)
