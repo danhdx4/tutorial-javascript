@@ -113,3 +113,87 @@ switch (userRole) {
 
 console.log("----".repeat(10)); // In ra dấu gạch ngang để phân cách
 console.log("BTVN Buổi 4");
+// 1. Hãy hiển thị danh sách phim dưới đây
+//      ===== DANH SÁCH PHIM =====
+// 1. Avengers      - 90000đ
+// 2. Conan         - 70000đ
+// 3. Doraemon      - 60000đ
+// 4. One Piece     - 80000đ
+// 0. Thoát
+
+console.log("===== DANH SÁCH PHIM =====");
+let movies = [, "Avengers", "Conan", "Doraemon", "One Piece"];
+for (let i = 1; i < movies.length; i++) {
+  let price;
+  switch (i) {
+    case 1:
+      price = 90000;
+      break;
+    case 2:
+      price = 70000;
+      break;
+    case 3:
+      price = 60000;
+      break;
+    case 4:
+      price = 80000;
+      break;
+  }
+  console.log(`${i}. ${movies[i]} - ${price}đ`);
+}
+
+// 2. - user sẽ nhập số để chọn phim tương ứng hãy dùng switch case để: in tên phim và giá vé đã chọn
+//     Gợi ý mục 2: khởi tạo biến và lấy giá trị khi user nhập số chọn phim bằng hàm sau:
+// let choice
+// choice = Number(prompt("Chọn phim:")); --> giả lập màn hình hiển thị "Chọn phim: __"
+// Ý nghĩa: prompt(""): Hiển thị ô nhập liệu để user có thể nhập vào --> sau khi nhập xx hàm sẽ nhận giá trị prompt("xx") --> đây là String --> dùng Number() để convert String sang Number (từ "xx" --> xx)
+
+console.log("----".repeat(10)); // In ra dấu gạch ngang để phân cách
+
+let choice = Number(prompt("Chọn phim:"));
+switch (choice) {
+  case 1:
+    console.log("Bạn đã chọn phim : Avengers - 90000đ");
+    break;
+  case 2:
+    console.log("Bạn đã chọn phim : Conan - 70000đ");
+    break;
+  case 3:
+    console.log("Bạn đã chọn phim: Doraemon - 60000đ");
+    break;
+  case 4:
+    console.log("Bạn đã chọn phim : One Piece - 80000đ");
+    break;
+  case 0:
+    console.log("Thoát chương trình");
+    break;
+  default:
+    console.log("Lựa chọn không hợp lệ");
+}
+
+// 3. - Nhập số lượng vé --> tương tự như nhập "Chọn phim"
+// Sau đó tính tổng tiền (tổng tiền = giá vé * số lượng);
+// In số lượng, tổng tiền
+
+console.log("----".repeat(10)); // In ra dấu gạch ngang để phân cách
+
+let quantity = Number(prompt("Nhập số lượng vé:"));
+let totalPrice;
+switch (choice) {
+  case 1:
+    totalPrice = 90000 * quantity;
+    break;
+  case 2:
+    totalPrice = 70000 * quantity;
+    break;
+  case 3:
+    totalPrice = 60000 * quantity;
+    break;
+  case 4:
+    totalPrice = 80000 * quantity;
+    break;
+  default:
+    totalPrice = 0;
+}
+console.log(`Số lượng vé: ${quantity}`);
+console.log(`Tổng tiền: ${totalPrice}đ`);
