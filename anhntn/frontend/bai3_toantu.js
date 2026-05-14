@@ -88,3 +88,87 @@ if (experienceYears >= 3 && knowsAutomation && age <= 35) {
 } else {
     console.log("Chưa đủ điều kiện");
 }
+
+
+
+let student = {
+  info: {
+    name: "Trần Thị B",
+    age: 19,
+    class: "12A1",
+  },
+  scores: {
+    math: 9,
+    physics: 7.5,
+    chemistry: 4,
+  },
+  attendance: {
+    totalDays: 180,
+    absentDays: 12, // ngày vắng mặt
+  },
+  behavior: "good", // good | average | bad
+  extracurricular: true,
+};
+/**Dữ liệu không hợp lệ
+age <= 0 hoặc age > 100
+scores <= 0 hoặc > 10
+absentDays > totalDays
+Behavior không thuộc: good, average, bad --> dùng includes() để kiểm tra, vd: ["good", "average", "bad"].includes(behavior)
+*/
+if (student.info.age <= 0 || student.info.age > 100) {
+    console.log("Dữ liệu không hợp lệ: Tuổi không hợp lệ");
+}   else if (student.scores.math < 0 || student.scores.math > 10 ||        
+              student.scores.physics < 0 || student.scores.physics > 10 ||  
+                student.scores.chemistry < 0 || student.scores.chemistry > 10) {
+    console.log("Dữ liệu không hợp lệ: Điểm số không hợp lệ");
+}   else if (student.attendance.absentDays > student.attendance.totalDays) {
+    console.log("Dữ liệu không hợp lệ: Số ngày vắng mặt không hợp lệ");
+}
+else if (!["good", "average", "bad"].includes(student.behavior)) {
+    console.log("Dữ liệu không hợp lệ: Hạnh kiểm không hợp lệ");
+} else {
+    console.log("Dữ liệu hợp lệ");
+}                           
+/**
+ * 2. tính điểm trung bình và in ra "Average score: xx", làm tròn tới 2 chữ số sau dấu phẩy (dùng toFixed)
+ */
+if (student.scores.math >= 0 && student.scores.math <= 10 &&
+    student.scores.physics >= 0 && student.scores.physics <= 10 &&
+    student.scores.chemistry >= 0 && student.scores.chemistry <= 10) {          
+    let averageScore = (student.scores.math + student.scores.physics + student.scores.chemistry) / 3;
+    console.log("Average score: " + averageScore.toFixed(2));
+}   else {
+    console.log("Không thể tính điểm trung bình do có điểm số không hợp lệ");
+}       
+/**
+ * 3. Xếp loại học lực
+avg > 8: Giỏi
+avg >= 6.5: Khá
+avg >= 5: Trung bình
+Còn lại: Yếu
+ */
+let averageScore = (student.scores.math + student.scores.physics + student.scores.chemistry) / 3;
+if (averageScore > 8) {
+    console.log("Xếp loại học lực: Giỏi");          
+} else if (averageScore >= 6.5) {
+    console.log("Xếp loại học lực: Khá");
+} else if (averageScore >= 5) {
+    console.log("Xếp loại học lực: Trung bình");
+}   else {
+    console.log("Xếp loại học lực: Yếu");
+}           
+
+/**
+ * 4. Cảnh báo học lệch môn
+ * Nếu math >= 9 nhưng chemistry < 5 --> in ra "Strong in Math, weak in Science"
+ * Nếu extracurricular == false và attendanceRate < 85 --> in ra "Needs more participation"
+ 
+ */
+let attendanceRate = ((student.attendance.totalDays - student.attendance.absentDays) / student.attendance.totalDays) * 100;
+if (student.scores.math >= 9 && student.scores.chemistry < 5) {
+    console.log("Strong in Math, weak in Science");         
+} else if (!student.extracurricular && attendanceRate < 85) {
+    console.log("Needs more participation");
+}   else {
+    console.log("No specific warnings");
+}       
