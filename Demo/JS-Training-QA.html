@@ -1,0 +1,2110 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript cơ bản cho QA — 4 Buổi Training</title>
+<style>
+  /* ── Reset & base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:    #2563eb;
+    --indigo:  #4f46e5;
+    --purple:  #7c3aed;
+    --teal:    #0d9488;
+    --green:   #16a34a;
+    --amber:   #d97706;
+    --red:     #dc2626;
+    --gray:    #374151;
+    --light:   #f8fafc;
+    --code-bg: #1e293b;
+    --code-fg: #e2e8f0;
+    --accent1: #06b6d4;
+    --accent2: #f59e0b;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: #0f172a;
+    overflow: hidden;
+    color: #1e293b;
+  }
+
+  /* ── Slide container ── */
+  #deck {
+    width: 100vw; height: 100vh;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 48px 64px;
+    opacity: 0;
+    transition: opacity .35s ease;
+    background: #fff;
+  }
+  .slide.active {
+    display: flex;
+    opacity: 1;
+  }
+
+  /* ── Navigation ── */
+  #nav {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; align-items: center; gap: 16px;
+    background: rgba(15,23,42,.85);
+    backdrop-filter: blur(8px);
+    border-radius: 40px;
+    padding: 10px 24px;
+    z-index: 999;
+    color: #e2e8f0;
+    font-size: 14px;
+    user-select: none;
+  }
+  #nav button {
+    background: rgba(255,255,255,.15);
+    border: none; color: #fff;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background .2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #nav button:hover { background: rgba(255,255,255,.35); }
+  #nav button:disabled { opacity: .3; cursor: default; }
+  #progress {
+    width: 120px; height: 4px;
+    background: rgba(255,255,255,.2);
+    border-radius: 2px; overflow: hidden;
+  }
+  #progress-bar {
+    height: 100%; background: #38bdf8;
+    border-radius: 2px;
+    transition: width .3s;
+  }
+
+  /* ── Session badge ── */
+  .session-badge {
+    position: absolute;
+    top: 20px; right: 28px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    border-radius: 20px;
+    text-transform: uppercase;
+  }
+  .s1 { background: #dbeafe; color: #1d4ed8; }
+  .s2 { background: #ede9fe; color: #6d28d9; }
+  .s5 { background: #dcfce7; color: #166534; }
+  .s6 { background: #fef9c3; color: #a16207; }
+
+  /* ── Slide number ── */
+  .slide-num {
+    position: absolute;
+    top: 20px; left: 28px;
+    font-size: 12px; color: #94a3b8;
+    font-weight: 600;
+  }
+
+  /* ────────────────────────────────────────────
+     COVER SLIDES
+  ─────────────────────────────────────────── */
+  .cover {
+    background: linear-gradient(135deg, #1e3a8a 0%, #4f46e5 60%, #7c3aed 100%);
+    color: #fff;
+    text-align: center;
+  }
+  .cover .kicker {
+    font-size: 13px; letter-spacing: .15em; text-transform: uppercase;
+    background: rgba(255,255,255,.15);
+    padding: 5px 18px; border-radius: 20px;
+    margin-bottom: 28px;
+  }
+  .cover h1 {
+    font-size: clamp(30px, 4vw, 52px);
+    font-weight: 800; line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .cover h1 span { color: #93c5fd; }
+  .cover .subtitle {
+    font-size: 18px; opacity: .85;
+    max-width: 620px; line-height: 1.6;
+  }
+  .cover .pills {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    justify-content: center;
+    margin-top: 36px;
+  }
+  .cover .pill {
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 20px;
+    padding: 7px 18px;
+    font-size: 14px; font-weight: 600;
+  }
+
+  /* session cover variants */
+  .cover-s2 {
+    background: linear-gradient(135deg, #312e81 0%, #7c3aed 60%, #be185d 100%);
+  }
+  .cover-s5 {
+    background: linear-gradient(135deg, #065f46 0%, #059669 55%, #0d9488 100%);
+  }
+  .cover-s6 {
+    background: linear-gradient(135deg, #78350f 0%, #d97706 55%, #f59e0b 100%);
+  }
+
+  /* ────────────────────────────────────────────
+     SECTION DIVIDERS
+  ─────────────────────────────────────────── */
+  .divider {
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
+    color: #fff;
+    text-align: center;
+  }
+  .divider .number {
+    font-size: 80px; font-weight: 900;
+    color: rgba(255,255,255,.08);
+    line-height: 1; margin-bottom: 0;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+  }
+  .divider .content { position: relative; z-index: 2; }
+  .divider .icon {
+    font-size: 56px; margin-bottom: 20px; display: block;
+  }
+  .divider h2 {
+    font-size: clamp(26px, 3.5vw, 44px);
+    font-weight: 800; margin-bottom: 12px;
+  }
+  .divider .desc {
+    font-size: 17px; opacity: .75;
+    max-width: 540px; line-height: 1.6;
+  }
+
+  /* ────────────────────────────────────────────
+     CONTENT SLIDES
+  ─────────────────────────────────────────── */
+  .content h2 {
+    font-size: clamp(22px, 2.8vw, 36px);
+    font-weight: 800; color: #0f172a;
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .content h2 .icon { font-size: 1em; }
+  .content p { font-size: 16px; color: #475569; line-height: 1.7; margin-bottom: 14px; }
+  .content strong { color: #1e293b; }
+
+  /* two-col layout */
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    width: 100%;
+  }
+  .three-col {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    width: 100%;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .card.blue  { border-top: 4px solid #3b82f6; }
+  .card.green { border-top: 4px solid #22c55e; }
+  .card.amber { border-top: 4px solid #f59e0b; }
+  .card.purple{ border-top: 4px solid #a855f7; }
+  .card.teal  { border-top: 4px solid #14b8a6; }
+  .card.red   { border-top: 4px solid #ef4444; }
+  .card.indigo{ border-top: 4px solid #6366f1; }
+  .card h3 {
+    font-size: 15px; font-weight: 700;
+    color: #1e293b; margin-bottom: 10px;
+  }
+  .card p, .card li { font-size: 14px; color: #475569; line-height: 1.65; }
+  .card ul { padding-left: 18px; }
+  .card ul li { margin-bottom: 5px; }
+
+  /* ── Code blocks ── */
+  pre {
+    background: var(--code-bg);
+    border-radius: 12px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--code-fg);
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    width: 100%;
+    border: 1px solid #334155;
+  }
+  .kw  { color: #93c5fd; font-weight: 600; }  /* keyword */
+  .str { color: #86efac; }                     /* string */
+  .cmt { color: #64748b; font-style: italic; } /* comment */
+  .fn  { color: #fde68a; }                     /* function */
+  .cl  { color: #f9a8d4; }                     /* class */
+  .num { color: #fb923c; }                     /* number */
+  .tm  { color: #5eead4; }                     /* template literal delimiters */
+  .ti  { color: #f0abfc; }                     /* template interpolation */
+
+  /* inline code */
+  code {
+    background: #e0f2fe;
+    color: #0369a1;
+    border-radius: 5px;
+    padding: 2px 7px;
+    font-size: .88em;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-weight: 600;
+  }
+
+  /* ── Tip / Warning boxes ── */
+  .tip, .warn, .info {
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-size: 14px;
+    line-height: 1.6;
+    display: flex; gap: 12px;
+    align-items: flex-start;
+    width: 100%;
+  }
+  .tip  { background: #f0fdf4; border-left: 4px solid #22c55e; color: #166534; }
+  .warn { background: #fffbeb; border-left: 4px solid #f59e0b; color: #92400e; }
+  .info { background: #eff6ff; border-left: 4px solid #3b82f6; color: #1e40af; }
+  .tip .icon-sm, .warn .icon-sm, .info .icon-sm { font-size: 18px; flex-shrink: 0; }
+
+  /* ── Steps ── */
+  .steps { display: flex; flex-direction: column; gap: 14px; width: 100%; }
+  .step  { display: flex; gap: 16px; align-items: flex-start; }
+  .step-num {
+    min-width: 32px; height: 32px;
+    background: var(--blue); color: #fff;
+    border-radius: 50%;
+    font-weight: 700; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-body h4 { font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 3px; }
+  .step-body p  { font-size: 13px; color: #475569; line-height: 1.5; }
+
+  /* ── Comparison table ── */
+  .compare {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .compare th {
+    background: #1e3a8a; color: #fff;
+    padding: 12px 16px; text-align: left;
+    font-weight: 700;
+  }
+  .compare th:first-child { border-radius: 10px 0 0 0; }
+  .compare th:last-child  { border-radius: 0 10px 0 0; }
+  .compare td { padding: 11px 16px; border-bottom: 1px solid #e2e8f0; color: #374151; }
+  .compare tr:last-child td { border-bottom: none; }
+  .compare tr:nth-child(even) td { background: #f8fafc; }
+  .bad  { color: #dc2626; font-weight: 600; }
+  .good { color: #16a34a; font-weight: 600; }
+
+  /* ── Highlight tag ── */
+  .hl {
+    background: linear-gradient(120deg, #fde68a 0%, #fde68a 100%);
+    background-size: 100% 40%;
+    background-repeat: no-repeat;
+    background-position: 0 90%;
+    font-weight: 700;
+  }
+
+  /* ── Big quote ── */
+  .big-quote {
+    font-size: clamp(18px, 2.4vw, 28px);
+    font-weight: 700; color: #1e3a8a;
+    text-align: center; line-height: 1.5;
+    max-width: 800px;
+  }
+  .big-quote span { color: #4f46e5; }
+
+  /* ── Goal list ── */
+  .goal-list { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+  .goal-item {
+    display: flex; gap: 12px; align-items: center;
+    background: #f0fdf4; border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 15px; font-weight: 600; color: #166534;
+  }
+  .goal-item .icon { font-size: 20px; }
+
+  /* ── OS buttons ── */
+  .os-tabs {
+    display: flex; gap: 8px; margin-bottom: 16px;
+  }
+  .os-tab {
+    padding: 6px 18px; border-radius: 20px; font-size: 13px; font-weight: 600;
+    border: 2px solid #e2e8f0; cursor: pointer;
+    background: #fff; color: #475569;
+    transition: all .2s;
+  }
+  .os-tab.active { background: #1e3a8a; color: #fff; border-color: #1e3a8a; }
+
+  /* ── Summary checklist ── */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .checklist li {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 15px; color: #1e293b; line-height: 1.5;
+  }
+  .checklist .cb {
+    width: 22px; height: 22px;
+    background: #22c55e; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: #fff; font-size: 13px;
+  }
+
+  /* ── Agenda items ── */
+  .agenda { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+  .agenda-item {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+  }
+  .agenda-item .num-badge {
+    min-width: 36px; height: 36px;
+    border-radius: 10px;
+    font-weight: 800; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+  }
+  .agenda-item h4 { font-size: 15px; font-weight: 700; color: #0f172a; margin: 0; }
+  .agenda-item p  { font-size: 13px; color: #64748b; margin: 2px 0 0; }
+
+  /* responsive tweak */
+  @media (max-width: 800px) {
+    .slide { padding: 32px 24px; }
+    .two-col, .three-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="deck">
+
+  <!-- ════════════════════════════════════════════════════════════
+       SLIDE 1 — MAIN COVER
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide cover active" id="s1">
+    <div class="kicker">Training dành cho QA Non-Tech</div>
+    <h1>JavaScript <span>cơ bản</span><br>cho Automation Testing</h1>
+    <p class="subtitle">
+      Function · Array/Object · Template Literal · Class · Modules · Async/Await · Node.js<br>
+      Nền tảng JavaScript để bắt đầu học framework automation test.
+    </p>
+    <div class="pills">
+      <div class="pill">⏱ 4 Buổi Training</div>
+      <div class="pill">🎯 Dành cho QA không có nền tảng lập trình</div>
+      <div class="pill">🔧 Function &amp; Arrow</div>
+      <div class="pill">📋 Array &amp; Object</div>
+      <div class="pill">⚡ Thực hành ngay</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SLIDE 2 — AGENDA TỔNG QUAN
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide content" id="s2">
+    <div class="slide-num">Tổng quan</div>
+    <h2>📋 Nội dung 4 buổi training</h2>
+    <div class="two-col" style="gap:24px">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#166534;margin-bottom:10px;">🟢 Buổi 5</div>
+          <div class="agenda">
+            <div class="agenda-item">
+              <div class="num-badge" style="background:#059669">🔧</div>
+              <div><h4>Function</h4><p>Declaration, Arrow Function, Hoisting, Bài tập</p></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#a16207;margin-bottom:10px;">🟡 Buổi 6</div>
+          <div class="agenda">
+            <div class="agenda-item">
+              <div class="num-badge" style="background:#d97706">📋</div>
+              <div><h4>Array &amp; Object</h4><p>map / filter / find — xử lý dữ liệu API</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#1d4ed8;margin-bottom:10px;">🔵 Buổi 7</div>
+          <div class="agenda">
+            <div class="agenda-item">
+              <div class="num-badge" style="background:#3b82f6">📦</div>
+              <div><h4>Node.js · Template Literal · Class</h4><p>Môi trường, chuỗi ES6, lập trình OOP</p></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7c3aed;margin-bottom:10px;">🟣 Buổi 8</div>
+          <div class="agenda">
+            <div class="agenda-item">
+              <div class="num-badge" style="background:#8b5cf6">⚡</div>
+              <div><h4>Modules · JSON · Async/Await</h4><p>Export/import, đọc JSON, gọi API bất đồng bộ</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       ██████ BUỔI 5 COVER
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide cover cover-s5">
+    <div class="session-badge s5">Buổi 5</div>
+    <div class="kicker">Buổi học thứ năm</div>
+    <h1><span>Function</span> trong JavaScript</h1>
+    <p class="subtitle">
+      Tạo các khối code có thể tái sử dụng —<br>
+      Function Declaration và Arrow Function.
+    </p>
+    <div class="pills">
+      <div class="pill">🔧 Function Declaration</div>
+      <div class="pill">➡️ Arrow Function</div>
+      <div class="pill">📝 Bài tập thực hành</div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Mục tiêu + Function là gì -->
+  <div class="slide content">
+    <div class="slide-num">Function · Mục tiêu & Khái niệm</div>
+    <div class="session-badge s5">Buổi 5</div>
+    <h2>🎯 Mục tiêu + Function là gì?</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card green">
+          <h3>🎯 Sau buổi này bạn sẽ:</h3>
+          <ul>
+            <li>Hiểu Function là gì, dùng để làm gì</li>
+            <li>Viết được <strong>Function Declaration</strong></li>
+            <li>Viết được <strong>Arrow Function</strong></li>
+            <li>Biết khi nào dùng cái nào</li>
+            <li>Làm được bài tập thực tế đơn giản</li>
+          </ul>
+        </div>
+        <div class="card blue">
+          <h3>🔧 Function là gì?</h3>
+          <p>Function = <strong>một khối code có thể tái sử dụng</strong></p>
+          <p style="margin-top:8px">💡 Đơn giản: <strong>Input → Xử lý → Output</strong></p>
+        </div>
+      </div>
+      <div>
+        <p><strong>Ví dụ cơ bản nhất:</strong></p>
+        <pre>
+<span class="cmt">// Định nghĩa function</span>
+<span class="kw">function</span> <span class="fn">sayHello</span>() {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hello!"</span>);
+}
+
+<span class="cmt">// Gọi function — dùng lại bao nhiêu lần cũng được</span>
+<span class="fn">sayHello</span>(); <span class="cmt">// Hello!</span>
+<span class="fn">sayHello</span>(); <span class="cmt">// Hello!</span>
+<span class="fn">sayHello</span>(); <span class="cmt">// Hello!</span></pre>
+        <div class="tip" style="margin-top:12px">
+          <span class="icon-sm">💡</span>
+          <div>Thay vì copy-paste code nhiều lần, đặt nó vào 1 function → gọi bao nhiêu lần cũng được mà chỉ cần sửa ở 1 chỗ!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Function Declaration -->
+  <div class="slide content">
+    <div class="slide-num">Function · Declaration</div>
+    <div class="session-badge s5">Buổi 5</div>
+    <h2>🔧 Function Declaration</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card blue">
+          <h3>📝 Cú pháp</h3>
+          <pre style="font-size:13px">
+<span class="kw">function</span> <span class="fn">tenFunction</span>(param1, param2) {
+  <span class="cmt">// logic xử lý</span>
+  <span class="kw">return</span> ketQua;
+}</pre>
+        </div>
+        <p><strong>Demo với tham số:</strong></p>
+        <pre>
+<span class="kw">function</span> <span class="fn">greet</span>(name) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`Hello </span><span class="ti">${name}</span><span class="tm">!`</span>);
+}
+
+<span class="fn">greet</span>(<span class="str">"Danh"</span>); <span class="cmt">// Hello Danh!</span>
+<span class="fn">greet</span>(<span class="str">"An"</span>);   <span class="cmt">// Hello An!</span></pre>
+        <p><strong>Có return value:</strong></p>
+        <pre>
+<span class="kw">function</span> <span class="fn">add</span>(a, b) {
+  <span class="kw">return</span> a + b;
+}
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">add</span>(<span class="num">3</span>, <span class="num">5</span>)); <span class="cmt">// 8</span></pre>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card amber">
+          <h3>⚠️ Điểm đặc biệt: Hoisting</h3>
+          <p>Function Declaration có thể <strong>gọi trước khi khai báo</strong> — JavaScript tự "kéo" nó lên đầu file.</p>
+        </div>
+        <pre>
+<span class="cmt">// ✅ Hợp lệ — gọi TRƯỚC khi khai báo!</span>
+<span class="fn">sayHi</span>();
+
+<span class="kw">function</span> <span class="fn">sayHi</span>() {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hi!"</span>);
+}
+<span class="cmt">// Output: Hi!</span></pre>
+        <div class="info">
+          <span class="icon-sm">💡</span>
+          <div><strong>Hoisting</strong> = JavaScript đọc qua file một lần để "nhặt" tất cả Function Declaration lên đầu trước khi thực sự chạy code.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Arrow Function -->
+  <div class="slide content">
+    <div class="slide-num">Function · Arrow Function</div>
+    <div class="session-badge s5">Buổi 5</div>
+    <h2>➡️ Arrow Function (ES6 — cách hiện đại)</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card purple">
+          <h3>📝 Cú pháp</h3>
+          <pre style="font-size:13px">
+<span class="kw">const</span> <span class="fn">tenFunction</span> = (param1, param2) => {
+  <span class="cmt">// logic</span>
+  <span class="kw">return</span> ketQua;
+};</pre>
+        </div>
+        <p><strong>Demo tương đương Function Declaration:</strong></p>
+        <pre>
+<span class="cmt">// Arrow Function</span>
+<span class="kw">const</span> <span class="fn">greet</span> = (name) => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`Hello </span><span class="ti">${name}</span><span class="tm">!`</span>);
+};
+
+<span class="fn">greet</span>(<span class="str">"Danh"</span>); <span class="cmt">// Hello Danh!</span></pre>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card green">
+          <h3>✂️ Viết gọn hơn</h3>
+          <p>Nếu chỉ có <strong>1 dòng lệnh</strong>, có thể bỏ <code>{ }</code> và <code>return</code>:</p>
+        </div>
+        <pre>
+<span class="cmt">// 1 dòng — bỏ return và { }</span>
+<span class="kw">const</span> <span class="fn">sum</span> = (a, b) => a + b;
+
+<span class="cmt">// 1 tham số — bỏ luôn ( )</span>
+<span class="kw">const</span> <span class="fn">greet</span> = name => <span class="tm">`Hello </span><span class="ti">${name}</span><span class="tm">`</span>;
+
+<span class="cmt">// Không tham số — giữ ( )</span>
+<span class="kw">const</span> <span class="fn">sayHi</span> = () => <span class="str">"Hi!"</span>;
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">sum</span>(<span class="num">3</span>, <span class="num">4</span>));      <span class="cmt">// 7</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">greet</span>(<span class="str">"An"</span>));  <span class="cmt">// Hello An</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">sayHi</span>());      <span class="cmt">// Hi!</span></pre>
+        <div class="warn">
+          <span class="icon-sm">⚠️</span>
+          <div>Arrow Function <strong>không có Hoisting</strong> — phải khai báo trước khi gọi!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: So sánh + Demo isEven -->
+  <div class="slide content">
+    <div class="slide-num">Function · So sánh & Demo</div>
+    <div class="session-badge s5">Buổi 5</div>
+    <h2>⚖️ So sánh nhanh + Demo thực tế</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <table class="compare">
+          <tr>
+            <th></th>
+            <th>Function Declaration</th>
+            <th>Arrow Function</th>
+          </tr>
+          <tr><td>Hoisting</td><td class="good">✅ Có</td><td class="bad">❌ Không</td></tr>
+          <tr><td>Syntax</td><td>Dài hơn</td><td>Ngắn hơn</td></tr>
+          <tr><td>Dùng khi</td><td>Logic chính</td><td>Callback, code ngắn</td></tr>
+        </table>
+        <div class="info">
+          <span class="icon-sm">💡</span>
+          <div>Trong thực tế, cả hai đều dùng được. Arrow Function ngày càng phổ biến hơn nhờ cú pháp ngắn gọn.</div>
+        </div>
+      </div>
+      <div>
+        <p><strong>Demo: Kiểm tra số chẵn</strong></p>
+        <pre>
+<span class="cmt">// Cách 1: Function Declaration</span>
+<span class="kw">function</span> <span class="fn">isEven</span>(n) {
+  <span class="kw">return</span> n % <span class="num">2</span> === <span class="num">0</span>;
+}
+
+<span class="cmt">// Cách 2: Arrow Function (ngắn hơn)</span>
+<span class="kw">const</span> <span class="fn">isEven</span> = n => n % <span class="num">2</span> === <span class="num">0</span>;
+
+<span class="cmt">// Kết quả giống nhau!</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">isEven</span>(<span class="num">4</span>)); <span class="cmt">// true</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">isEven</span>(<span class="num">5</span>)); <span class="cmt">// false</span></pre>
+        <div class="tip" style="margin-top:12px">
+          <span class="icon-sm">🎯</span>
+          <div><code>n % 2</code> = phép chia lấy phần dư. Số chẵn chia 2 dư 0, số lẻ dư 1.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Bài tập + Lỗi hay gặp -->
+  <div class="slide content">
+    <div class="slide-num">Function · Bài tập & Lỗi hay gặp</div>
+    <div class="session-badge s5">Buổi 5</div>
+    <h2>📝 Bài tập thực hành + Lỗi hay gặp</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card blue">
+          <h3>📚 Bài 1 — Convert sang Arrow</h3>
+          <pre style="font-size:12px">
+<span class="kw">function</span> <span class="fn">multiply</span>(a, b) {
+  <span class="kw">return</span> a * b;
+}
+<span class="cmt">// 👉 Viết lại bằng arrow function</span></pre>
+        </div>
+        <div class="card blue">
+          <h3>📚 Bài 2 — Convert sang Declaration</h3>
+          <pre style="font-size:12px">
+<span class="kw">const</span> <span class="fn">divide</span> = (a, b) => a / b;
+<span class="cmt">// 👉 Viết lại bằng function declaration</span></pre>
+        </div>
+        <div class="card purple">
+          <h3>📚 Bài 3 — Viết function mới</h3>
+          <p>Viết function nhận vào <code>name</code>, trả về chuỗi <code>"Hello &lt;name&gt;"</code></p>
+        </div>
+        <div class="card teal">
+          <h3>📚 Bài 4 — Array + Arrow</h3>
+          <pre style="font-size:12px">
+<span class="kw">const</span> numbers = [<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>];
+<span class="cmt">// 👉 Tạo array bình phương các số</span></pre>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card red">
+          <h3>❌ Lỗi hay gặp: Quên return</h3>
+          <pre style="font-size:12px">
+<span class="cmt">// ❌ Sai — không có return, kết quả bị bỏ đi</span>
+<span class="kw">const</span> <span class="fn">sum</span> = (a, b) => {
+  a + b;
+};
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="fn">sum</span>(<span class="num">1</span>, <span class="num">2</span>)); <span class="cmt">// undefined !</span></pre>
+        </div>
+        <div class="card green">
+          <h3>✅ Cách sửa</h3>
+          <pre style="font-size:12px">
+<span class="cmt">// ✅ Cách 1: thêm return</span>
+<span class="kw">const</span> <span class="fn">sum</span> = (a, b) => {
+  <span class="kw">return</span> a + b;
+};
+
+<span class="cmt">// ✅ Cách 2: bỏ { } luôn</span>
+<span class="kw">const</span> <span class="fn">sum</span> = (a, b) => a + b;</pre>
+        </div>
+        <div class="warn">
+          <span class="icon-sm">⚠️</span>
+          <div>Khi dùng <code>{ }</code> trong arrow function, <strong>bắt buộc phải có <code>return</code></strong> nếu muốn trả về giá trị.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       ██████ BUỔI 6 COVER
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide cover cover-s6">
+    <div class="session-badge s6">Buổi 6</div>
+    <div class="kicker">Buổi học thứ sáu</div>
+    <h1>Array · <span>Object</span> · Methods</h1>
+    <p class="subtitle">
+      Làm việc với danh sách và đối tượng —<br>
+      map, filter, find để xử lý dữ liệu API như một pro.
+    </p>
+    <div class="pills">
+      <div class="pill">📋 Array</div>
+      <div class="pill">📦 Object</div>
+      <div class="pill">🔄 map / filter / find</div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Array & Object là gì -->
+  <div class="slide content">
+    <div class="slide-num">Array & Object · Giới thiệu</div>
+    <div class="session-badge s6">Buổi 6</div>
+    <h2>🧠 Array và Object là gì?</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card blue">
+          <h3>📋 Array — Danh sách</h3>
+          <p>Dùng khi cần lưu <strong>nhiều phần tử cùng loại</strong> theo thứ tự.</p>
+          <pre style="font-size:12px">
+<span class="kw">const</span> users = [<span class="str">"An"</span>, <span class="str">"Bình"</span>, <span class="str">"Cường"</span>];
+
+<span class="cmt">// Truy cập bằng index (bắt đầu từ 0)</span>
+users[<span class="num">0</span>]; <span class="cmt">// "An"</span>
+users[<span class="num">1</span>]; <span class="cmt">// "Bình"</span></pre>
+        </div>
+        <div class="card purple">
+          <h3>📦 Object — Đối tượng</h3>
+          <p>Dùng khi cần mô tả <strong>một thứ</strong> với nhiều thuộc tính (key-value).</p>
+          <pre style="font-size:12px">
+<span class="kw">const</span> user = {
+  name: <span class="str">"An"</span>,
+  age:  <span class="num">25</span>
+};
+
+<span class="cmt">// Truy cập bằng key</span>
+user.name; <span class="cmt">// "An"</span>
+user.age;  <span class="cmt">// 25</span></pre>
+        </div>
+      </div>
+      <div>
+        <table class="compare">
+          <tr>
+            <th></th>
+            <th>Array</th>
+            <th>Object</th>
+          </tr>
+          <tr><td>Dùng khi</td><td>Danh sách nhiều thứ</td><td>1 đối tượng</td></tr>
+          <tr><td>Truy cập</td><td><code>index [0]</code></td><td><code>key .name</code></td></tr>
+          <tr><td>Ví dụ</td><td>List users</td><td>1 user</td></tr>
+        </table>
+        <div class="tip" style="margin-top:16px">
+          <span class="icon-sm">🎯</span>
+          <div>Thực tế hay gặp nhất: <strong>Array of Objects</strong> — đây chính xác là format JSON mà API trả về!</div>
+        </div>
+        <pre style="margin-top:12px">
+<span class="cmt">// Array of Objects — format API phổ biến nhất</span>
+<span class="kw">const</span> users = [
+  { name: <span class="str">"An"</span>,   age: <span class="num">25</span> },
+  { name: <span class="str">"Bình"</span>, age: <span class="num">30</span> }
+];</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: map() -->
+  <div class="slide content">
+    <div class="slide-num">Array Methods · map()</div>
+    <div class="session-badge s6">Buổi 6</div>
+    <h2>🟢 <code>map()</code> — Biến đổi toàn bộ Array</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card green">
+          <h3>🟢 Dùng khi nào?</h3>
+          <p>Muốn <strong>tạo array mới</strong> bằng cách biến đổi từng phần tử của array cũ.</p>
+          <p style="margin-top:6px">📌 Array gốc <strong>không bị thay đổi</strong>.</p>
+        </div>
+        <p><strong>Ví dụ cơ bản:</strong></p>
+        <pre>
+<span class="kw">const</span> numbers = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+
+<span class="kw">const</span> doubled = numbers.<span class="fn">map</span>(n => n * <span class="num">2</span>);
+
+<span class="fn">console</span>.<span class="fn">log</span>(doubled); <span class="cmt">// [2, 4, 6]</span>
+<span class="fn">console</span>.<span class="fn">log</span>(numbers); <span class="cmt">// [1, 2, 3] ← không đổi!</span></pre>
+      </div>
+      <div>
+        <p><strong>Ví dụ thực tế — lấy danh sách name từ API:</strong></p>
+        <pre>
+<span class="kw">const</span> users = [
+  { name: <span class="str">"An"</span>,   age: <span class="num">25</span> },
+  { name: <span class="str">"Bình"</span>, age: <span class="num">30</span> }
+];
+
+<span class="kw">const</span> names = users.<span class="fn">map</span>(u => u.name);
+
+<span class="fn">console</span>.<span class="fn">log</span>(names);
+<span class="cmt">// ["An", "Bình"]</span></pre>
+        <div class="info" style="margin-top:14px">
+          <span class="icon-sm">🔗</span>
+          <div><strong>Trong API Testing:</strong> Nhận list orders từ API, dùng <code>map()</code> để lấy danh sách <code>id</code> hoặc <code>status</code> để verify — rất thường dùng!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: filter() + find() -->
+  <div class="slide content">
+    <div class="slide-num">Array Methods · filter() & find()</div>
+    <div class="session-badge s6">Buổi 6</div>
+    <h2>🔵 <code>filter()</code> và 🟣 <code>find()</code></h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card blue">
+          <h3>🔵 filter() — Lọc nhiều kết quả</h3>
+          <p>Lấy ra <strong>tất cả phần tử</strong> thỏa điều kiện → trả về <em>Array mới</em>.</p>
+        </div>
+        <pre>
+<span class="kw">const</span> users = [
+  { name: <span class="str">"An"</span>,    age: <span class="num">25</span> },
+  { name: <span class="str">"Bình"</span>,  age: <span class="num">30</span> },
+  { name: <span class="str">"Cường"</span>, age: <span class="num">20</span> }
+];
+
+<span class="kw">const</span> adults = users.<span class="fn">filter</span>(u => u.age >= <span class="num">25</span>);
+
+<span class="fn">console</span>.<span class="fn">log</span>(adults);
+<span class="cmt">// [{ name:"An",age:25 }, { name:"Bình",age:30 }]</span></pre>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card purple">
+          <h3>🟣 find() — Tìm 1 kết quả đầu tiên</h3>
+          <p>Lấy ra <strong>phần tử đầu tiên</strong> thỏa điều kiện → trả về <em>1 object</em> hoặc <code>undefined</code>.</p>
+        </div>
+        <pre>
+<span class="kw">const</span> user = users.<span class="fn">find</span>(u => u.name === <span class="str">"Bình"</span>);
+
+<span class="fn">console</span>.<span class="fn">log</span>(user);
+<span class="cmt">// { name: "Bình", age: 30 }</span>
+
+<span class="cmt">// ⚠️ Cẩn thận: có thể trả undefined!</span>
+<span class="kw">const</span> notFound = users.<span class="fn">find</span>(u => u.name === <span class="str">"XYZ"</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(notFound); <span class="cmt">// undefined</span>
+
+<span class="cmt">// ✅ Luôn kiểm tra trước khi dùng</span>
+<span class="kw">if</span> (user) {
+  <span class="fn">console</span>.<span class="fn">log</span>(user.name);
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: So sánh methods + Kết hợp -->
+  <div class="slide content">
+    <div class="slide-num">Array Methods · So sánh & Kết hợp</div>
+    <div class="session-badge s6">Buổi 6</div>
+    <h2>⚠️ So sánh map / filter / find + Kết hợp</h2>
+    <div class="two-col">
+      <div>
+        <table class="compare">
+          <tr>
+            <th>Method</th>
+            <th>Dùng khi</th>
+            <th>Trả về</th>
+          </tr>
+          <tr><td><code>map()</code></td><td>Biến đổi tất cả</td><td class="good">Array mới</td></tr>
+          <tr><td><code>filter()</code></td><td>Lọc nhiều kết quả</td><td class="good">Array mới</td></tr>
+          <tr><td><code>find()</code></td><td>Tìm 1 phần tử</td><td style="color:#7c3aed;font-weight:600">1 object / undefined</td></tr>
+        </table>
+        <div class="tip" style="margin-top:14px">
+          <span class="icon-sm">✅</span>
+          <div><strong>Cả 3 method đều KHÔNG thay đổi array gốc</strong> — dùng thoải mái mà không sợ mất dữ liệu.</div>
+        </div>
+        <div class="warn" style="margin-top:10px">
+          <span class="icon-sm">⚠️</span>
+          <div>Luôn kiểm tra <code>find()</code> có trả <code>undefined</code> không trước khi truy cập property — đây là lỗi rất hay gặp!</div>
+        </div>
+      </div>
+      <div>
+        <div class="card amber">
+          <h3>🔁 Kết hợp nhiều method (method chaining)</h3>
+          <pre style="font-size:13px">
+<span class="kw">const</span> orders = [
+  { id:<span class="num">1</span>, status:<span class="str">"success"</span>, total:<span class="num">100</span> },
+  { id:<span class="num">2</span>, status:<span class="str">"pending"</span>, total:<span class="num">200</span> },
+  { id:<span class="num">3</span>, status:<span class="str">"success"</span>, total:<span class="num">150</span> }
+];
+
+<span class="cmt">// Lấy tổng tiền các order "success"</span>
+<span class="kw">const</span> totals = orders
+  .<span class="fn">filter</span>(o => o.status === <span class="str">"success"</span>)
+  .<span class="fn">map</span>(o => o.total);
+
+<span class="fn">console</span>.<span class="fn">log</span>(totals); <span class="cmt">// [100, 150]</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Bài tập Buổi 6 -->
+  <div class="slide content">
+    <div class="slide-num">Array & Object · Bài tập</div>
+    <div class="session-badge s6">Buổi 6</div>
+    <h2>💻 Bài tập thực hành</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card green">
+          <h3>🟡 Bài 1 — Cơ bản</h3>
+          <pre style="font-size:12px">
+<span class="kw">const</span> numbers = [<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">5</span>];</pre>
+          <ul style="margin-top:8px">
+            <li>Nhân đôi tất cả phần tử <em>(map)</em></li>
+            <li>Lọc số &gt; 3 <em>(filter)</em></li>
+            <li>Tìm số = 4 <em>(find)</em></li>
+          </ul>
+        </div>
+        <div class="card blue">
+          <h3>🟠 Bài 2 — Object Array</h3>
+          <pre style="font-size:12px">
+<span class="kw">const</span> users = [
+  { id:<span class="num">1</span>, name:<span class="str">"An"</span>,    age:<span class="num">25</span> },
+  { id:<span class="num">2</span>, name:<span class="str">"Bình"</span>,  age:<span class="num">30</span> },
+  { id:<span class="num">3</span>, name:<span class="str">"Cường"</span>, age:<span class="num">20</span> }
+];</pre>
+          <ul style="margin-top:8px">
+            <li>Lấy danh sách name</li>
+            <li>Lọc user &gt; 25 tuổi</li>
+            <li>Tìm user id = 2</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="card red">
+          <h3>🔴 Bài 3 — Giống API thật (QA hay gặp!)</h3>
+          <pre style="font-size:12px">
+<span class="kw">const</span> orders = [
+  { id:<span class="num">1</span>, status:<span class="str">"success"</span>, total:<span class="num">100</span> },
+  { id:<span class="num">2</span>, status:<span class="str">"pending"</span>, total:<span class="num">200</span> },
+  { id:<span class="num">3</span>, status:<span class="str">"success"</span>, total:<span class="num">150</span> }
+];</pre>
+          <ul style="margin-top:8px">
+            <li>Lấy tất cả order có <code>status = "success"</code></li>
+            <li>Lấy danh sách <code>total</code> của toàn bộ orders</li>
+            <li>Tìm order có <code>id = 2</code></li>
+          </ul>
+        </div>
+        <div class="tip" style="margin-top:14px">
+          <span class="icon-sm">🚀</span>
+          <div>Bài 3 chính xác là những gì bạn cần làm khi <strong>verify response body từ API</strong> trong Playwright hay Postman!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       ██████ BUỔI 7 COVER
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide cover" id="s3">
+    <div class="session-badge s1">Buổi 7</div>
+    <div class="kicker">Buổi học thứ bảy</div>
+    <h1>Node.js · <span>Template Literal</span> · Class</h1>
+    <p class="subtitle">
+      Cài đặt môi trường, làm quen với cú pháp chuỗi hiện đại<br>và lập trình hướng đối tượng cơ bản.
+    </p>
+    <div class="pills">
+      <div class="pill">📦 Node.js</div>
+      <div class="pill">🔤 Template Literal</div>
+      <div class="pill">🏛️ Class</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION: NODE.JS
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide divider" id="s4">
+    <div class="session-badge s1">Buổi 7 · Phần 1</div>
+    <div class="number">01</div>
+    <div class="content">
+      <span class="icon">📦</span>
+      <h2>Cài đặt Node.js</h2>
+      <p class="desc">Setup môi trường lập trình — nền tảng để chạy mọi thứ</p>
+    </div>
+  </div>
+
+  <!-- SLIDE: Node.js là gì -->
+  <div class="slide content" id="s5">
+    <div class="slide-num">Node.js · Giới thiệu</div>
+    <div class="session-badge s1">Buổi 7</div>
+    <h2>🤔 Node.js là gì?</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card blue">
+          <h3>🖥️ Trước đây</h3>
+          <p>JavaScript chỉ chạy được trên <strong>trình duyệt</strong> (Chrome, Firefox…)<br>
+          Không thể chạy trên máy tính độc lập.</p>
+        </div>
+        <div class="card green">
+          <h3>🚀 Với Node.js</h3>
+          <p>JavaScript chạy được <strong>trực tiếp trên máy tính</strong> — không cần trình duyệt.<br>
+          Đây là nền tảng để chạy Playwright, Cypress, v.v.</p>
+        </div>
+        <div class="info">
+          <span class="icon-sm">💡</span>
+          <div>Hãy nghĩ Node.js như <strong>"máy chạy JavaScript"</strong> được cài trên máy tính của bạn.</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card amber">
+          <h3>⚙️ npm là gì?</h3>
+          <p>npm (<em>Node Package Manager</em>) được cài kèm Node.js tự động.<br>
+          Dùng để tải thư viện (Playwright, Axios…) chỉ bằng một lệnh.</p>
+        </div>
+        <div class="card purple">
+          <h3>🎯 Tại sao QA cần Node.js?</h3>
+          <ul>
+            <li>Chạy Playwright / Cypress</li>
+            <li>Chạy script automation test</li>
+            <li>Tải các thư viện test</li>
+            <li>Chạy file <code>.js</code> từ terminal</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Cài đặt Node.js steps -->
+  <div class="slide content" id="s6">
+    <div class="slide-num">Node.js · Cài đặt</div>
+    <div class="session-badge s1">Buổi 7</div>
+    <h2>📥 Cài đặt Node.js (mọi hệ điều hành)</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Truy cập trang chính thức</h4>
+          <p>Mở trình duyệt → vào <strong>nodejs.org</strong> → chọn nút <strong>"LTS" (Long Term Support)</strong> — đây là phiên bản ổn định nhất.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Tải file cài đặt phù hợp hệ điều hành</h4>
+          <p>
+            <strong>Windows</strong>: tải file <code>.msi</code> → chạy → Next → Next → Install<br>
+            <strong>macOS</strong>: tải file <code>.pkg</code> → chạy → Continue → Install<br>
+            <strong>Linux (Ubuntu)</strong>: dùng lệnh terminal bên dưới
+          </p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Kiểm tra cài đặt thành công</h4>
+          <p>Mở <strong>Terminal / Command Prompt</strong> → gõ lệnh kiểm tra:</p>
+        </div>
+      </div>
+    </div>
+    <pre style="margin-top:12px">
+<span class="cmt"># Kiểm tra Node.js đã được cài chưa</span>
+node --version
+<span class="cmt"># Kết quả ví dụ: v22.x.x  ← phiên bản hiện tại</span>
+
+<span class="cmt"># Kiểm tra npm</span>
+npm --version
+<span class="cmt"># Kết quả ví dụ: 10.x.x</span></pre>
+  </div>
+
+  <!-- SLIDE: VS Code -->
+  <div class="slide content" id="s7">
+    <div class="slide-num">Node.js · Editor</div>
+    <div class="session-badge s1">Buổi 7</div>
+    <h2>💻 Cài thêm VS Code (Editor)</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <p>VS Code là <strong>trình soạn thảo code miễn phí</strong> phổ biến nhất, rất phù hợp cho người mới bắt đầu.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <h4>Tải VS Code</h4>
+              <p>Vào <strong>code.visualstudio.com</strong> → tải phiên bản phù hợp hệ điều hành</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <h4>Cài extension hữu ích</h4>
+              <p>Mở Extensions (Ctrl+Shift+X) → cài <strong>"Prettier"</strong> và <strong>"ESLint"</strong></p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <h4>Mở Terminal trong VS Code</h4>
+              <p>Nhấn <strong>Ctrl + `</strong> (backtick) hoặc menu View → Terminal</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card blue">
+          <h3>📁 Tạo file JavaScript đầu tiên</h3>
+          <p>1. Tạo folder mới tên <code>js-training</code><br>
+          2. Mở folder bằng VS Code<br>
+          3. Tạo file mới tên <code>hello.js</code></p>
+        </div>
+        <pre><span class="cmt">// file: hello.js</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Xin chào, tôi là QA!"</span>);
+
+<span class="cmt">// Chạy file trong Terminal:</span>
+<span class="cmt">// node hello.js</span></pre>
+        <div class="tip">
+          <span class="icon-sm">✅</span>
+          <div>Nếu thấy dòng chữ <code>Xin chào, tôi là QA!</code> xuất hiện trong Terminal → cài đặt thành công!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION: TEMPLATE LITERAL
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide divider" id="s8">
+    <div class="session-badge s1">Buổi 7 · Phần 2</div>
+    <div class="number">02</div>
+    <div class="content">
+      <span class="icon">🔤</span>
+      <h2>Template Literal</h2>
+      <p class="desc">Cách viết chuỗi văn bản thông minh — nhanh hơn, dễ đọc hơn</p>
+    </div>
+  </div>
+
+  <!-- SLIDE: Template Literal là gì -->
+  <div class="slide content" id="s9">
+    <div class="slide-num">Template Literal · Giới thiệu</div>
+    <div class="session-badge s1">Buổi 7</div>
+    <h2>🔤 Template Literal là gì?</h2>
+    <div class="two-col">
+      <div>
+        <p>Template Literal cho phép bạn <strong>nhúng biến trực tiếp vào chuỗi</strong> mà không cần dùng dấu <code>+</code>.<br>
+        Được bao bởi dấu <span class="hl">backtick ( ` )</span> thay vì dấu nháy thường.</p>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
+          <div class="card red">
+            <h3>❌ Cách cũ — khó đọc</h3>
+            <pre style="font-size:12px">
+<span class="kw">const</span> name = <span class="str">"Lan"</span>;
+<span class="kw">const</span> age = <span class="num">25</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Tôi là "</span> + name + <span class="str">", "</span> + age + <span class="str">" tuổi"</span>);
+<span class="cmt">// 👆 Dễ nhầm lẫn, khó bảo trì</span></pre>
+          </div>
+          <div class="card green">
+            <h3>✅ Template Literal — rõ ràng</h3>
+            <pre style="font-size:12px">
+<span class="kw">const</span> name = <span class="str">"Lan"</span>;
+<span class="kw">const</span> age = <span class="num">25</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`</span><span class="str">Tôi là </span><span class="ti">${name}</span><span class="str">, </span><span class="ti">${age}</span><span class="str"> tuổi</span><span class="tm">`</span>);
+<span class="cmt">// ✅ Sạch hơn, dễ đọc hơn nhiều!</span></pre>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card blue">
+          <h3>🔑 Cú pháp cơ bản</h3>
+          <ul>
+            <li>Dùng dấu <strong>backtick</strong> <code>`</code> bao quanh chuỗi</li>
+            <li>Dùng <code>${ }</code> để nhúng biến hoặc biểu thức</li>
+            <li>Hỗ trợ viết <strong>nhiều dòng</strong> tự nhiên</li>
+          </ul>
+        </div>
+        <div class="warn">
+          <span class="icon-sm">⚠️</span>
+          <div>Dấu <code>`</code> (backtick) khác với dấu nháy đơn <code>'</code>. Thường ở góc trái trên bàn phím (cạnh số 1).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Template Literal Examples -->
+  <div class="slide content" id="s10">
+    <div class="slide-num">Template Literal · Ví dụ thực tế</div>
+    <div class="session-badge s1">Buổi 7</div>
+    <h2>💡 Ứng dụng thực tế trong Testing</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <p><strong>Tình huống 1:</strong> Tạo message log rõ ràng</p>
+        <pre>
+<span class="kw">const</span> testName = <span class="str">"Login_001"</span>;
+<span class="kw">const</span> status   = <span class="str">"PASSED"</span>;
+<span class="kw">const</span> duration = <span class="num">1.23</span>;
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`</span><span class="ti">[${testName}]</span><span class="str"> → </span><span class="ti">${status}</span><span class="str"> (</span><span class="ti">${duration}</span><span class="str">s)</span><span class="tm">`</span>);
+<span class="cmt">// Output: [Login_001] → PASSED (1.23s)</span></pre>
+
+        <p><strong>Tình huống 2:</strong> URL động</p>
+        <pre>
+<span class="kw">const</span> baseUrl = <span class="str">"https://api.example.com"</span>;
+<span class="kw">const</span> userId  = <span class="num">42</span>;
+
+<span class="kw">const</span> url = <span class="tm">`</span><span class="ti">${baseUrl}</span><span class="str">/users/</span><span class="ti">${userId}</span><span class="str">/profile</span><span class="tm">`</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(url);
+<span class="cmt">// https://api.example.com/users/42/profile</span></pre>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <p><strong>Tình huống 3:</strong> Chuỗi nhiều dòng</p>
+        <pre>
+<span class="kw">const</span> email = <span class="tm">`
+Kính gửi team QA,
+
+Test case TC_001 đã chạy xong.
+Kết quả: <span class="ti">${status}</span>
+Thời gian: <span class="ti">${duration}</span>s
+`</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(email);</pre>
+
+        <div class="tip">
+          <span class="icon-sm">🎯</span>
+          <div>
+            <strong>Biểu thức trong <code>${ }</code>:</strong><br>
+            Bạn có thể tính toán ngay bên trong:<br>
+            <code>`Tổng: ${2 + 3}`</code> → <code>Tổng: 5</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION: CLASS
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide divider" id="s11">
+    <div class="session-badge s1">Buổi 7 · Phần 3</div>
+    <div class="number">03</div>
+    <div class="content">
+      <span class="icon">🏛️</span>
+      <h2>Class</h2>
+      <p class="desc">Khuôn mẫu để tạo đối tượng — tái sử dụng code hiệu quả</p>
+    </div>
+  </div>
+
+  <!-- SLIDE: Class là gì -->
+  <div class="slide content" id="s12">
+    <div class="slide-num">Class · Giới thiệu</div>
+    <div class="session-badge s1">Buổi 7</div>
+    <h2>🏛️ Class là gì? Tại sao cần dùng?</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card blue">
+          <h3>🍪 Hãy nghĩ như khuôn bánh</h3>
+          <p>
+            <strong>Class</strong> = khuôn bánh (bản thiết kế)<br>
+            <strong>Object</strong> = chiếc bánh được tạo ra từ khuôn<br><br>
+            Một khuôn có thể tạo ra <em>nhiều chiếc bánh</em> khác nhau (mỗi cái có nhân khác nhau).
+          </p>
+        </div>
+        <div class="card green">
+          <h3>🎯 Lợi ích trong Testing</h3>
+          <ul>
+            <li>Nhóm các hàm liên quan vào một chỗ</li>
+            <li>Tái sử dụng code cho nhiều test case</li>
+            <li>Dễ bảo trì khi thay đổi</li>
+          </ul>
+        </div>
+        <div class="info">
+          <span class="icon-sm">💡</span>
+          <div>Trong framework Playwright, bạn thường tạo <strong>Page Object</strong> — đó chính là một Class!</div>
+        </div>
+      </div>
+      <div>
+        <p><strong>Cấu trúc cơ bản một Class:</strong></p>
+        <pre>
+<span class="kw">class</span> <span class="cl">TenClass</span> {
+
+  <span class="cmt">// constructor: chạy khi tạo object mới</span>
+  <span class="fn">constructor</span>(thamSo1, thamSo2) {
+    <span class="kw">this</span>.thamSo1 = thamSo1;
+    <span class="kw">this</span>.thamSo2 = thamSo2;
+  }
+
+  <span class="cmt">// method: hàm bên trong class</span>
+  <span class="fn">tenHam</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`Hello </span><span class="ti">${<span class="kw">this</span>.thamSo1}</span><span class="tm">`</span>);
+  }
+}
+
+<span class="cmt">// Tạo object từ class</span>
+<span class="kw">const</span> obj = <span class="kw">new</span> <span class="cl">TenClass</span>(<span class="str">"giaTri1"</span>, <span class="str">"giaTri2"</span>);</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Class thực tế -->
+  <div class="slide content" id="s13">
+    <div class="slide-num">Class · Ví dụ thực tế</div>
+    <div class="session-badge s1">Buổi 7</div>
+    <h2>📝 Class thực tế — Page Object cho Login</h2>
+    <div class="two-col">
+      <div>
+        <p><strong>Tạo LoginPage class:</strong></p>
+        <pre>
+<span class="cmt">// file: LoginPage.js</span>
+<span class="kw">class</span> <span class="cl">LoginPage</span> {
+
+  <span class="fn">constructor</span>(username, password) {
+    <span class="kw">this</span>.username = username;
+    <span class="kw">this</span>.password = password;
+    <span class="kw">this</span>.loginCount = <span class="num">0</span>;
+  }
+
+  <span class="fn">login</span>() {
+    <span class="kw">this</span>.loginCount++;
+    <span class="fn">console</span>.<span class="fn">log</span>(
+      <span class="tm">`Đăng nhập với: </span><span class="ti">${<span class="kw">this</span>.username}</span><span class="tm">`</span>
+    );
+  }
+
+  <span class="fn">getInfo</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(
+      <span class="tm">`User: </span><span class="ti">${<span class="kw">this</span>.username}</span><span class="str">, </span>
+<span class="str">       Số lần login: </span><span class="ti">${<span class="kw">this</span>.loginCount}</span><span class="tm">`</span>
+    );
+  }
+}
+</pre>
+      </div>
+      <div>
+        <p><strong>Sử dụng class:</strong></p>
+        <pre>
+<span class="cmt">// Tạo 2 user khác nhau từ cùng 1 class</span>
+<span class="kw">const</span> admin = <span class="kw">new</span> <span class="cl">LoginPage</span>(<span class="str">"admin"</span>, <span class="str">"1234"</span>);
+<span class="kw">const</span> guest = <span class="kw">new</span> <span class="cl">LoginPage</span>(<span class="str">"guest"</span>, <span class="str">"abcd"</span>);
+
+admin.<span class="fn">login</span>();  <span class="cmt">// Đăng nhập với: admin</span>
+admin.<span class="fn">login</span>();  <span class="cmt">// lần 2</span>
+admin.<span class="fn">getInfo</span>(); <span class="cmt">// User: admin, Số lần login: 2</span>
+
+guest.<span class="fn">login</span>();  <span class="cmt">// Đăng nhập với: guest</span>
+guest.<span class="fn">getInfo</span>(); <span class="cmt">// User: guest, Số lần login: 1</span>
+</pre>
+        <div class="tip" style="margin-top:12px">
+          <span class="icon-sm">💡</span>
+          <div><code>this</code> trong class = "cái này" — tức là đang nói đến chính object đó.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Kế thừa -->
+  <div class="slide content" id="s14">
+    <div class="slide-num">Class · Kế thừa (extends)</div>
+    <div class="session-badge s1">Buổi 7</div>
+    <h2>🧬 Kế thừa Class — <code>extends</code></h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card purple">
+          <h3>🧬 Kế thừa là gì?</h3>
+          <p>Class con <strong>thừa hưởng</strong> tất cả thuộc tính và method của class cha, đồng thời có thể <strong>thêm mới</strong> hoặc <strong>ghi đè</strong>.</p>
+        </div>
+        <pre>
+<span class="cmt">// Class CHA — dùng chung</span>
+<span class="kw">class</span> <span class="cl">BasePage</span> {
+  <span class="fn">constructor</span>(url) {
+    <span class="kw">this</span>.url = url;
+  }
+  <span class="fn">navigate</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`Mở trang: </span><span class="ti">${<span class="kw">this</span>.url}</span><span class="tm">`</span>);
+  }
+}</pre>
+      </div>
+      <div>
+        <pre>
+<span class="cmt">// Class CON — kế thừa từ BasePage</span>
+<span class="kw">class</span> <span class="cl">LoginPage</span> <span class="kw">extends</span> <span class="cl">BasePage</span> {
+
+  <span class="fn">constructor</span>(url, username) {
+    <span class="kw">super</span>(url); <span class="cmt">// gọi constructor của class cha</span>
+    <span class="kw">this</span>.username = username;
+  }
+
+  <span class="fn">login</span>() {
+    <span class="kw">this</span>.<span class="fn">navigate</span>(); <span class="cmt">// dùng method của class cha</span>
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`Login: </span><span class="ti">${<span class="kw">this</span>.username}</span><span class="tm">`</span>);
+  }
+}
+
+<span class="kw">const</span> page = <span class="kw">new</span> <span class="cl">LoginPage</span>(
+  <span class="str">"https://example.com/login"</span>, <span class="str">"admin"</span>
+);
+page.<span class="fn">login</span>();
+<span class="cmt">// Mở trang: https://example.com/login</span>
+<span class="cmt">// Login: admin</span></pre>
+        <div class="tip" style="margin-top:12px">
+          <span class="icon-sm">🎯</span>
+          <div><code>super()</code> = "gọi constructor của class cha". Phải gọi trước khi dùng <code>this</code> trong class con.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Export/Import Class -->
+  <div class="slide content" id="s15">
+    <div class="slide-num">Class · Export / Import</div>
+    <div class="session-badge s1">Buổi 7</div>
+    <h2>📤 Export và Import Class</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="info">
+          <span class="icon-sm">📂</span>
+          <div>Cấu trúc folder:<br>
+          <code>js-training/</code><br>
+          <code>├── pages/LoginPage.js</code><br>
+          <code>└── test/login.test.js</code></div>
+        </div>
+        <p><strong>1. Export class (file LoginPage.js):</strong></p>
+        <pre>
+<span class="cmt">// file: pages/LoginPage.js</span>
+<span class="kw">class</span> <span class="cl">LoginPage</span> {
+  <span class="fn">constructor</span>(username) {
+    <span class="kw">this</span>.username = username;
+  }
+  <span class="fn">login</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`Login: </span><span class="ti">${<span class="kw">this</span>.username}</span><span class="tm">`</span>);
+  }
+}
+
+<span class="cmt">// Export để file khác dùng được</span>
+<span class="kw">module</span>.exports = <span class="cl">LoginPage</span>;</pre>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <p><strong>2. Import và sử dụng (file test):</strong></p>
+        <pre>
+<span class="cmt">// file: test/login.test.js</span>
+
+<span class="cmt">// Import class từ file khác</span>
+<span class="kw">const</span> <span class="cl">LoginPage</span> = <span class="fn">require</span>(<span class="str">"../pages/LoginPage"</span>);
+
+<span class="cmt">// Sử dụng bình thường</span>
+<span class="kw">const</span> loginPage = <span class="kw">new</span> <span class="cl">LoginPage</span>(<span class="str">"admin"</span>);
+loginPage.<span class="fn">login</span>();
+<span class="cmt">// Login: admin</span></pre>
+
+        <div class="card amber">
+          <h3>📌 Nhớ quy tắc đường dẫn</h3>
+          <ul>
+            <li><code>./</code> = cùng thư mục</li>
+            <li><code>../</code> = thư mục cha (lên 1 cấp)</li>
+            <li>Không cần viết <code>.js</code> ở cuối</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Tổng kết buổi 1 -->
+  <div class="slide content" id="s16">
+    <div class="slide-num">Buổi 7 · Tổng kết</div>
+    <div class="session-badge s1">Buổi 7</div>
+    <h2>✅ Tổng kết Buổi 7</h2>
+    <div class="two-col">
+      <div>
+        <ul class="checklist">
+          <li><div class="cb">✓</div><span>Cài đặt <strong>Node.js</strong> và VS Code thành công, chạy được file <code>.js</code> đầu tiên</span></li>
+          <li><div class="cb">✓</div><span>Dùng <strong>Template Literal</strong> với backtick <code>`</code> và <code>${}</code> để nhúng biến vào chuỗi</span></li>
+          <li><div class="cb">✓</div><span>Tạo <strong>Class</strong> với <code>constructor</code> và method</span></li>
+          <li><div class="cb">✓</div><span>Dùng <code>extends</code> để <strong>kế thừa</strong> từ class cha, gọi <code>super()</code></span></li>
+          <li><div class="cb">✓</div><span><strong>Export</strong> class bằng <code>module.exports</code>, <strong>import</strong> bằng <code>require()</code></span></li>
+        </ul>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card blue">
+          <h3>📚 Bài tập về nhà</h3>
+          <ul>
+            <li>Tạo class <code>UserPage</code> kế thừa <code>BasePage</code></li>
+            <li>Thêm method <code>getProfile()</code> in ra tên user</li>
+            <li>Export <code>UserPage</code>, import vào file test</li>
+            <li>Dùng template literal cho tất cả <code>console.log</code></li>
+          </ul>
+        </div>
+        <div class="warn">
+          <span class="icon-sm">⏰</span>
+          <div><strong>Hẹn gặp ở Buổi 8!</strong> Chúng ta sẽ học Modules (import JSON), Async/Await và áp dụng vào testing thực tế.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       ██████ BUỔI 8 COVER
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide cover cover-s2" id="s17">
+    <div class="session-badge s2">Buổi 8</div>
+    <div class="kicker">Buổi học thứ tám</div>
+    <h1>Modules · <span>JSON</span> · Async/Await</h1>
+    <p class="subtitle">
+      Import/export function, đọc dữ liệu từ JSON<br>
+      và xử lý tác vụ bất đồng bộ — nền tảng của API Testing.
+    </p>
+    <div class="pills">
+      <div class="pill">📦 Modules</div>
+      <div class="pill">🗂️ JSON Data</div>
+      <div class="pill">⚡ Async/Await</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION: MODULES — FUNCTIONS
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide divider" id="s18">
+    <div class="session-badge s2">Buổi 8 · Phần 1</div>
+    <div class="number">04</div>
+    <div class="content">
+      <span class="icon">📦</span>
+      <h2>Modules — Functions</h2>
+      <p class="desc">Tách code thành các file riêng — export và import function</p>
+    </div>
+  </div>
+
+  <!-- SLIDE: Modules là gì -->
+  <div class="slide content" id="s19">
+    <div class="slide-num">Modules · Giới thiệu</div>
+    <div class="session-badge s2">Buổi 8</div>
+    <h2>📦 Module là gì? Tại sao cần tách file?</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card blue">
+          <h3>🤔 Vấn đề khi không dùng module</h3>
+          <p>Tưởng tượng toàn bộ code của dự án nằm trong <strong>1 file duy nhất</strong>:<br>
+          → File dài hàng nghìn dòng<br>
+          → Khó tìm code khi cần sửa<br>
+          → Nhiều người cùng sửa 1 file = xung đột</p>
+        </div>
+        <div class="card green">
+          <h3>✅ Với Module</h3>
+          <p>Mỗi chức năng nằm trong <strong>file riêng</strong>:<br>
+          → Dễ tìm, dễ sửa<br>
+          → Tái sử dụng ở nhiều nơi<br>
+          → Teamwork hiệu quả hơn</p>
+        </div>
+      </div>
+      <div>
+        <div class="info" style="margin-bottom:16px">
+          <span class="icon-sm">📂</span>
+          <div>Cấu trúc dự án điển hình:
+          <pre style="font-size:12px;background:transparent;border:none;padding:0;color:#1e40af;margin-top:8px">
+js-training/
+├── utils/
+│   ├── helpers.js      ← hàm tiện ích
+│   └── api.js          ← hàm gọi API
+├── data/
+│   └── users.json      ← dữ liệu test
+├── pages/
+│   └── LoginPage.js    ← page objects
+└── tests/
+    └── login.test.js   ← test chính</pre>
+          </div>
+        </div>
+        <div class="tip">
+          <span class="icon-sm">🎯</span>
+          <div>Nguyên tắc: <strong>1 file = 1 trách nhiệm</strong>. File helpers chỉ chứa hàm tiện ích, file test chỉ chứa test cases.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Export/Import Function -->
+  <div class="slide content" id="s20">
+    <div class="slide-num">Modules · Export Function</div>
+    <div class="session-badge s2">Buổi 8</div>
+    <h2>📤 Export và Import Function</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <p><strong>Cách 1: Export từng hàm riêng</strong></p>
+        <pre>
+<span class="cmt">// file: utils/helpers.js</span>
+
+<span class="kw">function</span> <span class="fn">formatDate</span>(date) {
+  <span class="kw">return</span> date.<span class="fn">toLocaleDateString</span>(<span class="str">"vi-VN"</span>);
+}
+
+<span class="kw">function</span> <span class="fn">logResult</span>(testName, passed) {
+  <span class="kw">const</span> status = passed ? <span class="str">"✅ PASS"</span> : <span class="str">"❌ FAIL"</span>;
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`[</span><span class="ti">${testName}</span><span class="tm">] </span><span class="ti">${status}</span><span class="tm">`</span>);
+}
+
+<span class="cmt">// Export nhiều hàm cùng lúc</span>
+<span class="kw">module</span>.exports = { formatDate, logResult };</pre>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <p><strong>Import và sử dụng:</strong></p>
+        <pre>
+<span class="cmt">// file: tests/login.test.js</span>
+
+<span class="kw">const</span> { formatDate, logResult } =
+      <span class="fn">require</span>(<span class="str">"../utils/helpers"</span>);
+
+<span class="cmt">// Sử dụng trực tiếp</span>
+<span class="fn">logResult</span>(<span class="str">"TC_001_Login"</span>, <span class="kw">true</span>);
+<span class="cmt">// [TC_001_Login] ✅ PASS</span>
+
+<span class="kw">const</span> today = <span class="fn">formatDate</span>(<span class="kw">new</span> <span class="cl">Date</span>());
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`Ngày test: </span><span class="ti">${today}</span><span class="tm">`</span>);
+<span class="cmt">// Ngày test: 12/5/2026</span></pre>
+
+        <div class="card amber">
+          <h3>🔎 Destructuring <code>{ }</code> khi import</h3>
+          <p>Dùng <code>{ }</code> để lấy <em>chỉ những hàm bạn cần</em> từ file export nhiều thứ. Tương tự như chọn món từ menu.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION: MODULES — JSON
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide divider" id="s21">
+    <div class="session-badge s2">Buổi 8 · Phần 2</div>
+    <div class="number">05</div>
+    <div class="content">
+      <span class="icon">🗂️</span>
+      <h2>Import dữ liệu từ JSON</h2>
+      <p class="desc">Đọc test data từ file .json — quản lý dữ liệu chuyên nghiệp</p>
+    </div>
+  </div>
+
+  <!-- SLIDE: JSON là gì -->
+  <div class="slide content" id="s22">
+    <div class="slide-num">JSON · Giới thiệu</div>
+    <div class="session-badge s2">Buổi 8</div>
+    <h2>🗂️ JSON là gì?</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card blue">
+          <h3>📄 JSON = JavaScript Object Notation</h3>
+          <p>Định dạng lưu trữ dữ liệu dạng văn bản, rất phổ biến để:</p>
+          <ul>
+            <li>Lưu <strong>test data</strong> (user, password, URL…)</li>
+            <li>Giao tiếp giữa client ↔ server (API)</li>
+            <li>Cấu hình ứng dụng</li>
+          </ul>
+        </div>
+        <div class="card green">
+          <h3>✅ Tại sao QA dùng JSON?</h3>
+          <ul>
+            <li>Tách dữ liệu test ra khỏi code</li>
+            <li>Thêm/xóa test data không cần sửa code</li>
+            <li>Dễ đọc, dễ hiểu ngay cả với người không biết code</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <p><strong>Cú pháp JSON:</strong></p>
+        <pre>
+<span class="cmt">// file: data/users.json</span>
+{
+  <span class="str">"adminUser"</span>: {
+    <span class="str">"username"</span>: <span class="str">"admin"</span>,
+    <span class="str">"password"</span>: <span class="str">"Admin@123"</span>,
+    <span class="str">"role"</span>: <span class="str">"administrator"</span>
+  },
+  <span class="str">"guestUser"</span>: {
+    <span class="str">"username"</span>: <span class="str">"guest"</span>,
+    <span class="str">"password"</span>: <span class="str">"Guest@456"</span>,
+    <span class="str">"role"</span>: <span class="str">"viewer"</span>
+  }
+}</pre>
+        <div class="warn" style="margin-top:12px">
+          <span class="icon-sm">⚠️</span>
+          <div>JSON luôn dùng <strong>dấu nháy kép</strong> <code>"</code> (không dùng nháy đơn). Key và value đều phải có nháy kép nếu là chuỗi.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Import JSON -->
+  <div class="slide content" id="s23">
+    <div class="slide-num">JSON · Import và sử dụng</div>
+    <div class="session-badge s2">Buổi 8</div>
+    <h2>📥 Import và sử dụng dữ liệu từ JSON</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <p><strong>File JSON — test data:</strong></p>
+        <pre>
+<span class="cmt">// file: data/testData.json</span>
+{
+  <span class="str">"users"</span>: [
+    {
+      <span class="str">"id"</span>: <span class="num">1</span>,
+      <span class="str">"username"</span>: <span class="str">"admin"</span>,
+      <span class="str">"password"</span>: <span class="str">"Admin@123"</span>,
+      <span class="str">"expected"</span>: <span class="str">"Đăng nhập thành công"</span>
+    },
+    {
+      <span class="str">"id"</span>: <span class="num">2</span>,
+      <span class="str">"username"</span>: <span class="str">"wrong_user"</span>,
+      <span class="str">"password"</span>: <span class="str">"wrong"</span>,
+      <span class="str">"expected"</span>: <span class="str">"Sai thông tin đăng nhập"</span>
+    }
+  ],
+  <span class="str">"baseUrl"</span>: <span class="str">"https://example.com"</span>
+}</pre>
+      </div>
+      <div>
+        <p><strong>Import JSON vào file test:</strong></p>
+        <pre>
+<span class="cmt">// file: tests/login.test.js</span>
+
+<span class="cmt">// Import JSON — đơn giản như require class!</span>
+<span class="kw">const</span> testData = <span class="fn">require</span>(<span class="str">"../data/testData.json"</span>);
+
+<span class="fn">console</span>.<span class="fn">log</span>(testData.baseUrl);
+<span class="cmt">// https://example.com</span>
+
+<span class="cmt">// Lặp qua từng user trong mảng</span>
+testData.users.<span class="fn">forEach</span>(user => {
+  <span class="fn">console</span>.<span class="fn">log</span>(
+    <span class="tm">`Test user </span><span class="ti">${user.id}</span><span class="str">: </span><span class="ti">${user.username}</span><span class="tm">`</span>
+  );
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`  Kỳ vọng: </span><span class="ti">${user.expected}</span><span class="tm">`</span>);
+});
+<span class="cmt">// Test user 1: admin</span>
+<span class="cmt">//   Kỳ vọng: Đăng nhập thành công</span>
+<span class="cmt">// Test user 2: wrong_user</span>
+<span class="cmt">//   Kỳ vọng: Sai thông tin đăng nhập</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION: ASYNC/AWAIT
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide divider" id="s24">
+    <div class="session-badge s2">Buổi 8 · Phần 3</div>
+    <div class="number">06</div>
+    <div class="content">
+      <span class="icon">⚡</span>
+      <h2>Async / Await</h2>
+      <p class="desc">Xử lý tác vụ cần "chờ" — nền tảng của API & UI testing</p>
+    </div>
+  </div>
+
+  <!-- SLIDE: Async concept -->
+  <div class="slide content" id="s25">
+    <div class="slide-num">Async/Await · Khái niệm</div>
+    <div class="session-badge s2">Buổi 8</div>
+    <h2>⚡ Async là gì? Tại sao cần "chờ"?</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card blue">
+          <h3>☕ Ví dụ đời thực</h3>
+          <p>Bạn gọi nước tại quán → nhân viên đi pha → bạn <strong>chờ</strong> vài phút → nhận nước.<br><br>
+          Trong lúc chờ, bạn vẫn có thể nhắn tin, đọc menu (không bị "đứng hình").</p>
+        </div>
+        <div class="card purple">
+          <h3>💻 Trong Testing</h3>
+          <p>Khi test gọi API hay tương tác UI, chương trình phải <strong>chờ</strong> kết quả trước khi kiểm tra.<br><br>
+          Không có async/await → code chạy tiếp ngay, kết quả chưa về → test sai!</p>
+        </div>
+      </div>
+      <div>
+        <div class="compare-wrapper">
+          <table class="compare">
+            <tr>
+              <th>Tình huống</th>
+              <th>Cần chờ?</th>
+            </tr>
+            <tr><td>Gọi API (GET, POST…)</td><td class="good">✅ Có</td></tr>
+            <tr><td>Đọc file từ ổ cứng</td><td class="good">✅ Có</td></tr>
+            <tr><td>Click nút trên UI</td><td class="good">✅ Có</td></tr>
+            <tr><td>Tính toán 1+1</td><td class="bad">❌ Không</td></tr>
+            <tr><td>In ra console.log</td><td class="bad">❌ Không</td></tr>
+          </table>
+        </div>
+        <div class="info" style="margin-top:14px">
+          <span class="icon-sm">💡</span>
+          <div>Từ khóa <strong>async</strong> đánh dấu function "có thể chứa tác vụ chờ". Từ khóa <strong>await</strong> = "hãy chờ tác vụ này xong rồi mới tiếp tục".</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Async/Await syntax -->
+  <div class="slide content" id="s26">
+    <div class="slide-num">Async/Await · Cú pháp</div>
+    <div class="session-badge s2">Buổi 8</div>
+    <h2>📝 Cú pháp async / await</h2>
+    <div class="two-col">
+      <div>
+        <p><strong>Cấu trúc cơ bản:</strong></p>
+        <pre>
+<span class="cmt">// "async" trước function = function này có thể chờ</span>
+<span class="kw">async function</span> <span class="fn">layDuLieu</span>() {
+
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Bắt đầu gọi API..."</span>);
+
+  <span class="cmt">// "await" = chờ kết quả trước khi tiếp tục</span>
+  <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(
+    <span class="str">"https://api.example.com/users"</span>
+  );
+
+  <span class="kw">const</span> data = <span class="kw">await</span> response.<span class="fn">json</span>();
+
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`Số user: </span><span class="ti">${data.length}</span><span class="tm">`</span>);
+}
+
+<span class="cmt">// Gọi function async</span>
+<span class="fn">layDuLieu</span>();</pre>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card green">
+          <h3>📌 Quy tắc vàng</h3>
+          <ul>
+            <li><code>async</code> đặt trước từ khóa <code>function</code></li>
+            <li><code>await</code> chỉ dùng được <strong>bên trong</strong> hàm <code>async</code></li>
+            <li>Mỗi bước "chờ" đặt một <code>await</code></li>
+          </ul>
+        </div>
+        <div class="card amber">
+          <h3>🔄 Arrow function cũng dùng được</h3>
+          <pre style="font-size:12px">
+<span class="kw">const</span> <span class="fn">layDuLieu</span> = <span class="kw">async</span> () => {
+  <span class="kw">const</span> data = <span class="kw">await</span> <span class="fn">fetch</span>(url);
+  <span class="kw">return</span> data;
+};</pre>
+        </div>
+        <div class="tip">
+          <span class="icon-sm">💡</span>
+          <div>Trong Playwright, <strong>hầu hết các hành động đều cần <code>await</code></strong>: click, type, navigate, screenshot…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: try/catch -->
+  <div class="slide content" id="s27">
+    <div class="slide-num">Async/Await · Xử lý lỗi</div>
+    <div class="session-badge s2">Buổi 8</div>
+    <h2>🛡️ Xử lý lỗi với try / catch</h2>
+    <div class="two-col">
+      <div>
+        <div class="card red" style="margin-bottom:14px">
+          <h3>❌ Không có xử lý lỗi</h3>
+          <p>Nếu API lỗi hoặc mất mạng → chương trình <strong>crash ngay</strong>, không biết lý do tại sao.</p>
+        </div>
+        <pre>
+<span class="cmt">// ❌ Không an toàn</span>
+<span class="kw">async function</span> <span class="fn">test</span>() {
+  <span class="kw">const</span> data = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"bad-url"</span>);
+  <span class="cmt">// 💥 Crash nếu bad-url không tồn tại</span>
+}</pre>
+      </div>
+      <div>
+        <div class="card green" style="margin-bottom:14px">
+          <h3>✅ Có xử lý lỗi — try/catch</h3>
+          <p><code>try</code>: thử chạy code<br><code>catch</code>: nếu có lỗi → bắt lấy và xử lý</p>
+        </div>
+        <pre>
+<span class="kw">async function</span> <span class="fn">goiApi</span>(url) {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(url);
+    <span class="kw">const</span> data = <span class="kw">await</span> response.<span class="fn">json</span>();
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`✅ Thành công: </span><span class="ti">${data.status}</span><span class="tm">`</span>);
+    <span class="kw">return</span> data;
+  } <span class="kw">catch</span> (error) {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`❌ Lỗi: </span><span class="ti">${error.message}</span><span class="tm">`</span>);
+    <span class="cmt">// Không crash, xử lý gracefully</span>
+  }
+}
+
+<span class="fn">goiApi</span>(<span class="str">"https://api.example.com/data"</span>);</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Async trong Testing -->
+  <div class="slide content" id="s28">
+    <div class="slide-num">Async/Await · Testing thực tế</div>
+    <div class="session-badge s2">Buổi 8</div>
+    <h2>🧪 Async/Await trong Testing thực tế</h2>
+    <div class="two-col">
+      <div>
+        <p><strong>Ví dụ: Test API đăng nhập</strong></p>
+        <pre>
+<span class="cmt">// file: tests/api.test.js</span>
+<span class="kw">const</span> testData = <span class="fn">require</span>(<span class="str">"../data/testData.json"</span>);
+
+<span class="kw">async function</span> <span class="fn">testLogin</span>(user) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`\n🧪 Test: </span><span class="ti">${user.username}</span><span class="tm">`</span>);
+
+  <span class="kw">try</span> {
+    <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(
+      <span class="tm">`</span><span class="ti">${testData.baseUrl}</span><span class="str">/api/login</span><span class="tm">`</span>,
+      {
+        method: <span class="str">"POST"</span>,
+        body: JSON.<span class="fn">stringify</span>({
+          username: user.username,
+          password: user.password
+        })
+      }
+    );
+    <span class="kw">const</span> body = <span class="kw">await</span> res.<span class="fn">json</span>();
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`  Kết quả: </span><span class="ti">${body.message}</span><span class="tm">`</span>);
+  } <span class="kw">catch</span>(e) {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`  Lỗi: </span><span class="ti">${e.message}</span><span class="tm">`</span>);
+  }
+}</pre>
+      </div>
+      <div>
+        <p><strong>Chạy test cho nhiều user:</strong></p>
+        <pre>
+<span class="kw">async function</span> <span class="fn">runAllTests</span>() {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"=== BẮT ĐẦU CHẠY TEST ==="</span>);
+
+  <span class="kw">for</span> (<span class="kw">const</span> user <span class="kw">of</span> testData.users) {
+    <span class="kw">await</span> <span class="fn">testLogin</span>(user);
+  }
+
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"\n=== XONG ==="</span>);
+}
+
+<span class="fn">runAllTests</span>();</pre>
+
+        <div class="tip" style="margin-top:14px">
+          <span class="icon-sm">🎯</span>
+          <div>Dùng <code>for...of</code> thay vì <code>forEach</code> khi cần <code>await</code> bên trong vòng lặp — <code>forEach</code> không chờ <code>await</code>!</div>
+        </div>
+        <div class="card purple" style="margin-top:12px">
+          <h3>🔗 Liên kết với Playwright</h3>
+          <pre style="font-size:12px">
+<span class="cmt">// Playwright dùng async/await ở mọi nơi</span>
+<span class="kw">await</span> page.<span class="fn">goto</span>(<span class="str">"https://example.com"</span>);
+<span class="kw">await</span> page.<span class="fn">click</span>(<span class="str">"#login-btn"</span>);
+<span class="kw">await</span> page.<span class="fn">fill</span>(<span class="str">"#username"</span>, <span class="str">"admin"</span>);</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SLIDE: GỘP ALL — TỔNG KẾT BUỔI 2
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide content" id="s29">
+    <div class="slide-num">Buổi 8 · Tổng kết</div>
+    <div class="session-badge s2">Buổi 8</div>
+    <h2>✅ Tổng kết Buổi 8</h2>
+    <div class="two-col">
+      <div>
+        <ul class="checklist">
+          <li><div class="cb">✓</div><span>Tách code thành nhiều file (<strong>module</strong>), export/import function</span></li>
+          <li><div class="cb">✓</div><span>Đọc <strong>test data từ file JSON</strong> bằng <code>require()</code></span></li>
+          <li><div class="cb">✓</div><span>Hiểu <strong>async</strong> = hàm có tác vụ chờ, <strong>await</strong> = chờ kết quả</span></li>
+          <li><div class="cb">✓</div><span>Dùng <strong>try/catch</strong> để xử lý lỗi khi gọi API</span></li>
+          <li><div class="cb">✓</div><span>Kết hợp JSON + async/await để viết test API cơ bản</span></li>
+        </ul>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card purple">
+          <h3>📚 Bài tập tổng hợp</h3>
+          <ul>
+            <li>Tạo file <code>data/products.json</code> với 3 sản phẩm</li>
+            <li>Tạo file <code>utils/logger.js</code> export hàm <code>log()</code></li>
+            <li>Tạo file <code>tests/product.test.js</code> import cả hai</li>
+            <li>Dùng <code>async/await</code> để lấy dữ liệu, log kết quả</li>
+          </ul>
+        </div>
+        <div class="tip">
+          <span class="icon-sm">🚀</span>
+          <div>Sau 2 buổi này, bạn đã có đủ nền tảng để bắt đầu học <strong>Playwright</strong> — framework automation test hiện đại!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SLIDE: TỔNG KẾT KHOÁ HỌC
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="slide content" id="s30">
+    <div class="slide-num">Kết thúc</div>
+    <h2>🎓 Bạn đã học được gì sau 2 buổi?</h2>
+    <div class="three-col">
+      <div class="card blue">
+        <h3>🔤 Template Literal</h3>
+        <p>Dùng backtick và <code>${}</code> để tạo chuỗi đẹp, dễ đọc, có thể chứa biểu thức và nhiều dòng.</p>
+      </div>
+      <div class="card indigo">
+        <h3>🏛️ Class</h3>
+        <p>Tạo khuôn mẫu cho objects. Kế thừa bằng <code>extends</code>, chia sẻ code bằng <code>export/import</code>.</p>
+      </div>
+      <div class="card purple">
+        <h3>📦 Modules</h3>
+        <p>Tách code thành file riêng. Export function/class, import JSON data để quản lý test data.</p>
+      </div>
+      <div class="card teal">
+        <h3>⚡ Async/Await</h3>
+        <p>Xử lý tác vụ cần chờ (API, UI). <code>async</code> khai báo hàm, <code>await</code> chờ kết quả.</p>
+      </div>
+      <div class="card green">
+        <h3>📦 Node.js</h3>
+        <p>Cài đặt môi trường, chạy file <code>.js</code>, dùng <code>npm</code> để tải thư viện testing.</p>
+      </div>
+      <div class="card amber">
+        <h3>🚀 Bước tiếp theo</h3>
+        <p>Bắt đầu với <strong>Playwright</strong> hoặc <strong>Cypress</strong> — áp dụng ngay những gì đã học!</p>
+      </div>
+    </div>
+    <div class="big-quote" style="margin-top:28px">
+      "Code không phải chỉ dành cho developer —<br>
+      <span>QA viết code tốt = Test mạnh mẽ hơn!</span>"
+    </div>
+  </div>
+
+</div><!-- /#deck -->
+
+<!-- Navigation -->
+<div id="nav">
+  <button id="btn-prev" onclick="prevSlide()">◀</button>
+  <div id="progress"><div id="progress-bar"></div></div>
+  <span id="slide-counter">1 / 30</span>
+  <button id="btn-next" onclick="nextSlide()">▶</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function showSlide(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, slides.length - 1));
+    slides[current].classList.add('active');
+
+    document.getElementById('slide-counter').textContent =
+      `${current + 1} / ${slides.length}`;
+
+    document.getElementById('progress-bar').style.width =
+      `${((current + 1) / slides.length) * 100}%`;
+
+    document.getElementById('btn-prev').disabled = current === 0;
+    document.getElementById('btn-next').disabled = current === slides.length - 1;
+  }
+
+  function nextSlide() { showSlide(current + 1); }
+  function prevSlide() { showSlide(current - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'Space') {
+      e.preventDefault(); nextSlide();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault(); prevSlide();
+    }
+  });
+
+  // Touch swipe support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) diff > 0 ? nextSlide() : prevSlide();
+  });
+
+  showSlide(0);
+</script>
+</body>
+</html>
