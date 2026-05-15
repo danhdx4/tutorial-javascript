@@ -433,7 +433,11 @@
           <div style="font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#166534;margin-bottom:10px;">🟢 Buổi 5</div>
           <div class="agenda">
             <div class="agenda-item">
-              <div class="num-badge" style="background:#059669">🔧</div>
+              <div class="num-badge" style="background:#059669">�</div>
+              <div><h4>Cài đặt Node.js</h4><p>Setup môi trường, kiểm tra node / npm, chạy file .js đầu tiên</p></div>
+            </div>
+            <div class="agenda-item">
+              <div class="num-badge" style="background:#059669">�🔧</div>
               <div><h4>Function</h4><p>Declaration, Arrow Function, Hoisting, Bài tập</p></div>
             </div>
           </div>
@@ -477,15 +481,125 @@
   <div class="slide cover cover-s5">
     <div class="session-badge s5">Buổi 5</div>
     <div class="kicker">Buổi học thứ năm</div>
-    <h1><span>Function</span> trong JavaScript</h1>
+    <h1><span>Cài đặt Node.js</span> &amp; Function</h1>
     <p class="subtitle">
-      Tạo các khối code có thể tái sử dụng —<br>
-      Function Declaration và Arrow Function.
+      Cài Node.js — nền tảng để chạy JavaScript.<br>
+      Sau đó học Function Declaration và Arrow Function.
     </p>
     <div class="pills">
+      <div class="pill">📦 Node.js &amp; npm</div>
       <div class="pill">🔧 Function Declaration</div>
       <div class="pill">➡️ Arrow Function</div>
       <div class="pill">📝 Bài tập thực hành</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION: CÀI ĐẶT NODE.JS (Buổi 5 - phần đầu)
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide divider">
+    <div class="session-badge s5">Buổi 5 · Phần 1</div>
+    <div class="number">01</div>
+    <div class="content">
+      <span class="icon">📦</span>
+      <h2>Cài đặt Node.js</h2>
+      <p class="desc">Setup môi trường lập trình — nền tảng để chạy mọi thứ</p>
+    </div>
+  </div>
+
+  <!-- SLIDE: Node.js là gì -->
+  <div class="slide content">
+    <div class="slide-num">Node.js · Giới thiệu</div>
+    <div class="session-badge s5">Buổi 5</div>
+    <h2>🤔 Node.js là gì?</h2>
+    <div class="two-col">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card blue">
+          <h3>🖥️ Trước đây</h3>
+          <p>JavaScript chỉ chạy được trên <strong>trình duyệt</strong> (Chrome, Firefox…)<br>
+          Không thể chạy trên máy tính độc lập.</p>
+        </div>
+        <div class="card green">
+          <h3>🚀 Với Node.js</h3>
+          <p>JavaScript chạy được <strong>trực tiếp trên máy tính</strong> — không cần trình duyệt.<br>
+          Đây là nền tảng để chạy Playwright, Cypress, v.v.</p>
+        </div>
+        <div class="info">
+          <span class="icon-sm">💡</span>
+          <div>Hãy nghĩ Node.js như <strong>"máy chạy JavaScript"</strong> được cài trên máy tính của bạn.</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card amber">
+          <h3>⚙️ npm là gì?</h3>
+          <p>npm (<em>Node Package Manager</em>) được cài kèm Node.js tự động.<br>
+          Dùng để tải thư viện (Playwright, Axios…) chỉ bằng một lệnh.</p>
+        </div>
+        <div class="card purple">
+          <h3>🎯 Tại sao QA cần Node.js?</h3>
+          <ul>
+            <li>Chạy Playwright / Cypress</li>
+            <li>Chạy script automation test</li>
+            <li>Tải các thư viện test</li>
+            <li>Chạy file <code>.js</code> từ terminal</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE: Cài đặt Node.js steps -->
+  <div class="slide content">
+    <div class="slide-num">Node.js · Cài đặt</div>
+    <div class="session-badge s5">Buổi 5</div>
+    <h2>📥 Cài đặt Node.js (mọi hệ điều hành)</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Truy cập trang chính thức</h4>
+          <p>Mở trình duyệt → vào <strong>nodejs.org</strong> → chọn nút <strong>"LTS" (Long Term Support)</strong> — đây là phiên bản ổn định nhất.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Tải file cài đặt phù hợp hệ điều hành</h4>
+          <p>
+            <strong>Windows</strong>: tải file <code>.msi</code> → chạy → Next → Next → Install<br>
+            <strong>macOS</strong>: tải file <code>.pkg</code> → chạy → Continue → Install<br>
+            <strong>Linux (Ubuntu)</strong>: dùng lệnh terminal bên dưới
+          </p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Kiểm tra cài đặt thành công</h4>
+          <p>Mở <strong>Terminal / Command Prompt</strong> → gõ lệnh kiểm tra:</p>
+        </div>
+      </div>
+    </div>
+    <pre style="margin-top:12px">
+<span class="cmt"># Kiểm tra Node.js đã được cài chưa</span>
+node --version
+<span class="cmt"># Kết quả ví dụ: v22.x.x  ← phiên bản hiện tại</span>
+
+<span class="cmt"># Kiểm tra npm</span>
+npm --version
+<span class="cmt"># Kết quả ví dụ: 10.x.x</span></pre>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       SECTION: FUNCTION (Buổi 5 - phần 2)
+  ══════════════════════════════════════════════════════ -->
+  <div class="slide divider">
+    <div class="session-badge s5">Buổi 5 · Phần 2</div>
+    <div class="number">02</div>
+    <div class="content">
+      <span class="icon">🔧</span>
+      <h2>Function trong JavaScript</h2>
+      <p class="desc">Tạo các khối code có thể tái sử dụng</p>
     </div>
   </div>
 
