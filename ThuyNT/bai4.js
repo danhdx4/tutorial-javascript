@@ -104,19 +104,21 @@ for (let i = 0; i < movies.length; i++) {
 
 let choice = Number(prompt("Chọn phim:")); 
 
-for (let i = 0; i < movies.length; i++) {
-    if (choice === 0) {
-        console.log("Số vé không hợp lệ");
+switch (choice) {
+    case 1:
+        console.log("Bạn chọn phim:", movies[0].name);  
         break;
-    }
-    else if (choice > 0 && choice <= movies.length) {
-        console.log("Bạn đã chọn phim:", movies[choice - 1].name);
-        break;
-    }
-    else {
+    case 2:
+        console.log("Bạn chọn phim:", movies[1].name);  
+        break;          
+    case 3:
+        console.log("Bạn chọn phim:", movies[2].name);  
+        break;  
+    case 4:
+        console.log("Bạn chọn phim:", movies[3].name);  
+        break;         
+    default:
         console.log("Lựa chọn không hợp lệ");
-        break;
-    }
 }
 
 let number = Number(prompt("Nhập số vé:"));
