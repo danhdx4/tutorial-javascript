@@ -106,7 +106,7 @@ switch (choice) {
 }
 if (choice >= 1 && choice <= 4) {
   console.log("Bạn đã chọn phim: " + name_movie);
-  console.log("Giá vé: " + gia + "đ");
+  console.log("Giá vé: " + gia + "đ ");
   let count = Number(prompt("Nhập số lượng vé: "));
   console.log("Số lượng vé: " + count + "  Tổng giá: " + count * gia + "đ");
 }
