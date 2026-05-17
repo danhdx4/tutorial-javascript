@@ -40,7 +40,7 @@ console.log("0. Thoát")
 
 let choice;
 choice = Number(prompt("Chọn phim:"));
-let choicePrice;
+let choicePrice = 0;
 
 switch (choice) {
     case 1:
@@ -59,8 +59,11 @@ switch (choice) {
         choicePrice = listFilm[3].price;
         console.log(listFilm[3].name + " - "+ listFilm[3].price + "đ")
       break;
+    case 0:
+        console.log("Thoát chương trình")
+      break;
    default:
-        choicePrice = 0;
+        console.log("Phim không hợp lệ")
 } 
 
 // Nhập số lượng vé --> tương tự như nhập "Chọn phim"
@@ -70,9 +73,8 @@ switch (choice) {
 let choice1;
 choice1 = Number(prompt("Số lượng vé:"));
 
-let totalPrice = choicePrice * choice1;
-
-if (choice1 >= 1) {
+if (choice1 >= 1 && 0 < choice && choice <= 4) {
+    let totalPrice = choicePrice * choice1;
     console.log("Số lượng: " + choice1);
     console.log("Tổng tiền: " + totalPrice + "đ");
 } else {
