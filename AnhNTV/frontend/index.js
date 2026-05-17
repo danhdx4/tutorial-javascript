@@ -1,3 +1,4 @@
+
 console.log("Hello JavaScript");
 
 let name = "Nguyen Thi Van Anh";
@@ -66,3 +67,73 @@ console.log(typeof data.checkout);
 console.log("additional needs: " + data.additionalneeds);
 console.log("check-in date: " + data.bookingdates.checkin);
 console.log("check-out date: " + data.bookingdates.checkout);
+
+///Buổi 3: Vòng lặp và điều kiện
+//Tạo các biến:​
+//Họ tên (string), ​
+//Tuổi (number, và tính tuổi =(2026 - năm sinh)​
+//Số năm kinh nghiệm (number) ​
+//Có biết automation hay không (boolean) ​
+
+//Yêu cầu:​
+ //Phân loại ​
+/* < 1 năm → "Fresher"​
+1–3 năm → "Junior QA"​
+3–5 năm → "Middle QA"​
+>5 năm → "Senior QA"​
+Kiểm tra điều kiện tuyển Senior Automation QA ​
+Kinh nghiệm ≥ 3 năm​
+Biết automation = true​
+Tuổi ≤ 35​
+Nếu thỏa mãn các yêu cầu trên:​
+→ "Đủ điều kiện Senior Automation QA"​
+Ngược lại:​
+→ "Chưa đủ điều kiện“​
+In toàn bộ thông tin​ */
+
+console.log("Bài 3................") 
+let name1 = "Nguyen Thi Van Anh";
+let birth1 = 1995;
+let current1 = 2026;
+let experience = 4;
+let isAutomation = true;
+let age1 = current1 - birth1; 
+console.log("Tên:", name1);
+console.log("Tuổi:", age1);
+console.log("Số năm kinh nghiệm:", experience);
+console.log("Biết automation:", isAutomation);    
+if (experience < 1) {
+    console.log("Fresher");
+} else if (experience <= 3) {
+    console.log("Junior QA");
+} else if (experience <= 5) {
+    console.log("Middle QA");
+} else {
+    console.log("Senior QA");
+};
+
+
+if (experience>=3 && isAutomation==true && age<=35)
+{
+    console.log("Đủ điều kiện Senior Automation QA");}
+else 
+    {console.log("Không đủ điều kiện");};
+let student = {
+    info: {
+        name: "Trần Thị B",
+        age: 19,
+        class: "12A1",
+    },
+    scores: {
+        math: 9,
+        physics: 7.5,
+        chemistry: 4,
+    },
+    attendance: {
+        totalDays: 180,
+        absentDays: 12, // ngày vắng mặt
+    },
+    behavior: "good", // good | average | bad
+    extracurricular: true,
+};
+
