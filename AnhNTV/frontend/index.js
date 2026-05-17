@@ -118,22 +118,48 @@ if (experience>=3 && isAutomation==true && age<=35)
     console.log("Đủ điều kiện Senior Automation QA");}
 else 
     {console.log("Không đủ điều kiện");};
-let student = {
-    info: {
-        name: "Trần Thị B",
-        age: 19,
-        class: "12A1",
-    },
-    scores: {
-        math: 9,
-        physics: 7.5,
-        chemistry: 4,
-    },
-    attendance: {
-        totalDays: 180,
-        absentDays: 12, // ngày vắng mặt
-    },
-    behavior: "good", // good | average | bad
-    extracurricular: true,
-};
 
+
+///Buổi 4: 
+console.log("Buổi 4:........................")
+
+let role="admin";
+switch (role) {
+   case "admin":
+      console.log("Quản trị");
+      break;
+   case "user":
+      console.log("Người dùng");
+      break;
+   default:
+     console.log("Khách");
+}
+
+///: Dùng vòng lặp for để in ra các số từ 1 đến 5,
+//  nhưng nếu là số 3 thì in thêm chữ "(Bỏ qua test case này)".
+
+for (let i = 1; i <= 5; i++) {
+  if(i === 3)
+    console.log(i,("Bỏ qua testcase này"))
+    console.log(i);
+}
+
+console.log("Bài 2:........................")
+//Viết switch kiểm tra biến userRole ("admin", "user", "guest") 
+// và in ra quyền tương ứng "Được xóa bài"/"Được đăng bài"/"Chỉ xem"/"Role không hợp lệ" (default)
+
+let userRole = "user"
+
+switch (userRole) {
+   case "admin":
+      console.log("Được xóa bài");
+      break;
+   case "user":
+      console.log("Được đăng bài");
+      break;
+    case "guest":
+      console.log("Chỉ xem");
+      break;
+   default:
+     console.log("Không hợp lệ");
+}
