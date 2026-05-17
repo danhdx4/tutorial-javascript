@@ -69,13 +69,18 @@ let moive = {
   One_Piece: 80000,
 };
 
-console.log("1. Hiển thị danh sách phim ");
-
-console.log("===== DANH SÁCH PHIM =====");
-console.log("1. Avengers      - 90000đ");
-console.log("2. Conan         - 70000đ");
-console.log("3. Doraemon      - 60000đ");
-console.log("4. One Piece     - 80000đ");
+console.log("===== DANH SÁCH PHIM =====​");
+for (let i = 1; i <= 4; i++) {
+  if (i == 1) {
+    console.log(i + ". Avengers   - " + moive.Avengers + "đ");
+  } else if (i == 2) {
+    console.log(i + ". Conan   - " + moive.Conan + "đ");
+  } else if (i == 3) {
+    console.log(i + ". Doraemon   - " + moive.Doraemon + "đ");
+  } else if (i == 4) {
+    console.log(i + ". One Piece   - " + moive.One_Piece + "đ");
+  }
+}
 console.log("0. Thoát");
 
 console.log("-- Chọn phim -- ");
