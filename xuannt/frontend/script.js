@@ -63,7 +63,7 @@
  * Kiểm tra điều kiện để tuyển senior auto : Biết auto = true; tuổi>=35; Nếu đủ các đk trên: đủ đk senior auto, nguojc lại: chưa đủ đk senior auto
  * In toàn bộ thông tin
  */
- let hoten= "Xuannt";
+ /**let hoten= "Xuannt";
  let tuoi= 2003;
  let tinhtuoi= (2026-2003);
  let snkn= 3;
@@ -168,5 +168,131 @@ let attendanceRate= 100-(student.attendance.absentDays/student.attendance.totalD
 if(attendanceRate<85 && student.extracurricular == false){
     console.log("Needs more participation")
 }
+*/
+
+
+//bai4: switch & loop
+// DÙng vòng lặp for để in ra các số từ 1 đến 5, nhưng nếu là 3 thì in ra thêm chứ: bỏ qua case này
+
+/**for(let i=1;i<=5;i++){
+  if(i==3){
+    console.log("bỏ qua case này")
+  }
+  console.log(i)
+}
+*/
+
+// let status=404;
+/**yêu cầu: 
+200: OK
+404: not found
+500: sever console.error
+default: not found;
+*/
+/**let status=200;
+switch(status){
+  case 200:
+    console.log("OK");
+    break;
+  case 404:
+    console.log("not found");
+    break;
+  case 500:
+    console.log("sever console error");
+    break;
+  default:
+      console.log("not found");
+}
+
+//Viết switch kiểm tra biến userRole("admin","user","guest") và in ra quyền được óa bài, dduojc đăng bài, chỉ em và khoong hợp lệ(default
+let userRole="admin";
+switch(userRole){
+  case "admin":
+    console.log("Được óa bài");
+    break;
+  case "user":
+    console.log("dduojc đăng bài");
+    break;
+  case "guest":
+    console.log("chỉ em");
+    break;
+  default:
+    console.log("không hợp lệ");
+}
+*/
+/**Bài tập về nhà:
+1. Hãy hiển thị danh sách phim dưới đây
+     ===== DANH SÁCH PHIM =====
+1. Avengers      - 90000đ
+2. Conan         - 70000đ
+3. Doraemon      - 60000đ
+4. One Piece     - 80000đ
+0. Thoát
+2. - user sẽ nhập số để chọn phim tương ứng hãy dùng switch case để: in tên phim và giá vé đã chọn
+    Gợi ý mục 2: khởi tạo biến và lấy giá trị khi user nhập số chọn phim bằng hàm sau:
+let choice
+choice = Number(prompt("Chọn phim:")); --> giả lập màn hình hiển thị "Chọn phim: __"
+Ý nghĩa: prompt(""): Hiển thị ô nhập liệu để user có thể nhập vào --> sau khi nhập xx hàm sẽ nhận giá trị prompt("xx") --> đây là String --> dùng Number() để convert String sang Number (từ "xx" --> xx)
+3. - Nhập số lượng vé --> tương tự như nhập "Chọn phim"
+Sau đó tính tổng tiền (tổng tiền = giá vé * số lượng);
+In số lượng, tổng tiền
+ */
+
+console.log("===== DANH SÁCH PHIM =====");
+console.log("1. Avengers      - 90000đ");
+console.log("2. Conan         - 70000đ");
+console.log("3. Doraemon      - 60000đ");
+console.log("4. One Piece     - 80000đ");
+console.log("0. Thoát");
+
+
+console.log("\n===========================");
+
+
+let choice = Number(prompt("Chọn phim:"));
+switch (choice) {
+  case 1:
+    console.log('Avengers      - 90000đ');
+    break;
+  case 2:
+    console.log("Conan         - 70000đ");
+    break;
+  case 3:
+    console.log("Doraemon      - 60000đ");
+    break;
+
+  case 4:
+    console.log("4. One Piece     - 80000đ");
+    break;
+
+  case 0:
+    console.log("Thoát");
+    break;
+}
+
+let sl = Number(prompt("Số vé:"));
+switch (sl) {
+  case 1:
+    console.log('Tổng tiền=', sl*90000);
+    break;
+  case 2:
+    console.log('Tổng tiền=', sl*70000);
+    break;
+  case 3:
+    console.log('Tổng tiền=', sl*60000);
+    break;
+
+  case 4:
+    console.log('Tổng tiền=', sl*80000);
+    break;
+
+  case 0:
+    console.log("Thoát");
+    break;
+}
+
+
+
+
 
 
