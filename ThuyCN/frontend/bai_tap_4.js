@@ -48,15 +48,15 @@ switch (choice) {
         console.log(listFilm[0].name + " - "+ listFilm[0].price + "đ")
       break; 
     case 2:
-        choicePrice = listFilm[0].price;
+        choicePrice = listFilm[1].price;
         console.log(listFilm[1].name + " - "+ listFilm[1].price + "đ")
       break;
     case 3:
-        choicePrice = listFilm[0].price;
+        choicePrice = listFilm[2].price;
         console.log(listFilm[2].name + " - "+ listFilm[2].price + "đ")
       break; 
     case 4:
-        choicePrice = listFilm[0].price;
+        choicePrice = listFilm[3].price;
         console.log(listFilm[3].name + " - "+ listFilm[3].price + "đ")
       break;
    default:
