@@ -172,3 +172,80 @@ console.log(`so sánh giá trị sau khi ép kiểu myA > myB : ${myA > myB}`); 
 console.log(`so sánh giá trị sau khi ép kiểu myA < myB : ${myA < myB}`); // Kết quả: false (so sánh giá trị sau khi ép kiểu)
 console.log(`so sánh giá trị sau khi ép kiểu myA >= myB : ${myA >= myB}`); // Kết quả: false (so sánh giá trị sau khi ép kiểu)
 console.log(`so sánh giá trị sau khi ép kiểu myA <= myB : ${myA <= myB}`); // Kết quả: false (so sánh giá trị sau khi ép kiểu)
+
+console.log("----".repeat(20)); // In ra dấu gạch ngang để phân cách
+// obj như sau:
+let student = {
+  info: {
+    name: "Trần Thị B",
+    age: 19,
+    class: "12A1",
+  },
+  scores: {
+    math: 1,
+    physics: 7.5,
+    chemistry: 4,
+  },
+  attendance: {
+    totalDays: 180,
+    absentDays: 30, // ngày vắng mặt
+  },
+  behavior: "good", // good | average | bad
+  extracurricular: false,
+};
+
+// Đánh giá học sinh dựa trên các tiêu chí:
+// 1. validation dữ liệu, nếu dữ liệu không hợp lệ thì in "Invalid student data"
+// Dữ liệu không hợp lệ
+// age <= 0 hoặc age > 100
+// scores <= 0 hoặc > 10
+// absentDays > totalDays
+// Behavior không thuộc: good, average, bad --> dùng includes() để kiểm tra, vd: ["good", "average", "bad"].includes(behavior)
+
+if (
+  student.info.age <= 0 ||
+  student.info.age > 100 ||
+  student.scores.math < 0 ||
+  student.scores.math > 10 ||
+  student.scores.physics < 0 ||
+  student.scores.physics > 10 ||
+  student.scores.chemistry < 0 ||
+  student.scores.chemistry > 10 ||
+  student.attendance.absentDays > student.attendance.totalDays ||
+  !["good", "average", "bad"].includes(student.behavior)
+) {
+  console.log(`${student.info.name} : invalid student data`);
+} else {
+  console.log(`${student.info.name} : valid student data`);
+}
+
+// 2. tính điểm trung bình và in ra "Average score: xx", làm tròn tới 2 chữ số sau dấu phẩy (dùng toFixed)
+let averageScore =
+  (student.scores.math + student.scores.physics + student.scores.chemistry) / 3;
+console.log(`Average score : ${averageScore.toFixed(2)}`);
+
+// 3. Xếp loại học lực
+// avg > 8: Giỏi
+// avg >= 6.5: Khá
+// avg >= 5: Trung bình
+// Còn lại: Yếu
+
+if (averageScore > 8) {
+  console.log(`Học lực ${student.info.name} : Giỏi`);
+} else if (averageScore >= 6.5) {
+  console.log(`Học lực ${student.info.name} : Khá`);
+} else if (averageScore >= 5) {
+  console.log(`Học lực ${student.info.name} : Trung bình`);
+} else {
+  console.log(`Học lực ${student.info.name} : Yếu`);
+}
+
+// 4. Cảnh báo nếu học lệch môn học
+// Nếu math >= 9 nhưng chemistry < 5 --> in ra "Strong in Math, weak in Science"
+// Nếu extracurricular == false và attendanceRate < 85 --> in ra "Needs more participation"
+
+if (student.scores.math >= 9 && student.scores.chemistry < 5) {
+  console.log("Strong in Math, weak in Science");
+} else if (!student.extracurricular && (student.attendance.totalDays - student.attendance.absentDays) / student.attendance.totalDays < 0.85) {
+  console.log("Needs more participation");
+}
