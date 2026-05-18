@@ -201,3 +201,4 @@ let attendanceRate = ((student.attendance.totalDays - student.attendance.absentD
 if(student.extracurricular == false && attendanceRate < 85){
   console.log("Needs more participation");
 }
+
