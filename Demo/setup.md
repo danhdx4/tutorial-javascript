@@ -18,9 +18,83 @@
 
 ---
 
-# 3. Cài đặt Extensions
+# 3. Cài đặt Node.js (qua nvm)
 
-## 3.1. Prettier – Tự động format code
+> **nvm** (Node Version Manager) giúp cài và quản lý nhiều phiên bản Node.js, dễ nâng cấp hoặc chuyển đổi phiên bản sau này.
+
+---
+
+## 3.1. Windows
+
+### Bước 1 — Cài nvm-windows
+
+1. Truy cập: https://github.com/coreybutler/nvm-windows/releases
+2. Tải file **`nvm-setup.exe`** ở phần **Assets** của bản release mới nhất.
+3. Chạy file `.exe`, nhấn **Next** đến khi hoàn tất cài đặt.
+4. Mở lại **Command Prompt** hoặc **PowerShell** (mở mới để nhận biến môi trường).
+5. Kiểm tra cài đặt thành công:
+   ```
+   nvm version
+   ```
+
+### Bước 2 — Cài Node.js qua nvm
+
+```bash
+# Cài phiên bản LTS mới nhất (khuyến nghị)
+nvm install lts
+
+# Dùng phiên bản vừa cài
+nvm use lts
+
+# Kiểm tra
+node --version
+npm --version
+```
+
+---
+
+## 3.2. macOS
+
+### Bước 1 — Cài nvm
+
+Mở **Terminal** và chạy lệnh sau:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+```
+
+Sau khi cài xong, **đóng và mở lại Terminal**, hoặc chạy lệnh reload phù hợp với shell đang dùng:
+
+```bash
+# Nếu dùng zsh (mặc định trên macOS)
+source ~/.zshrc
+
+# Nếu dùng bash
+source ~/.bashrc
+```
+
+Kiểm tra cài đặt thành công:
+
+```bash
+nvm --version
+```
+
+### Bước 2 — Cài Node.js qua nvm
+
+```bash
+# Cài phiên bản LTS mới nhất (khuyến nghị)
+nvm install --lts
+
+# Kiểm tra
+node --version
+npm --version
+```
+
+---
+
+# 4. Cài đặt Extensions
+
+## 4.1. Prettier – Tự động format code
 
 ### Cài extension
 1. Mở VS Code.
@@ -39,7 +113,7 @@
 
 ---
 
-# 4. Tắt gợi ý code tự động của Copilot
+# 5. Tắt gợi ý code tự động của Copilot
 
 1. Nhấn vào **biểu tượng Copilot** ở thanh trạng thái phía dưới (mũi tên 1).
 2. Trong panel hiện ra, tìm mục **Inline Suggestions**.
