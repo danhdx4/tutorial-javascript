@@ -163,3 +163,8 @@ switch (userRole) {
    default:
      console.log("Không hợp lệ");
 }
+
+
+
+///Buổi 5: 
+console.log(123)
