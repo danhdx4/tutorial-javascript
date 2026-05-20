@@ -126,4 +126,58 @@ if (student.extracurricular == false && attendanceRate < 85) {
   console.log("Needs more participation");
 }
 
+/*Bài tập về nhà 4*/
 
+console.log("===== DANH SÁCH PHIM =====");
+console.log("1. Avengers      - 90000đ");
+console.log("2. Conan         - 70000đ");
+console.log("3. Doraemon      - 60000đ");
+console.log("4. One Piece     - 80000đ");
+console.log("0. Thoát");
+
+
+console.log("\n===========================");
+
+
+let choice = Number(prompt("Chọn phim:"));
+switch (choice) {
+  case 1:
+    console.log('Avengers      - 90000đ');
+    break;
+  case 2:
+    console.log("Conan         - 70000đ");
+    break;
+  case 3:
+    console.log("Doraemon      - 60000đ");
+    break;
+
+  case 4:
+    console.log("4. One Piece     - 80000đ");
+    break;
+
+  case 0:
+    console.log("Thoát");
+    break;
+}
+console.log("\n===========================");
+
+let quantity = Number(prompt("Chọn vé:"));
+switch (choice) {
+  case 1:
+    console.log('Avengers - ' + quantity * 90000 + "d");
+    break;
+  case 2:
+    console.log("Conan - " + quantity * 70000 + "d");
+    break;
+  case 3:
+    console.log("Doraemon - " + quantity * 60000 + "d");
+    break;
+
+  case 4:
+    console.log("One Piece - " + quantity * 80000 + "d");
+    break;
+
+  case 0:
+    console.log("Thoát");
+    break;
+}
