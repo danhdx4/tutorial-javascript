@@ -33,8 +33,6 @@ function Max(arr) {
   return Math.max(...arr);
 }
 console.log(Max([3, -9, 1, 999]));
-console.log(Max([100, 0, 5]));
 //Cách 2: Arrow Function
 const timMax = (arr) => Math.max(...arr);
 console.log(timMax([3, 9, 1, 7]));
-console.log(timMax([-2, 0, 5]));
