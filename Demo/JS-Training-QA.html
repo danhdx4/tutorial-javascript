@@ -2399,25 +2399,15 @@ member/backend/
             <ul class="checklist">
               <li>
                 <div class="cb">✓</div>
-                <span
-                  >Dùng <strong>Template Literal</strong> với backtick
-                  <code>`</code> và <code>${}</code> để nhúng biến vào
-                  chuỗi</span
-                >
+                <span>Dùng <strong>Template Literal</strong> với backtick <code>`</code> và <code>${}</code> để nhúng biến vào chuỗi</span>
               </li>
               <li>
                 <div class="cb">✓</div>
-                <span
-                  >Tạo <strong>Class</strong> với <code>constructor</code> và
-                  method</span
-                >
+                <span>Tạo <strong>Class</strong> với <code>constructor</code> và method</span>
               </li>
               <li>
                 <div class="cb">✓</div>
-                <span
-                  >Dùng <code>extends</code> để <strong>kế thừa</strong> từ
-                  class cha, gọi <code>super()</code></span
-                >
+                <span>Dùng <code>extends</code> để <strong>kế thừa</strong> từ class cha, gọi <code>super()</code></span>
               </li>
             </ul>
           </div>
@@ -2447,6 +2437,67 @@ member/backend/
                 <strong>dựng server Node.js HTTP đầu tiên</strong> — mục tiêu để
                 Playwright test sau!
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE: Cheat Sheet Class cho QA -->
+      <div class="slide content">
+        <div class="slide-num">Buổi 7 · Cheat Sheet</div>
+        <div class="session-badge s1">Buổi 7</div>
+        <h2>📌 Class — Những điều cần nhớ cho QA</h2>
+        <div class="two-col">
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <div class="card blue">
+              <h3>🔑 Cú pháp cơ bản</h3>
+              <ul>
+                <li><code>class Tên { }</code> — luôn viết hoa chữ cái đầu</li>
+                <li><code>constructor()</code> — hàm chạy khi <code>new</code></li>
+                <li><code>this.xxx</code> — thuộc tính của object đó</li>
+                <li><code>new Tên()</code> — tạo instance mới</li>
+              </ul>
+            </div>
+            <div class="card green">
+              <h3>📦 Methods hay dùng trong test</h3>
+              <ul>
+                <li><code>getInfo()</code> — in thông tin đẹp (template literal)</li>
+                <li><code>toJSON()</code> — biến thành plain object để gửi API</li>
+                <li><code>static fromJSON(data)</code> — tạo instance từ response API</li>
+                <li><code>isAdmin()</code> — kiểm tra role/permission</li>
+              </ul>
+            </div>
+            <div class="card purple">
+              <h3>🔗 Kế thừa (extends)</h3>
+              <ul>
+                <li><code>class Con extends Cha</code> — kế thừa toàn bộ</li>
+                <li><code>super()</code> — gọi constructor cha, <strong>bắt buộc</strong> viết trước <code>this</code></li>
+                <li>Class con có thể thêm method riêng hoặc override method cha</li>
+              </ul>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <div class="card red">
+              <h3>❌ Lỗi hay gặp</h3>
+              <ul>
+                <li>Quên <code>new</code> → <code>TypeError</code></li>
+                <li>Quên <code>this.</code> → biến không lưu được</li>
+                <li>Quên <code>super()</code> trong class con → lỗi ngay</li>
+                <li>Gọi <code>static</code> method trên instance → sai, phải gọi trên class</li>
+              </ul>
+            </div>
+            <div class="card amber">
+              <h3>🎯 Khi nào QA cần dùng Class?</h3>
+              <ul>
+                <li><strong>Page Object Model</strong> — mỗi trang = 1 class</li>
+                <li><strong>Test Data</strong> — tạo User, Product từ JSON</li>
+                <li><strong>API Helper</strong> — class chứa các hàm gọi API</li>
+                <li><strong>Store/Service</strong> — quản lý danh sách dữ liệu</li>
+              </ul>
+            </div>
+            <div class="tip">
+              <span class="icon-sm">💡</span>
+              <div><strong>Quy tắc nhớ:</strong> Class = khuôn bánh, Instance = chiếc bánh. Một khuôn tạo được nhiều bánh. Mỗi bánh có nhân riêng (<code>constructor</code>) nhưng cùng hình dáng (methods).</div>
             </div>
           </div>
         </div>
