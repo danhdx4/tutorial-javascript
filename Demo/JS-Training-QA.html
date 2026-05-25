@@ -2293,18 +2293,21 @@ page.<span class="fn">login</span>();
               <h3>Bài 4 — Class <code>Product</code></h3>
               <ul>
                 <li>Constructor: <code>id, name, price, category</code></li>
-                <li>Method <code>getInfo()</code> dùng template literal</li>
-                <li>Method <code>toJSON()</code> trả về plain object</li>
+                <li>Tạo method <code>getInfo()</code> dùng template literal</li>
+                <li>Tạo method <code>toJSON()</code> trả về plain object</li>
               </ul>
             </div>
             <div class="card amber">
               <h3>Bài 5 — Class <code>User</code></h3>
               <ul>
                 <li>Constructor: <code>id, username, role</code></li>
-                <li>Method <code>getProfile()</code> dùng template literal</li>
+                <li>Tạo method <code>getProfile()</code> dùng template literal</li>
                 <li>
-                  Method <code>isAdmin()</code> trả về <code>true/false</code>
+                  Tạo method <code>isAdmin()</code> trả về <code>true/false</code>
                 </li>
+                <li>Tạo method <code>toJSON()</code> trả về plain object</li> 
+                <li>Tạo method <code>fromJSON(data)</code> tạo <code>User</code> từ plain object</li>
+
               </ul>
             </div>
           </div>
@@ -2341,8 +2344,6 @@ page.<span class="fn">login</span>();
                 <li><code>findByCategory(cat)</code> → lọc theo danh mục</li>
               </ul>
             </div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 14px">
             <div class="card purple">
               <h3>Bài 3 — Tạo file JSON</h3>
               <p>Tạo 2 file — Buổi 8 nạp vào server:</p>
@@ -2356,18 +2357,33 @@ page.<span class="fn">login</span>();
                 </li>
               </ul>
             </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 14px">
             <div class="card green">
-              <h3>⭐ Bài 4 — Chuẩn bị cấu trúc</h3>
+              <h3>⭐ Bài 4 — Chuẩn bị cấu trúc (cho Buổi 8)</h3>
               <p>Tổ chức thành các file riêng (chưa cần export):</p>
-              <ul>
-                <li><code>models/Product.js</code></li>
-                <li><code>models/ProductStore.js</code></li>
-                <li><code>models/User.js</code></li>
-                <li>
-                  <code>main.js</code> — khởi tạo store, gọi
-                  <code>getAll()</code>
-                </li>
+              <pre style="font-size:12px;margin-top:10px">
+member/backend/
+├── models/
+│   ├── Product.js      ← class Product
+│   ├── ProductStore.js ← class ProductStore
+│   └── User.js         ← class User
+├── data/
+│   ├── products.json   ← dữ liệu sản phẩm
+│   └── users.json      ← dữ liệu user
+└── main.js             ← khởi tạo &amp; chạy</pre>
+              <p style="margin-top:12px"><strong>Yêu cầu từng file:</strong></p>
+              <ul style="margin-top:6px">
+                <li><code>models/Product.js</code> — copy class Product vào (đã làm ở Bài 1)</li>
+                <li><code>models/ProductStore.js</code> — copy class ProductStore (Bài 2)</li>
+                <li><code>models/User.js</code> — copy class User (Bài 5 buổi trước)</li>
+                <li><code>data/</code> — copy 2 file JSON (Bài 3)</li>
+                <li><code>main.js</code> — tạo store từ array cứng, gọi <code>getAll()</code>, <code>findById()</code></li>
               </ul>
+              <div class="tip" style="margin-top:12px">
+                <span class="icon-sm">🎯</span>
+                <div><strong>Buổi 8 sẽ nối tiếp:</strong> Thêm <code>module.exports</code> + <code>require()</code> để kết nối các file lại → load JSON → dựng server API.</div>
+              </div>
             </div>
           </div>
         </div>
