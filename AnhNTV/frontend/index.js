@@ -61,8 +61,8 @@ console.log("Full name: " + fullname);
 
 console.log(typeof data.totalprice);
 console.log(typeof data.depositpaid);
-console.log(typeof data.checkin);
-console.log(typeof data.checkout);
+console.log(typeof data.bookingdates.checkin);
+console.log(typeof data.bookingdates.checkout);
 
 console.log("additional needs: " + data.additionalneeds);
 console.log("check-in date: " + data.bookingdates.checkin);
@@ -113,11 +113,11 @@ if (experience < 1) {
 };
 
 
-if (experience>=3 && isAutomation==true && age<=35)
-{
-    console.log("Đủ điều kiện Senior Automation QA");}
-else 
-    {console.log("Không đủ điều kiện");};
+if (experience >= 3 && isAutomation && age1 <= 35) {
+    console.log("Đủ điều kiện Senior Automation QA");
+} else {
+    console.log("Không đủ điều kiện");
+}
 
 
 ///Buổi 4: 
@@ -139,10 +139,12 @@ switch (role) {
 //  nhưng nếu là số 3 thì in thêm chữ "(Bỏ qua test case này)".
 
 for (let i = 1; i <= 5; i++) {
-  if(i === 3)
-    console.log(i,("Bỏ qua testcase này"))
+  if (i === 3) {
+    console.log(i, "Bỏ qua testcase này");
+  } else {
     console.log(i);
-}
+  }
+}
 
 console.log("Bài 2:........................")
 //Viết switch kiểm tra biến userRole ("admin", "user", "guest") 
@@ -168,3 +170,117 @@ switch (userRole) {
 
 ///Buổi 5: 
 console.log(123)
+
+///Buổi 6: 
+console.log("Buổi 6.................")
+const numbers = [1, 2, 3];
+
+const doubled = numbers.map(n => n * 2);
+
+console.log(doubled); // [2, 4, 6]
+console.log(numbers); // [1, 2, 3] ← không đổi!
+
+
+const users = [
+  { name: "An",   age: 25 },
+  { name: "Bình", age: 30 }
+];
+
+const names = users.map(u => u.name);
+
+console.log(names);
+// ["An", "Bình"]
+
+const usersList = [
+  { name: "An",    age: 25 },
+  { name: "Bình",  age: 30 },
+  { name: "Cường", age: 20 }
+];
+
+const adults = usersList.filter(u => u.age >= 25);
+
+console.log(adults);
+// [{ name:"An",age:25 }, { name:"Bình",age:30 }]
+
+const foundUser = users.find(u => u.name === "Bình");
+
+console.log(foundUser);
+// { name: "Bình", age: 30 }
+
+// 📚 Bài 1 — Truy cập phần tử Array
+// const fruits = ["Cam", "Táo", "Xoài", "Chuối"];
+// In ra phần tử đầu tiên
+// In ra phần tử cuối cùng
+// In ra độ dài của mảng
+
+console.log(" Bài 1: Truy cập phần tử array")
+const fruits = ["Cam", "Táo", "Xoài", "Chuối"];
+console.log(fruits[0]);
+console.log(fruits.length);
+console.log(fruits[fruits.length - 1]);
+
+// Bài 2 — Truy cập thuộc tính Object
+// const product = {
+//   name: "Laptop",
+//   price: 15000000,
+//   inStock: true
+// };
+// In ra tên sản phẩm
+// In ra giá tiền
+// Kiểm tra kiểu dữ liệu của inStock
+console.log(" Bài 2")
+const product = {
+  name: "Laptop",
+  price: 15000000,
+  inStock: true
+};
+
+console.log(product.name);
+console.log(product.price);
+console.log(typeof product.inStock);
+
+// Bài 3 — map() cơ bản
+// const scores = [5, 7, 8, 6, 9];
+// Tạo mảng mới cộng thêm 1 điểm cho mỗi bạn
+// Tạo mảng nhân đôi điểm số
+console.log(" Bài 3------------")
+
+const scores = [5, 7, 8, 6, 9];
+const doubled1 = scores.map(n => n + 1);
+console.log(doubled1);
+const nhandoi = scores.map(n => n*2);
+console.log(nhandoi);
+
+//  Bài 4 — filter() cơ bản
+// const ages = [15, 22, 17, 30, 16, 25];
+// Lọc ra những người đủ 18 tuổi trở lên
+// Lọc ra những người dưới 18 tuổi
+
+console.log(" Bài 4------------")
+const ages = [15, 22, 17, 30, 16, 25];
+const ages1 = ages.filter(u => u >= 18);
+
+console.log(ages1);
+
+const ages2 = ages.filter(u => u < 18);
+
+console.log(ages2);
+
+// Bài 5 — find() cơ bản
+// const students = [
+//   { name: "An",   score: 8 },
+//   { name: "Bình", score: 5 },
+//   { name: "Cúc",  score: 9 }
+// ];
+// Tìm học sinh tên "Bình"
+// Tìm học sinh có điểm > 8
+
+console.log(" Bài 5------------")
+const students = [
+  { name: "An",   score: 8 },
+  { name: "Bình", score: 5 },
+  { name: "Cúc",  score: 9 }
+];
+
+const students1 = students.find(u => u.name =="Bình");
+console.log(students1);
