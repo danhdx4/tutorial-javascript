@@ -1,4 +1,3 @@
-// Tạo file data/users.json — 3 user (id, username, role)
 [
   {
     "id": 1,

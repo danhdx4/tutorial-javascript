@@ -1,4 +1,3 @@
-// Tạo file data/products.json — 3 sản phẩm (id, name, price, category, inStock)
 [
   {
     "id": 1,
