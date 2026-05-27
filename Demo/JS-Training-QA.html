@@ -2338,10 +2338,11 @@ page.<span class="fn">login</span>();
             <div class="card teal">
               <h3>Bài 2 — Class <code>ProductStore</code></h3>
               <ul>
-                <li>Constructor nhận mảng <code>Product[]</code></li>
-                <li><code>getAll()</code> → trả về toàn bộ</li>
-                <li><code>findById(id)</code> → tìm theo id</li>
-                <li><code>findByCategory(cat)</code> → lọc theo danh mục</li>
+                <li>Constructor nhận mảng products <code>const products = [];</code></li>
+                <li>contructor(products) { this.products = products; }</li>
+                <li><code>getAll()</code> → trả về toàn bộ products</li>
+                <li><code>findById(id)</code> → tìm products theo id dùng <code>find</code></li>
+                <li><code>findByCategory(cat)</code> → tìm products lọc theo danh mục dùng <code>filter()</code></li>
               </ul>
             </div>
             <div class="card purple">
