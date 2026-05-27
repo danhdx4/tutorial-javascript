@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "name": "Dell Inspiron",
+        "price": 1000,
+        "category": "Laptop",
+        "inStock": true
+    },
+    {
+        "id": 2,
+        "name": "iPhone 15",
+        "price": 1500,
+        "category": "Phone",
+        "inStock": false
+    },
+    {
+        "id": 3,
+        "name": "Macbook Pro",
+        "price": 2200,
+        "category": "Laptop",
+        "inStock": true
+    }
+]
