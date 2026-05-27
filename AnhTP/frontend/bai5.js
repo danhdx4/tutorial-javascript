@@ -71,52 +71,48 @@ function display_log() {
 
 //  Bài 1 — Tính tổng
 // Viết function declaration nhận 2 số, trả về tổng.
-
 function tinhTong(a, b) {
-  console.log(`Tổng ${a} + ${b} = ${a + b}`);
+  return a + b;
 }
 
-tinhTong(3, 5); // 8
-tinhTong(-2, 4); // 2
+console.log(tinhTong(3, 5)); // 8
+console.log(tinhTong(-2, 4)); // 2
 display_log();
+
 // Bài 2 — Diện tích hình chữ nhật
 // Viết arrow function nhận width, height, trả về diện tích.
-
 const dientichHCN = (r, d) => {
-  console.log(`Diện tích HCN size ${r} và ${d} : ${r * d}`);
+  return r * d;
 };
-dientichHCN(2, 5); // Diện tích HCN: 10
+console.log(dientichHCN(2, 5)); // Diện tích HCN: 10
 display_log();
+
 // 📚 Bài 3 — Chẵn hay Lẻ?
 // Viết arrow function nhận 1 số, trả về chuỗi "Chẵn" hoặc "Lẻ".
-
 const chanLe = (Numb) => (Numb % 2 === 0 ? "Chẵn" : "Lẻ");
 console.log(chanLe(4));
 console.log(chanLe(7));
 display_log();
+
 // 📚 Bài 4 — Lời chào cá nhân hoá
 // Viết function declaration nhận name và role, in ra lời chào.
-
 function chaoMung(name, role) {
-  console.log(`Chào ${name}! Vai trò của bạn là ${role}.`);
+  return `Chào ${name}! Vai trò của bạn là ${role}.`;
 }
 
-chaoMung("Nam", "Dev");
-
+console.log(chaoMung("Nam", "Dev"));
 display_log();
+
 // Bài 5 — Tìm số lớn nhất
 // Viết arrow function nhận mảng số, trả về số lớn nhất. (Gợi ý: dùng Math.max(...arr))
-
 // Kết quả mong đợi:
 // timMax([3, 9, 1, 7]); // 9
 // timMax([-2, 0, 5]); // 5
-
 const timMax = (arr) => Math.max(...arr);
 console.log(timMax([3, 9, 1, 7]));
 console.log(timMax([-2, 0, 5]));
 
 display_log();
-
 const timMin = (arr) => Math.min(...arr);
 console.log(timMin([3, 9, 1, 7]));
 console.log(timMin([-2, 0, 5]));
