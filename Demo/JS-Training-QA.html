@@ -2568,7 +2568,7 @@ member/backend/
             <div class="info" style="margin-bottom: 16px">
               <span class="icon-sm">📂</span>
               <div>
-                Cấu trúc dự án điển hình:
+                Cấu trúc dự án:
                 <pre
                   style="
                     font-size: 12px;
@@ -2579,16 +2579,15 @@ member/backend/
                     margin-top: 8px;
                   "
                 >
-js-training/
-├── utils/
-│   ├── helpers.js      ← hàm tiện ích
-│   └── api.js          ← hàm gọi API
+member/backend/
+├── models/
+│   ├── Product.js      ← class Product
+│   ├── ProductStore.js ← class ProductStore
+│   └── User.js         ← class User
 ├── data/
-│   └── users.json      ← dữ liệu test
-├── pages/
-│   └── LoginPage.js    ← page objects
-└── tests/
-    └── login.test.js   ← test chính</pre
+│   ├── products.json   ← dữ liệu sản phẩm
+│   └── users.json      ← dữ liệu user
+└── main.js             ← khởi tạo & chạy</pre
                 >
               </div>
             </div>
@@ -2596,7 +2595,7 @@ js-training/
               <span class="icon-sm">🎯</span>
               <div>
                 Nguyên tắc: <strong>1 file = 1 trách nhiệm</strong>. File
-                helpers chỉ chứa hàm tiện ích, file test chỉ chứa test cases.
+                model chỉ chứa class, file data chỉ chứa JSON, file main dùng để khởi tạo và chạy.
               </div>
             </div>
           </div>
@@ -2664,38 +2663,40 @@ js-training/
               <span class="icon-sm">📂</span>
               <div>
                 Cấu trúc folder:<br />
-                <code>js-training/</code><br />
-                <code>├── pages/LoginPage.js</code><br />
-                <code>└── test/login.test.js</code>
+                <code>member/backend/</code><br />
+                <code>├── models/Product.js</code><br />
+                <code>└── main.js</code>
               </div>
             </div>
-            <p><strong>1. Export class (file LoginPage.js):</strong></p>
+            <p><strong>1. Export class (file Product.js):</strong></p>
             <pre>
-<span class="cmt">// file: pages/LoginPage.js</span>
-<span class="kw">class</span> <span class="cl">LoginPage</span> {
-  <span class="fn">constructor</span>(username) {
-    <span class="kw">this</span>.username = username;
+<span class="cmt">// file: models/Product.js</span>
+<span class="kw">class</span> <span class="cl">Product</span> {
+  <span class="fn">constructor</span>(id, name, price) {
+    <span class="kw">this</span>.id = id;
+    <span class="kw">this</span>.name = name;
+    <span class="kw">this</span>.price = price;
   }
-  <span class="fn">login</span>() {
-    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`Login: </span><span class="ti">${<span class="kw">this</span>.username}</span><span class="tm">`</span>);
+  <span class="fn">getInfo</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`</span><span class="str">#</span><span class="ti">${<span class="kw">this</span>.id}</span><span class="str"> - </span><span class="ti">${<span class="kw">this</span>.name}</span><span class="str"> - </span><span class="ti">${<span class="kw">this</span>.price}</span><span class="str"> VND</span><span class="tm">`</span>);
   }
 }
 
 <span class="cmt">// Export để file khác dùng được</span>
-<span class="kw">module</span>.exports = <span class="cl">LoginPage</span>;</pre>
+<span class="kw">module</span>.exports = <span class="cl">Product</span>;</pre>
           </div>
           <div style="display: flex; flex-direction: column; gap: 14px">
-            <p><strong>2. Import và sử dụng (file test):</strong></p>
+            <p><strong>2. Import và sử dụng (file main.js):</strong></p>
             <pre>
-<span class="cmt">// file: test/login.test.js</span>
+<span class="cmt">// file: main.js</span>
 
 <span class="cmt">// Import class từ file khác</span>
-<span class="kw">const</span> <span class="cl">LoginPage</span> = <span class="fn">require</span>(<span class="str">"../pages/LoginPage"</span>);
+<span class="kw">const</span> <span class="cl">Product</span> = <span class="fn">require</span>(<span class="str">"./models/Product"</span>);
 
 <span class="cmt">// Sử dụng bình thường</span>
-<span class="kw">const</span> loginPage = <span class="kw">new</span> <span class="cl">LoginPage</span>(<span class="str">"admin"</span>);
-loginPage.<span class="fn">login</span>();
-<span class="cmt">// Login: admin</span></pre>
+<span class="kw">const</span> product = <span class="kw">new</span> <span class="cl">Product</span>(<span class="num">1</span>, <span class="str">"Laptop"</span>, <span class="num">25000000</span>);
+product.<span class="fn">getInfo</span>();
+<span class="cmt">// #1 - Laptop - 25000000 VND</span></pre>
 
             <div class="card amber">
               <h3>📌 Nhớ quy tắc đường dẫn</h3>

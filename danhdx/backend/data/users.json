@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "username": "admin_user",
+    "role": "admin"
+  },
+  {
+    "id": 2,
+    "username": "john_doe",
+    "role": "user"
+  },
+  {
+    "id": 3,
+    "username": "jane_smith",
+    "role": "user"
+  }
+]
