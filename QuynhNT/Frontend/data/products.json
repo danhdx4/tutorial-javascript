@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Áo thun",
+    "price": 150000,
+    "category": "Thời trang",
+    "inStock": true
+  },
+  {
+    "id": 2,
+    "name": "Laptop",
+    "price": 20000000,
+    "category": "Điện tử",
+    "inStock": true
+  },
+  {
+    "id": 3,
+    "name": "Son môi",
+    "price": 300000,
+    "category": "Làm đẹp",
+    "inStock": false
+  }
+]

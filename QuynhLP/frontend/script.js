@@ -183,7 +183,7 @@
 // }
 // 
 /*Bài tập về nhà_Danh */
-  // Bài 1
+// Bài 1
 const tinhTong = (a, b) => a + b
 console.log(tinhTong(3, 5))
 
@@ -194,14 +194,14 @@ function tinhtong(a, b) {
 console.log(tinhtong(3, 7));
 
 
-  // Bài 2
+// Bài 2
 function dienTich(a, b) {
   return a * b;
 }
 console.log(dienTich(-1, 5));
 
 
-  // Bài 3
+// Bài 3
 
 const chanLe2 = (a) => a % 2 === 0 ? "Chẵn" : "Lẻ";
 console.log("chanLe" + chanLe2(9))
@@ -212,7 +212,7 @@ function chanLe(a) {
   else
     return "lẻ";
 
-    
+
   // Bài 4
 }
 console.log(chanLe(4));
@@ -223,7 +223,7 @@ function chaoMung(name, role) {
 console.log(chaoMung("An", "QA"));
 
 
-  // Bài 5
+// Bài 5
 
 
 function timMax(a) {
@@ -233,4 +233,85 @@ console.log(timMax([3, 9, 1, 7, 2, 3, 4, 5, 6, 7]));
 
 const timMax2 = (a) => Math.max(...a)
 console.log("TimMax: " + timMax2([3, 8, 1, 7, 1]));
+
+// Bài 1 — Truy cập phần tử Array
+// =========================
+
+const fruits = ["Cam", "Táo", "Xoài", "Chuối"];
+
+// In ra phần tử đầu tiên
+console.log(fruits[0]);
+
+// In ra phần tử cuối cùng
+console.log(fruits[fruits.length - 1]);
+
+// In độ dài của mảng
+console.log(fruits.length);
+
+
+
+// Bài 2 — Truy cập thuộc tính Object
+// =========================
+
+const product = {
+  name: "Laptop",
+  price: 15000000,
+  inStock: true
+};
+
+// In ra tên sản phẩm
+console.log(product.name);
+
+// In ra giá tiền
+console.log(product.price);
+
+// Kiểm tra kiểu dữ liệu của inStock
+console.log(typeof product.inStock);
+
+
+// Bài 3 — map() cơ bản
+// =========================
+
+const scores = [5, 7, 8, 6, 9];
+
+// Tạo mảng mới cộng thêm 1 điểm cho mỗi bạn
+const plusOne = scores.map(score => score + 1);
+console.log(plusOne);
+
+// Tạo mảng mới nhân đôi điểm số
+const doubleScores = scores.map(score => score * 2);
+console.log(doubleScores);
+
+
+
+// Bài 4 — filter() cơ bản
+// =========================
+
+const ages = [15, 22, 17, 30, 16, 25, 18, 11, 19];
+
+// Lọc những người từ 18 tuổi trở lên
+const adults = ages.filter(age => age >= 18);
+console.log(adults);
+
+// Lọc những người dưới 18 tuổi
+const under18 = ages.filter(age => age < 18);
+console.log(under18);
+
+
+// Bài 5 — find() cơ bản
+// =========================
+
+const students = [
+  { name: "An", score: 8 },
+  { name: "Bình", score: 5 },
+  { name: "Cúc", score: 9 }
+];
+
+// Tìm học sinh tên "Bình"
+const studentName = students.find(student => student.name === "Bình");
+console.log(studentName);
+
+// Tìm học sinh có điểm > 8
+const highScore = students.find(student => student.score > 8);
+console.log(highScore);
 

@@ -284,3 +284,28 @@ const students = [
 
 const students1 = students.find(u => u.name =="Bình");
 console.log(students1);
+
+
+///Buổi 6
+console.log("Buổi 6:.......................")
+class User {
+    constructor(id, name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    getInfo() {
+        console.log("Hello");
+    }
+}
+
+let user = new User(1, "user");
+let object = {
+    id: 1,
+    name: "user"
+    getInfo() => {
+        console.log("Hello");
+};
+
+user.getInfo();
+console.log(user, object);

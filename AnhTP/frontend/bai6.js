@@ -108,3 +108,58 @@ console.log(studentBinh); // { name: "Bình", score: 5 }
 
 const highScorer = students.find((student) => student.score > 8);
 console.log(highScorer); // { name: "Cúc", score: 9 }
+
+display_log();
+//  BTVN 1 — Mảng số
+const numberA = [1, 2, 3, 4, 5];
+// Nhân đôi tất cả phần tử (map)
+// Lọc số > 3 (filter)
+// Tìm số = 4 (find)
+const doubledNumbers = numberA.map((n) => n * 2);
+console.log(doubledNumbers);
+const filteredNumbers = numberA.filter((n) => n > 3);
+console.log(filteredNumbers);
+const foundNumber = numberA.find((n) => n === 4);
+console.log(foundNumber);
+
+display_log();
+//  BTVN 2 — Object Array
+const userB = [
+  { id: 1, name: "An", age: 25 },
+  { id: 2, name: "Bình", age: 30 },
+  { id: 3, name: "Cường", age: 20 },
+];
+// Lấy danh sách name
+// Lọc user > 25 tuổi
+// Tìm user id = 2
+
+const userNames = userB.map((u) => u.name);
+console.log(userNames);
+const olderUsers = userB.filter((u) => u.age > 25);
+console.log(olderUsers);
+const userId2 = userB.find((u) => u.id === 2);
+console.log(userId2);
+
+display_log();
+//  BTVN 3 — Giống API thật (QA hay gặp!)
+const orders = [
+  { id: 1, status: "success", total: 100 },
+  { id: 2, status: "pending", total: 200 },
+  { id: 3, status: "success", total: 150 },
+];
+// Lấy tất cả order có status = "success"
+// Lấy danh sách total của toàn bộ orders
+// Tìm order có id = 2
+
+const successfulOrders = orders.filter((o) => o.status === "success");
+console.log(successfulOrders);
+const orderTotals = orders.map((o) => o.total);
+console.log(orderTotals);
+const orderId2 = orders.find((o) => o.id === 2);
+console.log(orderId2);
+
+display_log();
+// Lấy tất cả order có status = "pending"
+const pendingOrders = orders.filter((o) => o.status === "pending");
+console.log(pendingOrders);
+display_log();

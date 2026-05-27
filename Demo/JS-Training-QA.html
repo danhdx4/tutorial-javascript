@@ -2293,18 +2293,21 @@ page.<span class="fn">login</span>();
               <h3>Bài 4 — Class <code>Product</code></h3>
               <ul>
                 <li>Constructor: <code>id, name, price, category</code></li>
-                <li>Method <code>getInfo()</code> dùng template literal</li>
-                <li>Method <code>toJSON()</code> trả về plain object</li>
+                <li>Tạo method <code>getInfo()</code> dùng template literal</li>
+                <li>Tạo method <code>toJSON()</code> trả về plain object</li>
               </ul>
             </div>
             <div class="card amber">
               <h3>Bài 5 — Class <code>User</code></h3>
               <ul>
                 <li>Constructor: <code>id, username, role</code></li>
-                <li>Method <code>getProfile()</code> dùng template literal</li>
+                <li>Tạo method <code>getProfile()</code> dùng template literal</li>
                 <li>
-                  Method <code>isAdmin()</code> trả về <code>true/false</code>
+                  Tạo method <code>isAdmin()</code> trả về <code>true/false</code>
                 </li>
+                <li>Tạo method <code>toJSON()</code> trả về plain object</li> 
+                <li>Tạo method <code>fromJSON(data)</code> tạo <code>User</code> từ plain object</li>
+
               </ul>
             </div>
           </div>
@@ -2335,14 +2338,13 @@ page.<span class="fn">login</span>();
             <div class="card teal">
               <h3>Bài 2 — Class <code>ProductStore</code></h3>
               <ul>
-                <li>Constructor nhận mảng <code>Product[]</code></li>
-                <li><code>getAll()</code> → trả về toàn bộ</li>
-                <li><code>findById(id)</code> → tìm theo id</li>
-                <li><code>findByCategory(cat)</code> → lọc theo danh mục</li>
+                <li>Constructor nhận mảng products <code>const products = [];</code></li>
+                <li>contructor(products) { this.products = products; }</li>
+                <li><code>getAll()</code> → trả về toàn bộ products</li>
+                <li><code>findById(id)</code> → tìm products theo id dùng <code>find</code></li>
+                <li><code>findByCategory(cat)</code> → tìm products lọc theo danh mục dùng <code>filter()</code></li>
               </ul>
             </div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 14px">
             <div class="card purple">
               <h3>Bài 3 — Tạo file JSON</h3>
               <p>Tạo 2 file — Buổi 8 nạp vào server:</p>
@@ -2356,18 +2358,33 @@ page.<span class="fn">login</span>();
                 </li>
               </ul>
             </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 14px">
             <div class="card green">
-              <h3>⭐ Bài 4 — Chuẩn bị cấu trúc</h3>
+              <h3>⭐ Bài 4 — Chuẩn bị cấu trúc (cho Buổi 8)</h3>
               <p>Tổ chức thành các file riêng (chưa cần export):</p>
-              <ul>
-                <li><code>models/Product.js</code></li>
-                <li><code>models/ProductStore.js</code></li>
-                <li><code>models/User.js</code></li>
-                <li>
-                  <code>main.js</code> — khởi tạo store, gọi
-                  <code>getAll()</code>
-                </li>
+              <pre style="font-size:12px;margin-top:10px">
+member/backend/
+├── models/
+│   ├── Product.js      ← class Product
+│   ├── ProductStore.js ← class ProductStore
+│   └── User.js         ← class User
+├── data/
+│   ├── products.json   ← dữ liệu sản phẩm
+│   └── users.json      ← dữ liệu user
+└── main.js             ← khởi tạo &amp; chạy</pre>
+              <p style="margin-top:12px"><strong>Yêu cầu từng file:</strong></p>
+              <ul style="margin-top:6px">
+                <li><code>models/Product.js</code> — copy class Product vào (đã làm ở Bài 1)</li>
+                <li><code>models/ProductStore.js</code> — copy class ProductStore (Bài 2)</li>
+                <li><code>models/User.js</code> — copy class User (Bài 5 buổi trước)</li>
+                <li><code>data/</code> — copy 2 file JSON (Bài 3)</li>
+                <li><code>main.js</code> — tạo store từ array cứng, gọi <code>getAll()</code>, <code>findById()</code></li>
               </ul>
+              <div class="tip" style="margin-top:12px">
+                <span class="icon-sm">🎯</span>
+                <div><strong>Buổi 8 sẽ nối tiếp:</strong> Thêm <code>module.exports</code> + <code>require()</code> để kết nối các file lại → load JSON → dựng server API.</div>
+              </div>
             </div>
           </div>
         </div>
@@ -2383,25 +2400,15 @@ page.<span class="fn">login</span>();
             <ul class="checklist">
               <li>
                 <div class="cb">✓</div>
-                <span
-                  >Dùng <strong>Template Literal</strong> với backtick
-                  <code>`</code> và <code>${}</code> để nhúng biến vào
-                  chuỗi</span
-                >
+                <span>Dùng <strong>Template Literal</strong> với backtick <code>`</code> và <code>${}</code> để nhúng biến vào chuỗi</span>
               </li>
               <li>
                 <div class="cb">✓</div>
-                <span
-                  >Tạo <strong>Class</strong> với <code>constructor</code> và
-                  method</span
-                >
+                <span>Tạo <strong>Class</strong> với <code>constructor</code> và method</span>
               </li>
               <li>
                 <div class="cb">✓</div>
-                <span
-                  >Dùng <code>extends</code> để <strong>kế thừa</strong> từ
-                  class cha, gọi <code>super()</code></span
-                >
+                <span>Dùng <code>extends</code> để <strong>kế thừa</strong> từ class cha, gọi <code>super()</code></span>
               </li>
             </ul>
           </div>
@@ -2431,6 +2438,67 @@ page.<span class="fn">login</span>();
                 <strong>dựng server Node.js HTTP đầu tiên</strong> — mục tiêu để
                 Playwright test sau!
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE: Cheat Sheet Class cho QA -->
+      <div class="slide content">
+        <div class="slide-num">Buổi 7 · Cheat Sheet</div>
+        <div class="session-badge s1">Buổi 7</div>
+        <h2>📌 Class — Những điều cần nhớ cho QA</h2>
+        <div class="two-col">
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <div class="card blue">
+              <h3>🔑 Cú pháp cơ bản</h3>
+              <ul>
+                <li><code>class Tên { }</code> — luôn viết hoa chữ cái đầu</li>
+                <li><code>constructor()</code> — hàm chạy khi <code>new</code></li>
+                <li><code>this.xxx</code> — thuộc tính của object đó</li>
+                <li><code>new Tên()</code> — tạo instance mới</li>
+              </ul>
+            </div>
+            <div class="card green">
+              <h3>📦 Methods hay dùng trong test</h3>
+              <ul>
+                <li><code>getInfo()</code> — in thông tin đẹp (template literal)</li>
+                <li><code>toJSON()</code> — biến thành plain object để gửi API</li>
+                <li><code>static fromJSON(data)</code> — tạo instance từ response API</li>
+                <li><code>isAdmin()</code> — kiểm tra role/permission</li>
+              </ul>
+            </div>
+            <div class="card purple">
+              <h3>🔗 Kế thừa (extends)</h3>
+              <ul>
+                <li><code>class Con extends Cha</code> — kế thừa toàn bộ</li>
+                <li><code>super()</code> — gọi constructor cha, <strong>bắt buộc</strong> viết trước <code>this</code></li>
+                <li>Class con có thể thêm method riêng hoặc override method cha</li>
+              </ul>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <div class="card red">
+              <h3>❌ Lỗi hay gặp</h3>
+              <ul>
+                <li>Quên <code>new</code> → <code>TypeError</code></li>
+                <li>Quên <code>this.</code> → biến không lưu được</li>
+                <li>Quên <code>super()</code> trong class con → lỗi ngay</li>
+                <li>Gọi <code>static</code> method trên instance → sai, phải gọi trên class</li>
+              </ul>
+            </div>
+            <div class="card amber">
+              <h3>🎯 Khi nào QA cần dùng Class?</h3>
+              <ul>
+                <li><strong>Page Object Model</strong> — mỗi trang = 1 class</li>
+                <li><strong>Test Data</strong> — tạo User, Product từ JSON</li>
+                <li><strong>API Helper</strong> — class chứa các hàm gọi API</li>
+                <li><strong>Store/Service</strong> — quản lý danh sách dữ liệu</li>
+              </ul>
+            </div>
+            <div class="tip">
+              <span class="icon-sm">💡</span>
+              <div><strong>Quy tắc nhớ:</strong> Class = khuôn bánh, Instance = chiếc bánh. Một khuôn tạo được nhiều bánh. Mỗi bánh có nhân riêng (<code>constructor</code>) nhưng cùng hình dáng (methods).</div>
             </div>
           </div>
         </div>
@@ -2500,7 +2568,7 @@ page.<span class="fn">login</span>();
             <div class="info" style="margin-bottom: 16px">
               <span class="icon-sm">📂</span>
               <div>
-                Cấu trúc dự án điển hình:
+                Cấu trúc dự án:
                 <pre
                   style="
                     font-size: 12px;
@@ -2511,16 +2579,15 @@ page.<span class="fn">login</span>();
                     margin-top: 8px;
                   "
                 >
-js-training/
-├── utils/
-│   ├── helpers.js      ← hàm tiện ích
-│   └── api.js          ← hàm gọi API
+member/backend/
+├── models/
+│   ├── Product.js      ← class Product
+│   ├── ProductStore.js ← class ProductStore
+│   └── User.js         ← class User
 ├── data/
-│   └── users.json      ← dữ liệu test
-├── pages/
-│   └── LoginPage.js    ← page objects
-└── tests/
-    └── login.test.js   ← test chính</pre
+│   ├── products.json   ← dữ liệu sản phẩm
+│   └── users.json      ← dữ liệu user
+└── main.js             ← khởi tạo & chạy</pre
                 >
               </div>
             </div>
@@ -2528,7 +2595,7 @@ js-training/
               <span class="icon-sm">🎯</span>
               <div>
                 Nguyên tắc: <strong>1 file = 1 trách nhiệm</strong>. File
-                helpers chỉ chứa hàm tiện ích, file test chỉ chứa test cases.
+                model chỉ chứa class, file data chỉ chứa JSON, file main dùng để khởi tạo và chạy.
               </div>
             </div>
           </div>
@@ -2557,29 +2624,42 @@ js-training/
 
 <span class="cmt">// Export nhiều hàm cùng lúc</span>
 <span class="kw">module</span>.exports = { formatDate, logResult };</pre>
+            <p style="margin-top: 12px"><strong>Cách 2: Export object rồi import toàn bộ</strong></p>
+            <pre>
+<span class="cmt">// file: utils/helpers.js (cách khác)</span>
+
+<span class="kw">module</span>.exports = {
+  <span class="fn">formatDate</span>(date) {
+    <span class="kw">return</span> date.<span class="fn">toLocaleDateString</span>(<span class="str">"vi-VN"</span>);
+  },
+  <span class="fn">logResult</span>(testName, passed) {
+    <span class="kw">const</span> status = passed ? <span class="str">"✅ PASS"</span> : <span class="str">"❌ FAIL"</span>;
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`[</span><span class="ti">${testName}</span><span class="tm">] </span><span class="ti">${status}</span><span class="tm">`</span>);
+  }
+};</pre>
           </div>
           <div style="display: flex; flex-direction: column; gap: 12px">
-            <p><strong>Import và sử dụng:</strong></p>
+            <p><strong>Import cách 1 (Destructuring):</strong></p>
             <pre>
-<span class="cmt">// file: tests/login.test.js</span>
-
 <span class="kw">const</span> { formatDate, logResult } =
       <span class="fn">require</span>(<span class="str">"../utils/helpers"</span>);
 
-<span class="cmt">// Sử dụng trực tiếp</span>
-<span class="fn">logResult</span>(<span class="str">"TC_001_Login"</span>, <span class="kw">true</span>);
-<span class="cmt">// [TC_001_Login] ✅ PASS</span>
+<span class="fn">logResult</span>(<span class="str">"TC_001"</span>, <span class="kw">true</span>);</pre>
 
-<span class="kw">const</span> today = <span class="fn">formatDate</span>(<span class="kw">new</span> <span class="cl">Date</span>());
-<span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`Ngày test: </span><span class="ti">${today}</span><span class="tm">`</span>);
-<span class="cmt">// Ngày test: 12/5/2026</span></pre>
+            <p style="margin-top: 12px"><strong>Import cách 2 (Toàn bộ):</strong></p>
+            <pre>
+<span class="kw">const</span> helpers = <span class="fn">require</span>(<span class="str">"../utils/helpers"</span>);
 
-            <div class="card amber">
-              <h3>🔎 Destructuring <code>{ }</code> khi import</h3>
-              <p>
-                Dùng <code>{ }</code> để lấy <em>chỉ những hàm bạn cần</em> từ
-                file export nhiều thứ. Tương tự như chọn món từ menu.
-              </p>
+<span class="cmt">// Gọi bằng helpers.tên_hàm</span>
+helpers.<span class="fn">logResult</span>(<span class="str">"TC_001"</span>, <span class="kw">true</span>);
+<span class="kw">const</span> today = helpers.<span class="fn">formatDate</span>(<span class="kw">new</span> <span class="cl">Date</span>());</pre>
+
+            <div class="card info">
+              <h3>🔄 So sánh 2 cách</h3>
+              <ul style="margin: 0; font-size: 13px">
+                <li><strong>Cách 1:</strong> Lấy từng hàm cần → code sạch, rõ ràng</li>
+                <li><strong>Cách 2:</strong> Lấy toàn bộ → dễ tìm tất cả hàm có sẵn</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -2596,38 +2676,40 @@ js-training/
               <span class="icon-sm">📂</span>
               <div>
                 Cấu trúc folder:<br />
-                <code>js-training/</code><br />
-                <code>├── pages/LoginPage.js</code><br />
-                <code>└── test/login.test.js</code>
+                <code>member/backend/</code><br />
+                <code>├── models/Product.js</code><br />
+                <code>└── main.js</code>
               </div>
             </div>
-            <p><strong>1. Export class (file LoginPage.js):</strong></p>
+            <p><strong>1. Export class (file Product.js):</strong></p>
             <pre>
-<span class="cmt">// file: pages/LoginPage.js</span>
-<span class="kw">class</span> <span class="cl">LoginPage</span> {
-  <span class="fn">constructor</span>(username) {
-    <span class="kw">this</span>.username = username;
+<span class="cmt">// file: models/Product.js</span>
+<span class="kw">class</span> <span class="cl">Product</span> {
+  <span class="fn">constructor</span>(id, name, price) {
+    <span class="kw">this</span>.id = id;
+    <span class="kw">this</span>.name = name;
+    <span class="kw">this</span>.price = price;
   }
-  <span class="fn">login</span>() {
-    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`Login: </span><span class="ti">${<span class="kw">this</span>.username}</span><span class="tm">`</span>);
+  <span class="fn">getInfo</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`</span><span class="str">#</span><span class="ti">${<span class="kw">this</span>.id}</span><span class="str"> - </span><span class="ti">${<span class="kw">this</span>.name}</span><span class="str"> - </span><span class="ti">${<span class="kw">this</span>.price}</span><span class="str"> VND</span><span class="tm">`</span>);
   }
 }
 
 <span class="cmt">// Export để file khác dùng được</span>
-<span class="kw">module</span>.exports = <span class="cl">LoginPage</span>;</pre>
+<span class="kw">module</span>.exports = <span class="cl">Product</span>;</pre>
           </div>
           <div style="display: flex; flex-direction: column; gap: 14px">
-            <p><strong>2. Import và sử dụng (file test):</strong></p>
+            <p><strong>2. Import và sử dụng (file main.js):</strong></p>
             <pre>
-<span class="cmt">// file: test/login.test.js</span>
+<span class="cmt">// file: main.js</span>
 
 <span class="cmt">// Import class từ file khác</span>
-<span class="kw">const</span> <span class="cl">LoginPage</span> = <span class="fn">require</span>(<span class="str">"../pages/LoginPage"</span>);
+<span class="kw">const</span> <span class="cl">Product</span> = <span class="fn">require</span>(<span class="str">"./models/Product"</span>);
 
 <span class="cmt">// Sử dụng bình thường</span>
-<span class="kw">const</span> loginPage = <span class="kw">new</span> <span class="cl">LoginPage</span>(<span class="str">"admin"</span>);
-loginPage.<span class="fn">login</span>();
-<span class="cmt">// Login: admin</span></pre>
+<span class="kw">const</span> product = <span class="kw">new</span> <span class="cl">Product</span>(<span class="num">1</span>, <span class="str">"Laptop"</span>, <span class="num">25000000</span>);
+product.<span class="fn">getInfo</span>();
+<span class="cmt">// #1 - Laptop - 25000000 VND</span></pre>
 
             <div class="card amber">
               <h3>📌 Nhớ quy tắc đường dẫn</h3>
@@ -2788,58 +2870,69 @@ testData.users.<span class="fn">forEach</span>(user => {
             <div class="card blue">
               <h3>☕ Ví dụ đời thực</h3>
               <p>
-                Bạn gọi nước tại quán → nhân viên đi pha → bạn
-                <strong>chờ</strong> vài phút → nhận nước.<br /><br />
-                Trong lúc chờ, bạn vẫn có thể nhắn tin, đọc menu (không bị "đứng
-                hình").
+                <strong>Bạn gọi nước tại quán:</strong><br/>
+                1️⃣ Bạn: "Cho tôi 1 cà phê"<br/>
+                2️⃣ Nhân viên: "Vâng, chờ tôi 5 phút"<br/>
+                3️⃣ Bạn: <em>Chờ...</em> (không thể kiểm tra nước đã xong chưa nếu không chờ)<br/>
+                4️⃣ Nhân viên: "Xong, đây là cà phê"<br/>
+                5️⃣ Bạn: Uống ☕<br/><br/>
+                <strong>⚠️ Nếu bạn không chờ:</strong> chạy ra khỏi quán lúc nhân viên đang pha → không có nước!
               </p>
             </div>
             <div class="card purple">
-              <h3>💻 Trong Testing</h3>
+              <h3>💻 Trong Testing (Playwright)</h3>
               <p>
-                Khi test gọi API hay tương tác UI, chương trình phải
-                <strong>chờ</strong> kết quả trước khi kiểm tra.<br /><br />
-                Không có async/await → code chạy tiếp ngay, kết quả chưa về →
-                test sai!
+                <strong>Giống như quán nước:</strong><br/>
+                1️⃣ Test: "Gọi API lấy users"<br/>
+                2️⃣ Server: "Đang xử lý..."<br/>
+                3️⃣ Test: <strong>PHẢI CHỜ</strong> <code>await</code><br/>
+                4️⃣ Server: "Đây là danh sách users"<br/>
+                5️⃣ Test: Kiểm tra dữ liệu ✅<br/><br/>
+                <strong>❌ Nếu bỏ await:</strong> Test kiểm tra ngay lập tức, server chưa trả dữ liệu → <strong>test sai!</strong>
               </p>
             </div>
           </div>
           <div>
             <div class="compare-wrapper">
+              <p style="font-weight: bold; margin-bottom: 8px;">Khi nào cần <code>await</code>? (Đặc biệt trong Playwright)</p>
               <table class="compare">
                 <tr>
-                  <th>Tình huống</th>
-                  <th>Cần chờ?</th>
+                  <th>Tác vụ</th>
+                  <th>Cần await?</th>
+                  <th>Lý do</th>
                 </tr>
                 <tr>
-                  <td>Gọi API (GET, POST…)</td>
-                  <td class="good">✅ Có</td>
+                  <td><code>await page.goto()</code></td>
+                  <td class="good">✅</td>
+                  <td>Chờ page load xong</td>
                 </tr>
                 <tr>
-                  <td>Đọc file từ ổ cứng</td>
-                  <td class="good">✅ Có</td>
+                  <td><code>await page.click()</code></td>
+                  <td class="good">✅</td>
+                  <td>Chờ action hoàn tất</td>
                 </tr>
                 <tr>
-                  <td>Click nút trên UI</td>
-                  <td class="good">✅ Có</td>
+                  <td><code>await fetch(url)</code></td>
+                  <td class="good">✅</td>
+                  <td>Chờ response từ server</td>
                 </tr>
                 <tr>
-                  <td>Tính toán 1+1</td>
-                  <td class="bad">❌ Không</td>
-                </tr>
-                <tr>
-                  <td>In ra console.log</td>
-                  <td class="bad">❌ Không</td>
+                  <td><code>const x = 1 + 1</code></td>
+                  <td class="bad">❌</td>
+                  <td>Ngay lập tức, không chờ</td>
                 </tr>
               </table>
             </div>
-            <div class="info" style="margin-top: 14px">
-              <span class="icon-sm">💡</span>
-              <div>
-                Từ khóa <strong>async</strong> đánh dấu function "có thể chứa
-                tác vụ chờ". Từ khóa <strong>await</strong> = "hãy chờ tác vụ
-                này xong rồi mới tiếp tục".
-              </div>
+            <div class="card info" style="margin-top: 14px; background: #f0f8ff; border-left: 4px solid #0066cc;">
+              <h3>🎯 Điểm mấu chốt</h3>
+              <p style="margin: 0 0 8px 0"><strong>Có await:</strong></p>
+              <pre style="font-size: 11px; margin: 0 0 8px 0">
+<span class="kw">const</span> data = <span class="kw">await</span> fetch(url);  <span class="cmt">// ✅ Chờ</span>
+<span class="fn">console</span>.<span class="fn">log</span>(data);  <span class="cmt">// ✅ Data đã sẵn sàng</span></pre>
+              <p style="margin: 0 0 8px 0"><strong>Không await:</strong></p>
+              <pre style="font-size: 11px; margin: 0">
+<span class="kw">const</span> data = <span class="fn">fetch</span>(url);  <span class="cmt">// ❌ Không chờ</span>
+<span class="fn">console</span>.<span class="fn">log</span>(data);  <span class="cmt">// ❌ Promise, không phải dữ liệu!</span></pre>
             </div>
           </div>
         </div>
@@ -2852,7 +2945,7 @@ testData.users.<span class="fn">forEach</span>(user => {
         <h2>📝 Cú pháp async / await</h2>
         <div class="two-col">
           <div>
-            <p><strong>Cấu trúc cơ bản:</strong></p>
+            <p><strong>Cấu trúc cơ bản (gọi API thật):</strong></p>
             <pre>
 <span class="cmt">// "async" trước function = function này có thể chờ</span>
 <span class="kw">async function</span> <span class="fn">layDuLieu</span>() {
@@ -2861,16 +2954,24 @@ testData.users.<span class="fn">forEach</span>(user => {
 
   <span class="cmt">// "await" = chờ kết quả trước khi tiếp tục</span>
   <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(
-    <span class="str">"https://api.example.com/users"</span>
+    <span class="str">"https://products-api-ten-alpha.vercel.app/api/products"</span>
   );
 
   <span class="kw">const</span> data = <span class="kw">await</span> response.<span class="fn">json</span>();
 
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`Số user: </span><span class="ti">${data.length}</span><span class="tm">`</span>);
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`Số sản phẩm: </span><span class="ti">${data.length}</span><span class="tm">`</span>);
 }
 
 <span class="cmt">// Gọi function async</span>
 <span class="fn">layDuLieu</span>();</pre>
+            <div class="tip" style="margin-top: 10px">
+              <span class="icon-sm">🌐</span>
+              <div>
+                API này đang chạy thật trên Vercel:
+                <code>https://products-api-ten-alpha.vercel.app/api/products</code> —
+                trả về 3 sản phẩm JSON.
+              </div>
+            </div>
           </div>
           <div style="display: flex; flex-direction: column; gap: 14px">
             <div class="card green">
@@ -2906,8 +3007,60 @@ testData.users.<span class="fn">forEach</span>(user => {
         </div>
       </div>
 
+      <!-- SLIDE: Async/Await · Ví dụ đơn giản -->
+      <div class="slide content">
+        <div class="slide-num">Async/Await · Ví dụ thật</div>
+        <div class="session-badge s2">Buổi 8</div>
+        <h2>🌐 Ví dụ gọi API thật — có delay 4 giây</h2>
+        <div class="two-col">
+          <div>
+            <p><strong>Gọi API chi tiết sản phẩm (server cố tình delay 4s):</strong></p>
+            <pre>
+<span class="kw">async function</span> <span class="fn">layChiTiet</span>(id) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"⏳ Bắt đầu gọi API..."</span>);
+
+  <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(
+    <span class="tm">`https://products-api-ten-alpha.vercel.app</span>
+<span class="tm">/api/products/</span><span class="ti">${id}</span><span class="tm">`</span>
+  );
+  <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"✅ Đã có dữ liệu:"</span>, data);
+}
+
+<span class="fn">layChiTiet</span>(<span class="num">2</span>);</pre>
+          </div>
+          <div>
+            <div class="card green">
+              <h3>✅ Khi chạy</h3>
+              <p>
+                <code>⏳ Bắt đầu gọi API...</code><br/>
+                → <em>chờ ~4 giây (server delay thật)</em><br/>
+                → <code>✅ Đã có dữ liệu: { id: 2, name: "iPhone 15 Pro", ... }</code>
+              </p>
+            </div>
+            <div class="card amber" style="margin-top: 12px">
+              <h3>❌ Nếu bỏ <code>await</code></h3>
+              <p>
+                <code>res</code> sẽ là <code>Promise { &lt;pending&gt; }</code>,
+                không phải data → gọi <code>.json()</code> sẽ lỗi ngay.
+                <strong>Đây chính là lỗi phổ biến nhất khi viết test API.</strong>
+              </p>
+            </div>
+            <div class="info" style="margin-top: 12px">
+              <span class="icon-sm">💡</span>
+              <div>
+                <strong>Vì sao API có delay 4s?</strong> Để bạn <em>cảm nhận</em> rõ
+                sự khác biệt giữa có <code>await</code> (chờ đủ) và không có
+                <code>await</code> (chạy tiếp ngay → sai data).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- SLIDE: try/catch -->
-      <div class="slide content" id="s27">
+      <div class="slide content">
         <div class="slide-num">Async/Await · Xử lý lỗi</div>
         <div class="session-badge s2">Buổi 8</div>
         <h2>🛡️ Xử lý lỗi với try / catch</h2>
@@ -2940,7 +3093,7 @@ testData.users.<span class="fn">forEach</span>(user => {
   <span class="kw">try</span> {
     <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(url);
     <span class="kw">const</span> data = <span class="kw">await</span> response.<span class="fn">json</span>();
-    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`✅ Thành công: </span><span class="ti">${data.status}</span><span class="tm">`</span>);
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"✅ Thành công:"</span>, data);
     <span class="kw">return</span> data;
   } <span class="kw">catch</span> (error) {
     <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`❌ Lỗi: </span><span class="ti">${error.message}</span><span class="tm">`</span>);
@@ -2948,75 +3101,8 @@ testData.users.<span class="fn">forEach</span>(user => {
   }
 }
 
-<span class="fn">goiApi</span>(<span class="str">"https://api.example.com/data"</span>);</pre>
-          </div>
-        </div>
-      </div>
-
-      <!-- SLIDE: Async trong Testing -->
-      <div class="slide content" id="s28">
-        <div class="slide-num">Async/Await · Testing thực tế</div>
-        <div class="session-badge s2">Buổi 8</div>
-        <h2>🧪 Async/Await trong Testing thực tế</h2>
-        <div class="two-col">
-          <div>
-            <p><strong>Ví dụ: Test API đăng nhập</strong></p>
-            <pre>
-<span class="cmt">// file: tests/api.test.js</span>
-<span class="kw">const</span> testData = <span class="fn">require</span>(<span class="str">"../data/testData.json"</span>);
-
-<span class="kw">async function</span> <span class="fn">testLogin</span>(user) {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`\n🧪 Test: </span><span class="ti">${user.username}</span><span class="tm">`</span>);
-
-  <span class="kw">try</span> {
-    <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(
-      <span class="tm">`</span><span class="ti">${testData.baseUrl}</span><span class="str">/api/login</span><span class="tm">`</span>,
-      {
-        method: <span class="str">"POST"</span>,
-        body: JSON.<span class="fn">stringify</span>({
-          username: user.username,
-          password: user.password
-        })
-      }
-    );
-    <span class="kw">const</span> body = <span class="kw">await</span> res.<span class="fn">json</span>();
-    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`  Kết quả: </span><span class="ti">${body.message}</span><span class="tm">`</span>);
-  } <span class="kw">catch</span>(e) {
-    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`  Lỗi: </span><span class="ti">${e.message}</span><span class="tm">`</span>);
-  }
-}</pre>
-          </div>
-          <div>
-            <p><strong>Chạy test cho nhiều user:</strong></p>
-            <pre>
-<span class="kw">async function</span> <span class="fn">runAllTests</span>() {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"=== BẮT ĐẦU CHẠY TEST ==="</span>);
-
-  <span class="kw">for</span> (<span class="kw">const</span> user <span class="kw">of</span> testData.users) {
-    <span class="kw">await</span> <span class="fn">testLogin</span>(user);
-  }
-
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"\n=== XONG ==="</span>);
-}
-
-<span class="fn">runAllTests</span>();</pre>
-
-            <div class="tip" style="margin-top: 14px">
-              <span class="icon-sm">🎯</span>
-              <div>
-                Dùng <code>for...of</code> thay vì <code>forEach</code> khi cần
-                <code>await</code> bên trong vòng lặp —
-                <code>forEach</code> không chờ <code>await</code>!
-              </div>
-            </div>
-            <div class="card purple" style="margin-top: 12px">
-              <h3>🔗 Liên kết với Playwright</h3>
-              <pre style="font-size: 12px">
-<span class="cmt">// Playwright dùng async/await ở mọi nơi</span>
-<span class="kw">await</span> page.<span class="fn">goto</span>(<span class="str">"https://example.com"</span>);
-<span class="kw">await</span> page.<span class="fn">click</span>(<span class="str">"#login-btn"</span>);
-<span class="kw">await</span> page.<span class="fn">fill</span>(<span class="str">"#username"</span>, <span class="str">"admin"</span>);</pre>
-            </div>
+<span class="cmt">// URL sai → catch sẽ bắt được lỗi</span>
+<span class="fn">goiApi</span>(<span class="str">"https://products-api-ten-alpha.vercel.app/api/products/999"</span>);</pre>
           </div>
         </div>
       </div>
@@ -3025,63 +3111,70 @@ testData.users.<span class="fn">forEach</span>(user => {
       <div class="slide content">
         <div class="slide-num">Buổi 8 · Bài tập</div>
         <div class="session-badge s2">Buổi 8</div>
-        <h2>💻 Bài tập — Dựng server Node.js</h2>
+        <h2>💻 Bài tập thực hành — Buổi 8</h2>
         <div class="two-col">
-          <div style="display: flex; flex-direction: column; gap: 14px">
-            <div class="card blue">
-              <h3>Bài 1 — Export &amp; Import</h3>
-              <p>
-                Thêm <code>module.exports</code> vào 3 file model từ BTVN. Tạo
-                <code>app.js</code>, <code>require()</code> các model và chạy
-                thử.
-              </p>
-            </div>
+          <div style="display: flex; flex-direction: column; gap: 10px">
             <div class="card green">
-              <h3>Bài 2 — Load JSON vào Store</h3>
+              <h3>Bước 1 — Import class</h3>
               <p>
-                Trong <code>app.js</code>: dùng <code>require()</code> để đọc
-                <code>products.json</code>, dùng <code>map()</code> chuyển sang
-                mảng <code>Product</code>, khởi tạo <code>ProductStore</code> và
-                gọi <code>getAll()</code>.
+                Trong <code>app.js</code>, <code>require()</code> class <code>Product</code>,
+                tạo 1 object và <code>console.log</code> ra.
               </p>
             </div>
             <div class="card purple">
-              <h3>Bài 3 — Async/Await</h3>
+              <h3>Bước 2 — Đọc <code>products.json</code></h3>
               <p>
-                Giả lập việc load data bất đồng bộ: bọc
-                <code>require()</code> JSON trong <code>new Promise()</code> +
-                <code>setTimeout</code>. Gọi bằng <code>async/await</code>.
+                <code>require()</code> file JSON, chuyển thành mảng object <code>Product</code>,
+                in danh sách ra terminal.
+              </p>
+            </div>
+            <div class="card purple">
+              <h3>Bước 3 — Gọi API thật bằng <code>async/await</code></h3>
+              <pre style="font-size: 11px; margin-top: 6px">
+<span class="kw">async function</span> <span class="fn">layChiTiet</span>() {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"⏳ Bắt đầu..."</span>);
+  <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(
+    <span class="str">"https://products-api-ten-alpha.vercel.app/api/products/2"</span>
+  );
+  <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"✅"</span>, data);
+}
+<span class="fn">layChiTiet</span>();</pre>
+              <p style="margin-top: 6px; font-size: 13px">
+                <strong>Mong đợi:</strong> in <em>iPhone 15 Pro</em> sau ~4 giây.
               </p>
             </div>
           </div>
-          <div style="display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; flex-direction: column; gap: 10px">
             <div class="card amber">
-              <h3>⭐ Bài 4 — Dựng HTTP Server</h3>
-              <p>
-                Tạo <code>server.js</code> dùng
-                <code>http.createServer()</code>. Xử lý 3 route:
-              </p>
-              <ul>
-                <li>
-                  <code>GET /</code> →
-                  <code>{ message: "Product API v1" }</code>
-                </li>
-                <li>
-                  <code>GET /products</code> → <code>store.getAll()</code>
-                </li>
-                <li>Khác → <code>404 Not found</code></li>
+              <h3>Bước 4 — Bỏ <code>await</code> để thấy lỗi</h3>
+              <pre style="font-size: 11px; margin-top: 6px">
+<span class="kw">const</span> res = <span class="fn">fetch</span>(<span class="str">"..."</span>);  <span class="cmt">// ❌ bỏ await</span>
+<span class="fn">console</span>.<span class="fn">log</span>(res);
+<span class="kw">const</span> data = res.<span class="fn">json</span>();  <span class="cmt">// 💥 lỗi</span></pre>
+              <ul style="margin: 6px 0 0 0; padding-left: 20px; font-size: 13px">
+                <li><code>res</code> → <code>Promise { &lt;pending&gt; }</code></li>
+                <li><code>res.json()</code> → <code>TypeError</code></li>
               </ul>
-              <p style="margin-top: 8px">
-                Chạy <code>node server.js</code>, mở
-                <code>localhost:3000/products</code> trên browser.
+              <p style="margin-top: 6px; font-size: 13px">
+                → Hiểu vì sao Playwright bắt buộc <code>await</code>.
               </p>
             </div>
-            <div class="tip">
-              <span class="icon-sm">🎯</span>
-              <div>
-                <code>localhost:3000/products</code> chính là URL
-                <strong>Playwright sẽ test</strong> trong khoá học tiếp theo!
-              </div>
+            <div class="card info-box" style="background: #f0f7ff; border-left: 4px solid #0066cc">
+              <h3>📝 Checklist</h3>
+              <ul style="margin: 0; padding-left: 20px; font-size: 13px">
+                <li>Chạy <code>node app.js</code> không lỗi</li>
+                <li>In danh sách products từ JSON</li>
+                <li>Gọi API thật, in sản phẩm sau ~4s</li>
+                <li>Quan sát lỗi khi bỏ <code>await</code></li>
+              </ul>
+            </div>
+            <div class="card amber">
+              <h3>⭐ Nâng cao (tuỳ chọn)</h3>
+              <p style="font-size: 13px">
+                Gọi <code>/api/products</code> lấy danh sách, rồi <code>for</code> loop
+                gọi <code>/api/products/:id</code> cho từng id (dùng <code>await</code> trong vòng lặp).
+              </p>
             </div>
           </div>
         </div>
@@ -3093,74 +3186,80 @@ testData.users.<span class="fn">forEach</span>(user => {
       <div class="slide content" id="s29">
         <div class="slide-num">Buổi 8 · Tổng kết</div>
         <div class="session-badge s2">Buổi 8</div>
-        <h2>✅ Tổng kết Buổi 8</h2>
+        <h2>✅ Tổng kết Buổi 8 — 3 khái niệm chính</h2>
         <div class="two-col">
           <div>
-            <ul class="checklist">
-              <li>
-                <div class="cb">✓</div>
-                <span
-                  >Tách code thành nhiều file (<strong>module</strong>),
-                  export/import</span
-                >
-              </li>
-              <li>
-                <div class="cb">✓</div>
-                <span
-                  >Load dữ liệu từ <strong>file JSON</strong> bằng
-                  <code>require()</code></span
-                >
-              </li>
-              <li>
-                <div class="cb">✓</div>
-                <span
-                  >Hiểu <strong>async/await</strong>, xử lý lỗi với
-                  <strong>try/catch</strong></span
-                >
-              </li>
-              <li>
-                <div class="cb">✓</div>
-                <span
-                  >Dựng <strong>HTTP Server</strong> với
-                  <code>http.createServer()</code></span
-                >
-              </li>
-              <li>
-                <div class="cb">✓</div>
-                <span
-                  >Định nghĩa routes: <code>GET /</code>,
-                  <code>GET /products</code>, <code>GET /users</code></span
-                >
-              </li>
-            </ul>
+            <div class="card blue" style="margin-bottom: 12px">
+              <h3>1️⃣ Module & Exports</h3>
+              <p>
+                Tách code thành nhiều file, export class/function,
+                import bằng <code>require()</code>.
+              </p>
+            </div>
+            <div class="card green" style="margin-bottom: 12px">
+              <h3>2️⃣ JSON & Data</h3>
+              <p>
+                Load test data từ <code>.json</code> files
+                bằng <code>require()</code>.
+              </p>
+            </div>
+            <div class="card purple" style="margin-bottom: 12px">
+              <h3>3️⃣ Async/Await</h3>
+              <p>
+                Xử lý tác vụ cần chờ (API, file I/O).
+                <code>await</code> = "chờ kết quả rồi mới tiếp tục".
+              </p>
+            </div>
           </div>
           <div style="display: flex; flex-direction: column; gap: 14px">
-            <div class="card purple">
-              <h3>📚 Bài tập về nhà — Mở rộng server</h3>
-              <ul>
+            <div class="card amber">
+              <h3>📚 Bài tập về nhà (BTVN 8)</h3>
+              <p style="font-size: 13px; margin: 0 0 8px 0">
+                Luyện <strong>class + export/import + await</strong>:
+              </p>
+              <ul style="margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7">
                 <li>
-                  Thêm route <code>GET /users</code> phục vụ
-                  <code>data/users.json</code>
+                  📄 <code>models/Order.js</code> — class <code>Order</code>
+                  <br />
+                  <span style="color: #555">
+                    constructor nhận 4 tham số:
+                    <code>id, productName, quantity, price</code> → gán vào
+                    <code>this</code>. Method <code>getTotal()</code> trả về
+                    <code>this.quantity * this.price</code>.
+                  </span>
                 </li>
                 <li>
-                  Thêm route <code>GET /products/1</code> lấy sản phẩm theo id
+                  📄 <code>models/OrderStore.js</code> — class
+                  <code>OrderStore</code>
+                  <br />
+                  <span style="color: #555">
+                    constructor nhận <strong>1 mảng orders</strong>
+                    (<code>constructor(orders)</code>) → gán
+                    <code>this.orders = orders</code>. Method:
+                    <code>getAll()</code>, <code>findById(id)</code>,
+                    <code>getTotalRevenue()</code> (cộng dồn
+                    <code>getTotal()</code> của từng order).
+                  </span>
                 </li>
                 <li>
-                  Dùng <code>async/await</code> để load JSON thay vì
-                  <code>require()</code> đồng bộ
+                  📄 <code>app.js</code> — <code>require()</code> 2 class,
+                  tạo 3 order, in kết quả 3 method trên
                 </li>
                 <li>
-                  Mở browser → <code>http://localhost:3000/products</code>, chụp
-                  màn hình kết quả JSON
+                  🌐 Thêm <code>async layTatCa()</code> dùng
+                  <code>await fetch(API)</code> in danh sách products
                 </li>
               </ul>
+              <p style="font-size: 12px; margin: 8px 0 0 0; color: #666">
+                💡 Đừng quên <code>module.exports</code> ở cuối mỗi file class.
+              </p>
             </div>
-            <div class="tip">
-              <span class="icon-sm">🎭</span>
+            <div class="info" style="padding: 12px; background: #fff8e1; border-radius: 6px">
+              <span class="icon-sm">💡</span>
               <div>
-                Server <code>localhost:3000</code> đã sẵn sàng! Chương trình
-                tiếp theo: <strong>Playwright</strong> sẽ gọi đúng những routes
-                này để test API và giao diện.
+                <strong>Mục tiêu BTVN:</strong> luyện <code>class</code> +
+                <code>module.exports</code> + <code>require()</code> + <code>await</code>
+                — nền tảng để viết test Playwright ở khoá sau.
               </div>
             </div>
           </div>
@@ -3172,51 +3271,50 @@ testData.users.<span class="fn">forEach</span>(user => {
   ═══════════════════════════════════════════════════════════════ -->
       <div class="slide content" id="s30">
         <div class="slide-num">Kết thúc</div>
-        <h2>🎓 Bạn đã học được gì sau 2 buổi?</h2>
+        <h2>🎓 Sẵn sàng cho Playwright — Bạn đã học đủ!</h2>
         <div class="three-col">
           <div class="card blue">
             <h3>🔤 Template Literal</h3>
             <p>
-              Dùng backtick và <code>${}</code> để tạo chuỗi đẹp, dễ đọc, có thể
-              chứa biểu thức và nhiều dòng.
+              <code>${}</code> tạo chuỗi dễ đọc.
+              Dùng nhiều trong Playwright assertions.
             </p>
           </div>
           <div class="card indigo">
-            <h3>🏛️ Class</h3>
+            <h3>🏛️ Class & Objects</h3>
             <p>
-              Tạo khuôn mẫu cho objects. Kế thừa bằng <code>extends</code>, chia
-              sẻ code bằng <code>export/import</code>.
+              Tạo khuôn mẫu cho test data.
+              Xoá code lặp lại, dễ bảo trì.
             </p>
           </div>
           <div class="card purple">
-            <h3>📦 Modules</h3>
+            <h3>📦 Modules & JSON</h3>
             <p>
-              Tách code thành file riêng. Export function/class, import JSON
-              data để quản lý test data.
+              Tách code thành file riêng.
+              Import dữ liệu test từ JSON.
             </p>
           </div>
           <div class="card teal">
             <h3>⚡ Async/Await</h3>
             <p>
-              Xử lý tác vụ cần chờ (API, UI). <code>async</code> khai báo hàm,
-              <code>await</code> chờ kết quả.
+              Chờ kết quả từ API/UI actions.
+              <strong>Playwright dùng await ở khắp nơi!</strong>
             </p>
           </div>
           <div class="card green">
-            <h3>�️ HTTP Server</h3>
+            <h3>🌐 API thật trên Vercel</h3>
             <p>
-              Dựng server Node.js với <code>http.createServer()</code>, định
-              nghĩa routes <code>/products</code>, <code>/users</code> và trả về
-              JSON — đang chạy tại <code>localhost:3000</code>!
+              <code>https://products-api-ten-alpha.vercel.app/api/products</code> —
+              endpoint thật, có delay 4s ở route detail để luyện
+              <code>await</code>.
             </p>
           </div>
           <div class="card amber">
             <h3>🎭 Bước tiếp theo — Playwright</h3>
             <p>
-              Server <code>localhost:3000</code> vừa dựng là
-              <strong>mục tiêu test đầu tiên</strong>! Playwright sẽ gọi
-              <code>/products</code>, <code>/users</code> và kiểm tra từng
-              response.
+              API trên Vercel là <strong>mục tiêu test đầu tiên</strong>!
+              Playwright sẽ gọi <code>/api/products</code>,
+              <code>/api/products/:id</code> và kiểm tra từng response.
             </p>
           </div>
         </div>
@@ -3233,6 +3331,14 @@ testData.users.<span class="fn">forEach</span>(user => {
       <button id="btn-prev" onclick="prevSlide()">◀</button>
       <div id="progress"><div id="progress-bar"></div></div>
       <span id="slide-counter">1 / 30</span>
+      <input
+        id="slide-jump"
+        type="number"
+        min="1"
+        title="Nhập số slide rồi Enter"
+        placeholder="#"
+        style="width: 56px; padding: 4px 6px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; text-align: center;"
+      />
       <button id="btn-next" onclick="nextSlide()">▶</button>
     </div>
 
@@ -3264,6 +3370,8 @@ testData.users.<span class="fn">forEach</span>(user => {
       }
 
       document.addEventListener("keydown", (e) => {
+        // Don't navigate while typing in input
+        if (e.target && e.target.tagName === "INPUT") return;
         if (
           e.key === "ArrowRight" ||
           e.key === "ArrowDown" ||
@@ -3274,6 +3382,18 @@ testData.users.<span class="fn">forEach</span>(user => {
         } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
           e.preventDefault();
           prevSlide();
+        }
+      });
+
+      // Jump-to-slide input
+      const jumpInput = document.getElementById("slide-jump");
+      jumpInput.max = slides.length;
+      jumpInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const n = parseInt(jumpInput.value, 10);
+          if (!isNaN(n)) showSlide(n - 1);
+          jumpInput.value = "";
+          jumpInput.blur();
         }
       });
 
