@@ -74,5 +74,42 @@ const list = [
 
 const classProductStore = new ProductStore(list);
 // console.log(typeof list);
-console.log(classProductStore.findByCategory("ao"));
+// console.log(classProductStore.findByCategory("ao"));
 
+class Animal {
+  constructor(name, sound) {
+    this.name = name;
+    this.sound = sound;
+  }
+
+  speak() {
+    console.log(
+      `${this.name} kêu: ${this.sound}`
+    );
+  }
+}
+
+class Dog extends Animal {
+
+  constructor(name, breed) {
+    super(name, "Gâu gâu");
+
+    this.breed = breed;
+  }
+
+  fetch() {
+    console.log(
+      `${this.name} (${this.breed}) đang nhặt bóng 🎾`
+    );
+  }
+
+}
+
+const dog = new Dog(
+  "Lucky",
+  "Husky"
+);
+
+dog.speak();
+
+dog.fetch();

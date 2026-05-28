@@ -2390,6 +2390,250 @@ member/backend/
         </div>
       </div>
 
+      <!-- SLIDE: BTVN Buổi 7 · Phần 2 — luyện Class + extends -->
+      <div class="slide content">
+        <div class="slide-num">Buổi 7 · BTVN (phần 2)</div>
+        <div class="session-badge s1">Buổi 7</div>
+        <h2>🧬 BTVN thêm — Luyện <code>class</code> + <code>extends</code></h2>
+        <div class="two-col">
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <div class="card blue">
+              <h3>🎯 Mục tiêu</h3>
+              <p style="margin: 0; font-size: 13px">
+                Hiểu sâu hơn cách <strong>tạo class</strong>,
+                <strong>kế thừa bằng <code>extends</code></strong>, và
+                <strong>gọi <code>super()</code></strong>.
+              </p>
+            </div>
+
+            <div class="card green">
+              <h3>Bài 1 — Tạo class <code>Animal</code></h3>
+              <ul style="margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7">
+                <li>Constructor: <code>name, sound</code> → gán vào <code>this</code></li>
+                <li>Method <code>speak()</code> → in
+                  <code>"&lt;name&gt; kêu: &lt;sound&gt;"</code>
+                </li>
+                <li>Test thử hàm <code>speak()</code>: <code>new Animal("Mèo", "Meo meo")</code></li>
+              </ul>
+            </div>
+
+            <div class="card purple">
+              <h3>Bài 2 — Tạo class <code>Dog</code> kế thừa <code>Animal</code></h3>
+              <ul style="margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7">
+                <li>
+                  Dùng <code>class Dog extends Animal</code>
+                  <br />
+                  <span style="color: #666; font-size: 12px">
+                    Xem cú pháp ở Slide 28.
+                  </span>
+                </li>
+                <li>
+                  Constructor nhận <code>name, breed</code>
+                  <br />
+                  <span style="color: #666; font-size: 12px">
+                    Gọi <code>super(name, "Gâu gâu")</code> rồi gán
+                    <code>this.breed = breed</code>.
+                  </span>
+                </li>
+                <li>
+                  Tạo method <code>fetch()</code> → in
+                  <code>"&lt;name&gt; (&lt;breed&gt;) đang nhặt bóng 🎾"</code>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <div class="card amber">
+              <h3>Bài 3 — Override method</h3>
+              <ul style="margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7">
+                <li>
+                  Trong <code>Dog</code>, <strong>override</strong> method
+                  <code>speak()</code> để in thêm tên giống chó
+                  <br />
+                  <span style="color: #666; font-size: 12px">
+                    Gợi ý:
+                    <code>return `${this.name} (${this.breed}) sủa: ${this.sound}`;</code>
+                  </span>
+                </li>
+                <li>
+                  Test thử:
+                  <code>const dog = new Dog("Lu", "Corgi"); dog.speak();</code>
+                  <br />
+                  <span style="color: #666; font-size: 12px">
+                    Kết quả mong đợi:
+                    <code>Lu (Corgi) sủa: Gâu gâu</code>
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card teal">
+              <h3>Bài 4 — Class <code>TestUser</code> (gắn với QA)</h3>
+              <ul style="margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7">
+                <li>
+                  Tạo <code>class TestUser extends User</code>
+                  (dùng <code>User</code> đã viết ở Bài 5)
+                </li>
+                <li>
+                  Constructor: <code>id, username, testEnv</code> →
+                  <code>super(id, username, "tester")</code> + lưu
+                  <code>testEnv</code> vào <code>this</code> (vd: data truyền vào <code>testEnv</code> là <code>"staging"</code>)
+                </li>
+                <li>
+                  Method <code>getTestInfo()</code> → in
+                  <code>"Tester &lt;username&gt; đang test trên &lt;testEnv&gt;"</code>
+                </li>
+              </ul>
+            </div>
+
+            <div class="tip">
+              <span class="icon-sm">💡</span>
+              <div style="font-size: 13px">
+                <strong>Checklist:</strong> chạy 4 bài không lỗi, in đúng output,
+                hiểu được khi nào dùng <code>super()</code> và khi nào override method.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE: BTVN Buổi 7 · Phần 3 — bộ bài ChatGPT (chủ đề Xe) -->
+      <div class="slide content">
+        <div class="slide-num">Buổi 7 · BTVN (phần 3)</div>
+        <div class="session-badge s1">Buổi 7</div>
+        <h2>🚗 BTVN luyện thêm — Chủ đề Phương tiện giao thông</h2>
+        <div class="two-col">
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <div class="card blue">
+              <h3>🎯 Mục tiêu</h3>
+              <p style="margin: 0; font-size: 13px">
+                Lặp lại pattern <code>class</code> + <code>extends</code> +
+                <code>super()</code> + override với chủ đề mới
+                (Vehicle → Car) để ghi nhớ chắc hơn.
+              </p>
+            </div>
+
+            <div class="card green">
+              <h3>Bài 1 — Class <code>Vehicle</code> (cha)</h3>
+              <ul style="margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7">
+                <li>
+                  Constructor: <code>brand, maxSpeed</code> → gán vào
+                  <code>this</code>
+                </li>
+                <li>
+                  Method <code>getInfo()</code> dùng template literal in
+                  <code>"&lt;brand&gt; — tốc độ tối đa &lt;maxSpeed&gt; km/h"</code>
+                </li>
+                <li>
+                  Test thử <code>getInfo()</code>:
+                  <code>new Vehicle("Toyota", 180)</code>
+                  <br />
+                  <span style="color: #666; font-size: 12px">
+                    Kết quả mong đợi:
+                    <code>Toyota — tốc độ tối đa 180 km/h</code>
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card purple">
+              <h3>Bài 2 — Class <code>Car</code> kế thừa <code>Vehicle</code></h3>
+              <ul style="margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7">
+                <li>
+                  Dùng <code>class Car extends Vehicle</code>
+                </li>
+                <li>
+                  Constructor nhận <code>brand, maxSpeed, seats</code>
+                  <br />
+                  <span style="color: #666; font-size: 12px">
+                    Gọi <code>super(brand, maxSpeed)</code> rồi gán
+                    <code>this.seats = seats</code>.
+                  </span>
+                </li>
+                <li>
+                  Tạo method riêng <code>honk()</code> → in
+                  <code>"&lt;brand&gt; bíp bíp 🚗"</code>
+                </li>
+                <li>
+                  Test thử:
+                  <code>new Car("Honda", 160, 5)</code>
+                  <br />
+                  <span style="color: #666; font-size: 12px">
+                    Kết quả mong đợi:
+                    <code>Honda bíp bíp 🚗</code>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <div class="card amber">
+              <h3>Bài 3 — Override <code>getInfo()</code></h3>
+              <ul style="margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7">
+                <li>
+                  Trong <code>Car</code>, override <code>getInfo()</code> để in
+                  thêm số ghế
+                  <br />
+                  <span style="color: #666; font-size: 12px">
+                    Gợi ý:
+                    <code>return `${this.brand} — ${this.maxSpeed} km/h — ${this.seats} chỗ`;</code>
+                  </span>
+                </li>
+                <li>
+                  Test thử:
+                  <code>const car = new Car("Mazda", 200, 4); car.getInfo();</code>
+                  <br />
+                  <span style="color: #666; font-size: 12px">
+                    Kết quả mong đợi:
+                    <code>Mazda — 200 km/h — 4 chỗ</code>
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="tip">
+              <span class="icon-sm">💡</span>
+              <div style="font-size: 13px">
+                <strong>Đã làm xong phần 2 + phần 3?</strong> Bạn đã quen
+                pattern <code>extends</code> + <code>super()</code> + override
+                — sẵn sàng cho Buổi 8!
+              </div>
+            </div>
+            
+
+            <div
+              class="card"
+              style="background: #f3f0ff; border-left: 4px solid #7c3aed"
+            >
+              <h3>🤖 Muốn luyện thêm? Tạo bài mới bằng ChatGPT</h3>
+              <p style="font-size: 13px; margin: 0 0 8px 0">
+                Bấm nút bên dưới để copy prompt, paste vào ChatGPT — sẽ ra
+                bộ bài tập <strong>class + extends</strong> tương tự
+                (chủ đề khác nhau mỗi lần copy).
+              </p>
+              <button
+                id="btn-copy-extends-prompt"
+                onclick="copyExtendsPrompt(this)"
+                style="
+                  background: #7c3aed;
+                  color: white;
+                  border: none;
+                  padding: 8px 14px;
+                  border-radius: 6px;
+                  font-size: 13px;
+                  font-weight: 600;
+                  cursor: pointer;
+                "
+              >
+                📋 Copy prompt → ChatGPT
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- SLIDE: Tổng kết buổi 1 -->
       <div class="slide content" id="s16">
         <div class="slide-num">Buổi 7 · Tổng kết</div>
@@ -3396,6 +3640,53 @@ testData.users.<span class="fn">forEach</span>(user => {
           jumpInput.blur();
         }
       });
+
+      // Copy prompt sinh bài tập class + extends bằng ChatGPT
+      // Mỗi lần bấm sẽ random chủ đề + seed để 2 lần copy không trùng
+      function copyExtendsPrompt(btn) {
+        const themes = [
+          "động vật (Bird, Fish, …)",
+          "phương tiện giao thông (Car, Bike, …)",
+          "nhân vật game (Warrior, Mage, …)",
+          "đồ ăn (Pizza, Burger, …)",
+          "thiết bị điện tử (Phone, Laptop, …)",
+          "nhạc cụ (Guitar, Piano, …)",
+          "loài cây (Tree, Flower, …)",
+          "siêu anh hùng (Hero, Villain, …)",
+        ];
+        const theme = themes[Math.floor(Math.random() * themes.length)];
+        const seed = Math.random().toString(36).slice(2, 8);
+
+        const prompt = `Tạo cho mình 4 bài tập JavaScript luyện class + extends, phong cách giống ví dụ Animal → Dog. Yêu cầu:
+
+- Chủ đề lần này: ${theme}. KHÔNG dùng Animal/Dog.
+- Bài 1: Tạo class cha (constructor với 2 thuộc tính + 1 method dùng template literal).
+- Bài 2: Tạo class con extends class cha, gọi super(...), thêm 1 method riêng.
+- Bài 3: Override method của class cha trong class con (in thêm thông tin của class con).
+- Bài 4: Tạo class extends User (User có id, username, role) gắn với ngữ cảnh QA/testing — có 1 method riêng.
+
+Yêu cầu trình bày:
+- Tiếng Việt, dễ hiểu cho QA chưa quen code.
+- Mỗi bài có: mục tiêu ngắn, gợi ý code (không cần giải đầy đủ), kết quả mong đợi khi chạy.
+- Không viết sẵn đáp án — chỉ hướng dẫn.
+
+Seed (để bạn tạo bộ khác lần sau, đừng nhắc lại trong câu trả lời): ${seed}`;
+
+        navigator.clipboard
+          .writeText(prompt)
+          .then(() => {
+            const old = btn.textContent;
+            btn.textContent = "✅ Đã copy! Mở chat.openai.com và paste";
+            btn.disabled = true;
+            setTimeout(() => {
+              btn.textContent = old;
+              btn.disabled = false;
+            }, 2500);
+          })
+          .catch(() => {
+            alert("Không copy được. Bạn copy thủ công nhé:\n\n" + prompt);
+          });
+      }
 
       // Touch swipe support
       let touchStartX = 0;
