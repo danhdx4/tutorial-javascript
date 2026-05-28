@@ -271,15 +271,7 @@ const products = [
 
 const p3 = new ProductStore(products);
 
-
-// Test getAll()
 console.log(p3.getAll());
-
-
-// Test findById()
 console.log(p3.findId(2));
-
-
-// Test findByCategory()
 console.log(p3.filterCategory("Laptop"));
 
