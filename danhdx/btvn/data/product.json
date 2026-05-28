@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "name": "Áo sơ mi",
+        "price": 120000,
+        "category": "ao",
+        "inStock": true
+    },
+    {
+        "id": 2,
+        "name": "Áo 1",
+        "price": 90000,
+        "category": "ao",
+        "inStock": true
+    },
+    {
+        "id": 3,
+        "name": "Quần dài",
+        "price": 130000,
+        "category": "quan",
+        "inStock": true
+    }
+]
