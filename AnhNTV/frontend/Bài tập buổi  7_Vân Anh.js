@@ -101,4 +101,69 @@ console.log("Bài 3:......................")
 // Import thư viện fs của NodeJS
 // fs = file system -> dùng để tạo/đọc file
 
-// Bài 3, 4 chưa biết làm Danh ơi
+// Bài 3 — Tạo file JSON
+
+console.log("Bài 3:......................")
+
+// Import thư viện fs của NodeJS
+// fs = file system -> dùng để tạo/đọc file
+const fs = require("fs");
+
+// Dữ liệu products
+const productsData = [
+  {
+    id: 1,
+    name: "Áo thun",
+    price: 100000,
+    category: "quần áo",
+    inStock: false
+  },
+  {
+    id: 2,
+    name: "Áo sơ mi",
+    price: 200000,
+    category: "quần áo",
+    inStock: true
+  },
+  {
+    id: 3,
+    name: "Túi",
+    price: 500000,
+    category: "phụ kiện",
+    inStock: true
+  }
+];
+
+// Dữ liệu users
+const usersData = [
+  {
+    id: 1,
+    username: "anhnv",
+    role: "admin"
+  },
+  {
+    id: 2,
+    username: "binhtran",
+    role: "staff"
+  },
+  {
+    id: 3,
+    username: "minhpham",
+    role: "customer"
+  }
+];
+
+// Tạo file products.json
+fs.writeFileSync(
+  "./data/products.json",
+  JSON.stringify(productsData, null, 2)
+);
+
+// Tạo file users.json
+fs.writeFileSync(
+  "./data/users.json",
+  JSON.stringify(usersData, null, 2)
+);
+
+console.log("Đã tạo file JSON thành công!");
+
