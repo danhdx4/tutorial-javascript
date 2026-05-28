@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "skirt",
+    "price": 2000,
+    "category": "clothes",
+    "inStock": true
+  },
+  {
+    "id": 2,
+    "name": "pants",
+    "price": 3000,
+    "category": "clothes",
+    "inStock": false
+  },
+  {
+    "id": 3,
+    "name": "hat",
+    "price": 9000,
+    "category": "accessories",
+    "inStock": true
+  }
+]
