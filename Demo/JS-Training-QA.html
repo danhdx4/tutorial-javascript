@@ -3351,160 +3351,531 @@ testData.users.<span class="fn">forEach</span>(user => {
         </div>
       </div>
 
-      <!-- SLIDE: Bài tập Buổi 8 -->
+      <!-- SLIDE: Bài tập Buổi 8 — Bài 1 -->
       <div class="slide content">
-        <div class="slide-num">Buổi 8 · Bài tập</div>
+        <div class="slide-num">Buổi 8 · Bài tập 1/3</div>
         <div class="session-badge s2">Buổi 8</div>
-        <h2>💻 Bài tập thực hành — Buổi 8</h2>
+        <h2>💻 Bài 1 — Export Class &amp; Tạo file <code>main.js</code></h2>
         <div class="two-col">
           <div style="display: flex; flex-direction: column; gap: 10px">
+            <div class="card blue">
+              <h3>📌 Nhắc lại: Buổi trước đã có</h3>
+              <ul style="font-size: 13px; margin: 0; padding-left: 18px">
+                <li><code>models/Product.js</code> — class Product (id, name, price, category, inStock)</li>
+                <li><code>models/ProductStore.js</code> — class ProductStore (getAll, findById, findByCategory…)</li>
+              </ul>
+              <p style="font-size: 12px; margin-top: 8px; color: #1e40af">
+                👉 Buổi này: thêm <code>module.exports</code> rồi import sang <code>main.js</code>
+              </p>
+            </div>
             <div class="card green">
-              <h3>Bước 1 — Import class</h3>
-              <p>
-                Trong <code>app.js</code>, <code>require()</code> class <code>Product</code>,
-                tạo 1 object và <code>console.log</code> ra.
-              </p>
+              <h3>Bước 1 — Export 2 class</h3>
+              <p style="font-size: 12px; margin-bottom: 6px">Thêm dòng cuối vào mỗi file:</p>
+              <pre style="font-size: 11px; margin: 4px 0">
+<span class="cmt">// models/Product.js — thêm dòng này xuống cuối</span>
+<span class="kw">module</span>.exports = <span class="cl">Product</span>;
+
+<span class="cmt">// models/ProductStore.js — thêm dòng này xuống cuối</span>
+<span class="kw">module</span>.exports = <span class="cl">ProductStore</span>;</pre>
             </div>
-            <div class="card purple">
-              <h3>Bước 2 — Đọc <code>products.json</code></h3>
-              <p>
-                <code>require()</code> file JSON, chuyển thành mảng object <code>Product</code>,
-                in danh sách ra terminal.
-              </p>
-            </div>
-            <div class="card purple">
-              <h3>Bước 3 — Gọi API thật bằng <code>async/await</code></h3>
-              <pre style="font-size: 11px; margin-top: 6px">
-<span class="kw">async function</span> <span class="fn">layChiTiet</span>() {
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"⏳ Bắt đầu..."</span>);
-  <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(
-    <span class="str">"https://products-api-ten-alpha.vercel.app/api/products/2"</span>
-  );
-  <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
-  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"✅"</span>, data);
-}
-<span class="fn">layChiTiet</span>();</pre>
-              <p style="margin-top: 6px; font-size: 13px">
-                <strong>Mong đợi:</strong> in <em>iPhone 15 Pro</em> sau ~4 giây.
-              </p>
+            <div class="card green">
+              <h3>Bước 2 — Tạo <code>main.js</code>, import &amp; tạo data</h3>
+              <pre style="font-size: 11px; margin: 4px 0">
+<span class="cmt">// main.js</span>
+<span class="kw">const</span> <span class="cl">Product</span>      = <span class="fn">require</span>(<span class="str">"./models/Product"</span>);
+<span class="kw">const</span> <span class="cl">ProductStore</span> = <span class="fn">require</span>(<span class="str">"./models/ProductStore"</span>);
+
+<span class="cmt">// Tạo mảng Product thủ công</span>
+<span class="kw">const</span> dssp = [
+  <span class="kw">new</span> <span class="cl">Product</span>(<span class="num">1</span>, <span class="str">"Laptop Dell XPS 13"</span>, <span class="num">25000000</span>, <span class="str">"electronics"</span>, <span class="kw">true</span>),
+  <span class="kw">new</span> <span class="cl">Product</span>(<span class="num">2</span>, <span class="str">"iPhone 15 Pro"</span>,     <span class="num">28000000</span>, <span class="str">"electronics"</span>, <span class="kw">true</span>),
+  <span class="kw">new</span> <span class="cl">Product</span>(<span class="num">3</span>, <span class="str">"Sony WH-1000XM5"</span>,   <span class="num">8000000</span>,  <span class="str">"accessories"</span>, <span class="kw">false</span>),
+];
+
+<span class="kw">const</span> store = <span class="kw">new</span> <span class="cl">ProductStore</span>(dssp);</pre>
             </div>
           </div>
           <div style="display: flex; flex-direction: column; gap: 10px">
-            <div class="card amber">
-              <h3>Bước 4 — Bỏ <code>await</code> để thấy lỗi</h3>
-              <pre style="font-size: 11px; margin-top: 6px">
-<span class="kw">const</span> res = <span class="fn">fetch</span>(<span class="str">"..."</span>);  <span class="cmt">// ❌ bỏ await</span>
-<span class="fn">console</span>.<span class="fn">log</span>(res);
-<span class="kw">const</span> data = res.<span class="fn">json</span>();  <span class="cmt">// 💥 lỗi</span></pre>
-              <ul style="margin: 6px 0 0 0; padding-left: 20px; font-size: 13px">
-                <li><code>res</code> → <code>Promise { &lt;pending&gt; }</code></li>
-                <li><code>res.json()</code> → <code>TypeError</code></li>
-              </ul>
-              <p style="margin-top: 6px; font-size: 13px">
-                → Hiểu vì sao Playwright bắt buộc <code>await</code>.
-              </p>
+            <div class="card purple">
+              <h3>Bước 3 — Gọi các method của ProductStore</h3>
+              <pre style="font-size: 11px; margin: 4px 0">
+<span class="cmt">// Lấy toàn bộ sản phẩm</span>
+store.<span class="fn">getAll</span>().<span class="fn">forEach</span>(p =>
+  <span class="fn">console</span>.<span class="fn">log</span>(p.<span class="fn">getLabel</span>())
+);
+
+<span class="cmt">// Tìm theo id</span>
+<span class="kw">const</span> p2 = store.<span class="fn">findById</span>(<span class="num">2</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Tìm id=2:"</span>, p2.<span class="fn">getLabel</span>());
+
+<span class="cmt">// Lọc theo danh mục</span>
+<span class="kw">const</span> acc = store.<span class="fn">findByCategory</span>(<span class="str">"accessories"</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Accessories:"</span>, acc.<span class="fn">length</span>, <span class="str">"sản phẩm"</span>);</pre>
             </div>
             <div class="card info-box" style="background: #f0f7ff; border-left: 4px solid #0066cc">
-              <h3>📝 Checklist</h3>
-              <ul style="margin: 0; padding-left: 20px; font-size: 13px">
-                <li>Chạy <code>node app.js</code> không lỗi</li>
-                <li>In danh sách products từ JSON</li>
-                <li>Gọi API thật, in sản phẩm sau ~4s</li>
-                <li>Quan sát lỗi khi bỏ <code>await</code></li>
-              </ul>
+              <h3>📝 Kết quả mong đợi (<code>node main.js</code>)</h3>
+              <pre style="font-size: 11px; margin: 4px 0; background: transparent; border: none; padding: 0; color: #1e40af">
+✅ Laptop Dell XPS 13 — 25.000.000đ
+✅ iPhone 15 Pro — 28.000.000đ
+❌ Sony WH-1000XM5 — Hết hàng
+Tìm id=2: ✅ iPhone 15 Pro — 28.000.000đ
+Accessories: 1 sản phẩm</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE: Bài tập Buổi 8 — Bài 2 -->
+      <div class="slide content">
+        <div class="slide-num">Buổi 8 · Bài tập 2/3</div>
+        <div class="session-badge s2">Buổi 8</div>
+        <h2>💻 Bài 2 — Đọc data từ <code>products.json</code> &amp; nạp vào class</h2>
+        <div class="two-col">
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <div class="card blue">
+              <h3>📌 File JSON đã có sẵn</h3>
+              <p style="font-size: 12px; margin-bottom: 6px">
+                <code>data/products.json</code> — 3 sản phẩm:
+              </p>
+              <pre style="font-size: 11px; margin: 4px 0">
+[
+  { <span class="str">"id"</span>: <span class="num">1</span>, <span class="str">"name"</span>: <span class="str">"Laptop Dell XPS 13"</span>,
+    <span class="str">"price"</span>: <span class="num">25000000</span>, <span class="str">"category"</span>: <span class="str">"electronics"</span>, <span class="str">"inStock"</span>: <span class="kw">true</span> },
+  { <span class="str">"id"</span>: <span class="num">2</span>, <span class="str">"name"</span>: <span class="str">"iPhone 15 Pro"</span>,
+    <span class="str">"price"</span>: <span class="num">28000000</span>, <span class="str">"category"</span>: <span class="str">"electronics"</span>, <span class="str">"inStock"</span>: <span class="kw">true</span> },
+  { <span class="str">"id"</span>: <span class="num">3</span>, <span class="str">"name"</span>: <span class="str">"Sony WH-1000XM5"</span>,
+    <span class="str">"price"</span>: <span class="num">8000000</span>,  <span class="str">"category"</span>: <span class="str">"accessories"</span>, <span class="str">"inStock"</span>: <span class="kw">false</span> }
+]</pre>
+            </div>
+            <div class="card green">
+              <h3>Bước 1 — Đọc JSON và in raw data</h3>
+              <p style="font-size: 12px; margin-bottom: 6px">
+                Trong <code>main.js</code>, thay mảng thủ công bằng:
+              </p>
+              <pre style="font-size: 11px; margin: 4px 0">
+<span class="cmt">// Đọc file JSON — tự động parse thành JS array</span>
+<span class="kw">const</span> rawData = <span class="fn">require</span>(<span class="str">"./data/products.json"</span>);
+
+<span class="cmt">// Bước 1: xem raw data trước</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Raw JSON:"</span>, rawData);
+<span class="cmt">// → [{ id: 1, name: 'Laptop Dell XPS 13', ... }, ...]</span></pre>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <div class="card purple">
+              <h3>Bước 2 — Chuyển JSON thành mảng <code>Product</code></h3>
+              <p style="font-size: 12px; margin-bottom: 6px">
+                Dùng <code>Product.fromJSON()</code> đã viết sẵn từ buổi trước:
+              </p>
+              <pre style="font-size: 11px; margin: 4px 0">
+<span class="cmt">// Chuyển từng plain object → Product instance</span>
+<span class="kw">const</span> products = rawData.<span class="fn">map</span>(item =>
+  <span class="cl">Product</span>.<span class="fn">fromJSON</span>(item)
+);
+
+<span class="cmt">// Nạp vào ProductStore</span>
+<span class="kw">const</span> store = <span class="kw">new</span> <span class="cl">ProductStore</span>(products);
+
+<span class="cmt">// Gọi method như Bài 1</span>
+store.<span class="fn">getAll</span>().<span class="fn">forEach</span>(p =>
+  <span class="fn">console</span>.<span class="fn">log</span>(p.<span class="fn">getLabel</span>())
+);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Còn hàng:"</span>, store.<span class="fn">getInStock</span>().<span class="fn">length</span>, <span class="str">"sản phẩm"</span>);</pre>
+            </div>
+            <div class="card info-box" style="background: #f0f7ff; border-left: 4px solid #0066cc">
+              <h3>📝 Kết quả mong đợi</h3>
+              <pre style="font-size: 11px; margin: 4px 0; background: transparent; border: none; padding: 0; color: #1e40af">
+Raw JSON: [ { id: 1, name: 'Laptop Dell XPS 13', ... }, ... ]
+✅ Laptop Dell XPS 13 — 25.000.000đ
+✅ iPhone 15 Pro — 28.000.000đ
+❌ Sony WH-1000XM5 — Hết hàng
+Còn hàng: 2 sản phẩm</pre>
+              <div class="tip" style="margin-top: 8px; padding: 8px 10px">
+                <span class="icon-sm">💡</span>
+                <div style="font-size: 12px">
+                  <strong>Khác biệt so với Bài 1:</strong> data đến từ file JSON thật — không cần viết tay từng object nữa.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE: Bài tập Buổi 8 — Bài 3 -->
+      <div class="slide content">
+        <div class="slide-num">Buổi 8 · Bài tập 3/3</div>
+        <div class="session-badge s2">Buổi 8</div>
+        <h2>💻 Bài 3 — Gọi API thật &amp; quan sát lỗi khi bỏ <code>await</code></h2>
+        <div class="two-col">
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <div class="card green">
+              <h3>✅ Gọi API đúng — có <code>await</code></h3>
+              <p style="font-size: 12px; margin-bottom: 6px">
+                Thêm vào cuối <code>main.js</code>:
+              </p>
+              <pre style="font-size: 11px; margin: 4px 0">
+<span class="kw">async function</span> <span class="fn">layChiTiet</span>(id) {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"⏳ Đang gọi API..."</span>);
+
+  <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(
+    <span class="tm">`https://products-api-ten-alpha.vercel.app/api/products/</span><span class="ti">${id}</span><span class="tm">`</span>
+  );
+  <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"✅ Nhận được:"</span>, data.name, <span class="str">"—"</span>, data.price);
+}
+
+<span class="fn">layChiTiet</span>(<span class="num">2</span>);</pre>
+              <div class="card info-box" style="background: #f0fff4; border-left: 4px solid #16a34a; margin-top: 8px">
+                <p style="font-size: 12px; margin: 0">
+                  <strong>Kết quả sau ~4 giây:</strong><br/>
+                  ⏳ Đang gọi API...<br/>
+                  ✅ Nhận được: iPhone 15 Pro — 28000000
+                </p>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <div class="card red">
+              <h3>❌ Bỏ <code>await</code> — quan sát lỗi</h3>
+              <p style="font-size: 12px; margin-bottom: 6px">
+                Sửa lại: xóa <code>await</code> ở dòng fetch, lưu, chạy lại:
+              </p>
+              <pre style="font-size: 11px; margin: 4px 0">
+<span class="kw">async function</span> <span class="fn">layChiTiet</span>(id) {
+  <span class="cmt">// ❌ Bỏ await ở đây</span>
+  <span class="kw">const</span> res = <span class="fn">fetch</span>(
+    <span class="tm">`https://products-api-ten-alpha.vercel.app/api/products/</span><span class="ti">${id}</span><span class="tm">`</span>
+  );
+  <span class="fn">console</span>.<span class="fn">log</span>(res);          <span class="cmt">// Promise { &lt;pending&gt; }</span>
+  <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();  <span class="cmt">// 💥 TypeError!</span>
+}</pre>
+              <p style="font-size: 12px; color: #7f1d1d; margin-top: 6px">
+                <strong>Lỗi nhận được:</strong><br/>
+                <code>TypeError: res.json is not a function</code><br/><br/>
+                <strong>Vì sao?</strong> <code>res</code> lúc này là <code>Promise</code> chưa xong, không phải Response object — nên không có method <code>.json()</code>.
+              </p>
             </div>
             <div class="card amber">
-              <h3>⭐ Nâng cao (tuỳ chọn)</h3>
-              <p style="font-size: 13px">
-                Gọi <code>/api/products</code> lấy danh sách, rồi <code>for</code> loop
-                gọi <code>/api/products/:id</code> cho từng id (dùng <code>await</code> trong vòng lặp).
-              </p>
+              <h3>🎯 Rút ra bài học</h3>
+              <ul style="font-size: 13px; margin: 0; padding-left: 18px">
+                <li>Mỗi lần "chờ" server trả về → cần 1 <code>await</code></li>
+                <li>Thiếu <code>await</code> = nhận <code>Promise</code>, không phải data</li>
+                <li>Playwright lỗi <strong>flaky test</strong> thường do quên <code>await</code></li>
+              </ul>
+            </div>
+            <div class="card info-box" style="background: #f0f7ff; border-left: 4px solid #0066cc">
+              <h3>📝 Checklist 3 bài</h3>
+              <ul style="margin: 0; padding-left: 18px; font-size: 13px">
+                <li>Bài 1: <code>node main.js</code> in được label 3 sản phẩm</li>
+                <li>Bài 2: Thay data thủ công bằng <code>require(products.json)</code></li>
+                <li>Bài 3: Thấy data API sau ~4s và thấy <code>TypeError</code> khi bỏ <code>await</code></li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
 
       <!-- ════════════════════════════════════════════════════════════
-       SLIDE: GỘP ALL — TỔNG KẾT BUỔI 2
+       SLIDE: TỔNG KẾT BUỔI 8
   ═══════════════════════════════════════════════════════════════ -->
       <div class="slide content" id="s29">
         <div class="slide-num">Buổi 8 · Tổng kết</div>
         <div class="session-badge s2">Buổi 8</div>
         <h2>✅ Tổng kết Buổi 8 — 3 khái niệm chính</h2>
-        <div class="two-col">
+        <div class="three-col">
+          <div class="card blue">
+            <h3>1️⃣ Module &amp; Exports</h3>
+            <p>
+              Tách code thành nhiều file, export class/function,
+              import bằng <code>require()</code>.
+            </p>
+            <pre style="font-size: 11px; margin-top: 10px">
+<span class="cmt">// greeting.js</span>
+<span class="kw">module</span>.exports = { chao };
+
+<span class="cmt">// main.js</span>
+<span class="kw">const</span> { chao } = <span class="fn">require</span>(<span class="str">"./greeting"</span>);</pre>
+          </div>
+          <div class="card green">
+            <h3>2️⃣ JSON &amp; Data</h3>
+            <p>
+              Load test data từ <code>.json</code> files
+              bằng <code>require()</code> — không cần parse thủ công.
+            </p>
+            <pre style="font-size: 11px; margin-top: 10px">
+<span class="kw">const</span> data =
+  <span class="fn">require</span>(<span class="str">"./data/products.json"</span>);
+
+<span class="cmt">// data là JS array ngay lập tức</span>
+data.<span class="fn">forEach</span>(p => <span class="fn">console</span>.<span class="fn">log</span>(p.name));</pre>
+          </div>
+          <div class="card purple">
+            <h3>3️⃣ Async/Await</h3>
+            <p>
+              Xử lý tác vụ cần chờ (API call).
+              <code>await</code> = "chờ kết quả rồi mới tiếp tục".
+            </p>
+            <pre style="font-size: 11px; margin-top: 10px">
+<span class="kw">async function</span> <span class="fn">lay</span>() {
+  <span class="kw">const</span> res  = <span class="kw">await</span> <span class="fn">fetch</span>(url);
+  <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+  <span class="fn">console</span>.<span class="fn">log</span>(data);
+}</pre>
+          </div>
+        </div>
+        <div class="tip" style="margin-top: 20px">
+          <span class="icon-sm">🎯</span>
           <div>
-            <div class="card blue" style="margin-bottom: 12px">
-              <h3>1️⃣ Module & Exports</h3>
-              <p>
-                Tách code thành nhiều file, export class/function,
-                import bằng <code>require()</code>.
-              </p>
+            <strong>3 kỹ năng này là nền tảng của Playwright:</strong>
+            tách helper function ra file riêng, đọc test data từ JSON, dùng <code>await</code> cho mọi action.
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════════════════
+       SLIDE: BTVN BUỔI 8 — slide 52
+  ═══════════════════════════════════════════════════════════════ -->
+      <div class="slide content">
+        <div class="slide-num">Buổi 8 · BTVN</div>
+        <div class="session-badge s2">Buổi 8</div>
+        <h2>📚 BTVN Buổi 8 — <code>Animal</code> &amp; <code>Dog</code></h2>
+        <p style="text-align:center; color:#64748b; font-size:13px; margin:-8px 0 14px 0">
+          Lấy class <code>Animal</code>, <code>Dog</code> từ BTVN buổi 7 → chia vào file riêng → load data từ JSON
+        </p>
+        <div class="two-col">
+          <div style="display:flex; flex-direction:column; gap:10px">
+            <div class="card blue">
+              <h3>📂 Cấu trúc thư mục</h3>
+              <pre style="font-size:12px; margin:6px 0; background:transparent; border:none; padding:0; color:#1e40af">
+member/backend/
+├── models/
+│   ├── Animal.js
+│   └── Dog.js
+├── data/
+│   └── dogs.json
+└── main.js</pre>
             </div>
-            <div class="card green" style="margin-bottom: 12px">
-              <h3>2️⃣ JSON & Data</h3>
-              <p>
-                Load test data từ <code>.json</code> files
-                bằng <code>require()</code>.
-              </p>
-            </div>
-            <div class="card purple" style="margin-bottom: 12px">
-              <h3>3️⃣ Async/Await</h3>
-              <p>
-                Xử lý tác vụ cần chờ (API, file I/O).
-                <code>await</code> = "chờ kết quả rồi mới tiếp tục".
-              </p>
+
+            <div class="card green">
+              <h3>Bài 1 — Chia file &amp; Export</h3>
+              <ul style="font-size:13px; padding-left:18px; margin:6px 0; line-height:2">
+                <li>Lấy class <code>Animal</code> và <code>Dog</code> từ <strong>bài tập đã làm ở buổi 7</strong></li>
+                <li>Copy mỗi class vào một file <code>.js</code> riêng</li>
+                <li>Thêm <code>module.exports = Animal</code> vào cuối <code>Animal.js</code></li>
+                <li>Thêm <code>const Animal = require("./Animal")</code> + <code>module.exports = Dog</code> vào <code>Dog.js</code></li>
+              </ul>
             </div>
           </div>
-          <div style="display: flex; flex-direction: column; gap: 14px">
-            <div class="card amber">
-              <h3>📚 Bài tập về nhà (BTVN 8)</h3>
-              <p style="font-size: 13px; margin: 0 0 8px 0">
-                Luyện <strong>class + export/import + await</strong>:
-              </p>
-              <ul style="margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.7">
-                <li>
-                  📄 <code>models/Order.js</code> — class <code>Order</code>
-                  <br />
-                  <span style="color: #555">
-                    constructor nhận 4 tham số:
-                    <code>id, productName, quantity, price</code> → gán vào
-                    <code>this</code>. Method <code>getTotal()</code> trả về
-                    <code>this.quantity * this.price</code>.
-                  </span>
-                </li>
-                <li>
-                  📄 <code>models/OrderStore.js</code> — class
-                  <code>OrderStore</code>
-                  <br />
-                  <span style="color: #555">
-                    constructor nhận <strong>1 mảng orders</strong>
-                    (<code>constructor(orders)</code>) → gán
-                    <code>this.orders = orders</code>. Method:
-                    <code>getAll()</code>, <code>findById(id)</code>,
-                    <code>getTotalRevenue()</code> (cộng dồn
-                    <code>getTotal()</code> của từng order).
-                  </span>
-                </li>
-                <li>
-                  📄 <code>app.js</code> — <code>require()</code> 2 class,
-                  tạo 3 order, in kết quả 3 method trên
-                </li>
-                <li>
-                  🌐 Thêm <code>async layTatCa()</code> dùng
-                  <code>await fetch(API)</code> in danh sách products
-                </li>
-              </ul>
-              <p style="font-size: 12px; margin: 8px 0 0 0; color: #666">
-                💡 Đừng quên <code>module.exports</code> ở cuối mỗi file class.
-              </p>
+
+          <div style="display:flex; flex-direction:column; gap:10px">
+            <div class="card purple">
+              <h3>Bài 2 — Tạo <code>dogs.json</code> &amp; load vào class</h3>
+              <p style="font-size:12px; margin:4px 0">Tạo <code>data/dogs.json</code>:</p>
+              <pre style="font-size:11px; margin:4px 0">
+[
+  { <span class="str">"name"</span>: <span class="str">"Lucky"</span>, <span class="str">"breed"</span>: <span class="str">"Husky"</span> },
+  { <span class="str">"name"</span>: <span class="str">"Lu"</span>,    <span class="str">"breed"</span>: <span class="str">"Corgi"</span> },
+  { <span class="str">"name"</span>: <span class="str">"Milo"</span>,  <span class="str">"breed"</span>: <span class="str">"Poodle"</span> }
+]</pre>
+              <p style="font-size:12px; margin:8px 0 4px 0">Trong <code>main.js</code> — đọc JSON, tạo instance, gọi method:</p>
+              <pre style="font-size:11px; margin:4px 0">
+<span class="kw">const</span> <span class="cl">Dog</span>      = <span class="fn">require</span>(<span class="str">"./models/Dog"</span>);
+<span class="kw">const</span> dogsData = <span class="fn">require</span>(<span class="str">"./data/dogs.json"</span>);
+
+<span class="kw">const</span> dogs = dogsData.<span class="fn">map</span>(d => <span class="kw">new</span> <span class="cl">Dog</span>(d.name, d.breed));
+dogs.<span class="fn">forEach</span>(dog => { dog.<span class="fn">speak</span>(); dog.<span class="fn">fetch</span>(); });</pre>
             </div>
-            <div class="info" style="padding: 12px; background: #fff8e1; border-radius: 6px">
-              <span class="icon-sm">💡</span>
-              <div>
-                <strong>Mục tiêu BTVN:</strong> luyện <code>class</code> +
-                <code>module.exports</code> + <code>require()</code> + <code>await</code>
-                — nền tảng để viết test Playwright ở khoá sau.
-              </div>
+
+            <div class="card info-box" style="background:#f0f7ff; border-left:4px solid #0066cc">
+              <h3>📝 Checklist</h3>
+              <ul style="margin:0; padding-left:18px; font-size:13px">
+                <li><code>Animal.js</code> có <code>module.exports</code></li>
+                <li><code>Dog.js</code> có <code>require('./Animal')</code> + <code>module.exports</code></li>
+                <li><code>main.js</code> đọc JSON → tạo được mảng <code>Dog</code></li>
+                <li>Chạy <code>node btvn8/main.js</code> không lỗi</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════════════════
+       SLIDE: BTVN BUỔI 8 — slide 53
+  ═══════════════════════════════════════════════════════════════ -->
+      <div class="slide content">
+        <div class="slide-num">Buổi 8 · BTVN</div>
+        <div class="session-badge s2">Buổi 8</div>
+        <h2>📚 BTVN Buổi 8 — <code>Vehicle</code> &amp; <code>Car</code></h2>
+        <p style="text-align:center; color:#64748b; font-size:13px; margin:-8px 0 14px 0">
+          Tương tự slide trước — áp dụng cùng pattern với <code>Vehicle</code>, <code>Car</code>
+        </p>
+        <div class="two-col">
+          <div style="display:flex; flex-direction:column; gap:10px">
+            <div class="card blue">
+              <h3>📂 Thêm vào thư mục <code>member/backend/</code></h3>
+              <pre style="font-size:12px; margin:6px 0; background:transparent; border:none; padding:0; color:#1e40af">
+member/backend/
+├── models/
+│   ├── Animal.js  ✅ (đã xong)
+│   ├── Dog.js     ✅ (đã xong)
+│   ├── Vehicle.js ← tạo mới
+│   └── Car.js     ← tạo mới
+├── data/
+│   ├── dogs.json  ✅ (đã xong)
+│   └── cars.json  ← tạo mới
+└── main.js        ← thêm vào</pre>
+            </div>
+
+            <div class="card green">
+              <h3>Bài 1 — Chia file &amp; Export</h3>
+              <ul style="font-size:13px; padding-left:18px; margin:6px 0; line-height:2">
+                <li>Lấy class <code>Vehicle</code> và <code>Car</code> từ <strong>bài tập đã làm ở buổi 7</strong></li>
+                <li>Copy mỗi class vào một file <code>.js</code> riêng</li>
+                <li>Thêm <code>module.exports = Vehicle</code> vào cuối <code>Vehicle.js</code></li>
+                <li>Thêm <code>const Vehicle = require("./Vehicle")</code> + <code>module.exports = Car</code> vào <code>Car.js</code></li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:10px">
+            <div class="card purple">
+              <h3>Bài 2 — Tạo <code>cars.json</code> &amp; load vào class</h3>
+              <p style="font-size:12px; margin:4px 0">Tạo <code>data/cars.json</code>:</p>
+              <pre style="font-size:11px; margin:4px 0">
+[
+  { <span class="str">"brand"</span>: <span class="str">"Mazda"</span>,  <span class="str">"maxSpeed"</span>: <span class="num">200</span>, <span class="str">"seats"</span>: <span class="num">4</span> },
+  { <span class="str">"brand"</span>: <span class="str">"Honda"</span>,  <span class="str">"maxSpeed"</span>: <span class="num">160</span>, <span class="str">"seats"</span>: <span class="num">5</span> },
+  { <span class="str">"brand"</span>: <span class="str">"Toyota"</span>, <span class="str">"maxSpeed"</span>: <span class="num">180</span>, <span class="str">"seats"</span>: <span class="num">7</span> }
+]</pre>
+              <p style="font-size:12px; margin:8px 0 4px 0">Trong <code>main.js</code> — đọc JSON, tạo instance, gọi method:</p>
+              <pre style="font-size:11px; margin:4px 0">
+<span class="kw">const</span> <span class="cl">Car</span>      = <span class="fn">require</span>(<span class="str">"./models/Car"</span>);
+<span class="kw">const</span> carsData = <span class="fn">require</span>(<span class="str">"./data/cars.json"</span>);
+
+<span class="kw">const</span> cars = carsData.<span class="fn">map</span>(c => <span class="kw">new</span> <span class="cl">Car</span>(c.brand, c.maxSpeed, c.seats));
+cars.<span class="fn">forEach</span>(car => { car.<span class="fn">getInfo</span>(); car.<span class="fn">honk</span>(); });</pre>
+            </div>
+
+            <div class="card info-box" style="background:#f0f7ff; border-left:4px solid #0066cc">
+              <h3>📝 Checklist</h3>
+              <ul style="margin:0; padding-left:18px; font-size:13px">
+                <li><code>Vehicle.js</code> có <code>module.exports</code></li>
+                <li><code>Car.js</code> có <code>require('./Vehicle')</code> + <code>module.exports</code></li>
+                <li><code>main.js</code> đọc <code>cars.json</code> → tạo được mảng <code>Car</code></li>
+                <li>Chạy <code>node btvn8/main.js</code> in đủ cả Dog lẫn Car</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+              <pre style="font-size:11px; margin:6px 0; background:transparent; border:none; padding:0; color:#1e40af">
+btvn8/
+├── models/
+│   ├── Animal.js
+│   ├── Dog.js
+│   ├── Vehicle.js
+│   └── Car.js
+├── data/
+│   ├── dogs.json
+│   └── cars.json
+└── main.js</pre>
+            </div>
+            <div class="card green">
+              <h3>models/Animal.js</h3>
+              <pre style="font-size:11px; margin:4px 0">
+<span class="kw">class</span> <span class="cl">Animal</span> {
+  <span class="fn">constructor</span>(name, sound) {
+    <span class="kw">this</span>.name  = name;
+    <span class="kw">this</span>.sound = sound;
+  }
+  <span class="fn">speak</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(
+      <span class="tm">`</span><span class="ti">${<span class="kw">this</span>.name}</span><span class="tm"> kêu: </span><span class="ti">${<span class="kw">this</span>.sound}</span><span class="tm">`</span>
+    );
+  }
+}
+<span class="kw">module</span>.exports = <span class="cl">Animal</span>;</pre>
+            </div>
+            <div class="card green">
+              <h3>models/Dog.js</h3>
+              <pre style="font-size:11px; margin:4px 0">
+<span class="kw">const</span> <span class="cl">Animal</span> = <span class="fn">require</span>(<span class="str">"./Animal"</span>);
+
+<span class="kw">class</span> <span class="cl">Dog</span> <span class="kw">extends</span> <span class="cl">Animal</span> {
+  <span class="fn">constructor</span>(name, breed) {
+    <span class="kw">super</span>(name, <span class="str">"Gâu gâu"</span>);
+    <span class="kw">this</span>.breed = breed;
+  }
+  <span class="fn">speak</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(
+      <span class="tm">`</span><span class="ti">${<span class="kw">this</span>.name}</span><span class="tm"> (</span><span class="ti">${<span class="kw">this</span>.breed}</span><span class="tm">) sủa: </span><span class="ti">${<span class="kw">this</span>.sound}</span><span class="tm">`</span>
+    );
+  }
+  <span class="fn">fetch</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(
+      <span class="tm">`</span><span class="ti">${<span class="kw">this</span>.name}</span><span class="tm"> đang nhặt bóng 🎾`</span>
+    );
+  }
+}
+<span class="kw">module</span>.exports = <span class="cl">Dog</span>;</pre>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px">
+            <div class="card purple">
+              <h3>models/Vehicle.js &amp; Car.js</h3>
+              <pre style="font-size:11px; margin:4px 0">
+<span class="cmt">// Vehicle.js</span>
+<span class="kw">class</span> <span class="cl">Vehicle</span> {
+  <span class="fn">constructor</span>(brand, maxSpeed) {
+    <span class="kw">this</span>.brand    = brand;
+    <span class="kw">this</span>.maxSpeed = maxSpeed;
+  }
+  <span class="fn">getInfo</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(
+      <span class="tm">`</span><span class="ti">${<span class="kw">this</span>.brand}</span><span class="tm"> — </span><span class="ti">${<span class="kw">this</span>.maxSpeed}</span><span class="tm"> km/h`</span>
+    );
+  }
+}
+<span class="kw">module</span>.exports = <span class="cl">Vehicle</span>;
+
+<span class="cmt">// Car.js</span>
+<span class="kw">const</span> <span class="cl">Vehicle</span> = <span class="fn">require</span>(<span class="str">"./Vehicle"</span>);
+
+<span class="kw">class</span> <span class="cl">Car</span> <span class="kw">extends</span> <span class="cl">Vehicle</span> {
+  <span class="fn">constructor</span>(brand, maxSpeed, seats) {
+    <span class="kw">super</span>(brand, maxSpeed);
+    <span class="kw">this</span>.seats = seats;
+  }
+  <span class="fn">getInfo</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(
+      <span class="tm">`</span><span class="ti">${<span class="kw">this</span>.brand}</span><span class="tm"> — </span><span class="ti">${<span class="kw">this</span>.maxSpeed}</span><span class="tm"> km/h — </span><span class="ti">${<span class="kw">this</span>.seats}</span><span class="tm"> chỗ`</span>
+    );
+  }
+  <span class="fn">honk</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="tm">`</span><span class="ti">${<span class="kw">this</span>.brand}</span><span class="tm"> bíp bíp 🚗`</span>);
+  }
+}
+<span class="kw">module</span>.exports = <span class="cl">Car</span>;</pre>
+            </div>
+            <div class="card amber">
+              <h3>main.js — Import &amp; gọi thử</h3>
+              <pre style="font-size:11px; margin:4px 0">
+<span class="kw">const</span> <span class="cl">Dog</span>     = <span class="fn">require</span>(<span class="str">"./models/Dog"</span>);
+<span class="kw">const</span> <span class="cl">Car</span>     = <span class="fn">require</span>(<span class="str">"./models/Car"</span>);
+
+<span class="kw">const</span> d = <span class="kw">new</span> <span class="cl">Dog</span>(<span class="str">"Lucky"</span>, <span class="str">"Husky"</span>);
+d.<span class="fn">speak</span>();   <span class="cmt">// Lucky (Husky) sủa: Gâu gâu</span>
+d.<span class="fn">fetch</span>();   <span class="cmt">// Lucky đang nhặt bóng 🎾</span>
+
+<span class="kw">const</span> c = <span class="kw">new</span> <span class="cl">Car</span>(<span class="str">"Mazda"</span>, <span class="num">200</span>, <span class="num">4</span>);
+c.<span class="fn">getInfo</span>(); <span class="cmt">// Mazda — 200 km/h — 4 chỗ</span>
+c.<span class="fn">honk</span>();    <span class="cmt">// Mazda bíp bíp 🚗</span></pre>
+              <p style="font-size:12px; color:#78350f; margin-top:6px">
+                Chạy <code>node btvn8/main.js</code> → thấy 4 dòng trên là ✅
+              </p>
             </div>
           </div>
         </div>
