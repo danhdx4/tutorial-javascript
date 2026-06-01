@@ -237,8 +237,48 @@ console.log(
 // data/products.json — 3 sản phẩm (id, name, price, category, inStock)
 // data/users.json — 3 user (id, username, role)
 
-const products = require("./data/products.json");
+/*const products = require("./data/products.json");
 const users = require("./data/users.json");
 
 console.log(products);
-console.log(users);
+console.log(users);*/
+
+//extentds; dùng kế thừa.
+//super dùng đẻ gọi contructor ở bên trên.
+// class car {
+
+
+//bài 2;
+class producstore1 {
+    constructor (produc =[] )
+    {
+this.list_produc_nhan =products
+    }
+    getAll ()
+
+    {
+        return this.list_produc_nhan;
+    }
+
+    finbyid(){
+        return  this.list_produc_nhan.find(p =>p.id==id);
+    }
+}
+
+const list_produc_nhan =[
+
+    {
+        id: 1,
+        name:"áo sơ mi",
+    category: "áo"
+    },
+
+    {
+id: 2,
+name: "quan dài",
+category: "quan",
+    }
+]
+const classproducstore =new producstore1 (list);
+console.log (typeof list)
+console.log (classproducstore.finbyid(1));
