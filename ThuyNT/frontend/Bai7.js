@@ -227,7 +227,7 @@ console.log(p2);
 //BTVN2
 
 class ProductStore {
-    constructor(products) {
+    constructor(products = []) {
         this.products = products;
     }
 
