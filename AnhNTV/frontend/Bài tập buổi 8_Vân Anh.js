@@ -12,12 +12,12 @@ class Animal {
   }
 
   speak() {
-    console.log(`${this.name} kêu: ${this.sound}`);
+    return `${this.name} kêu: ${this.sound}`;
   }
 }
 
 const cat = new Animal("Mèo", "Meo meo");
-cat.speak();
+console.log(cat.speak());
 
 // Bài 2 — Tạo class Dog kế thừa Animal
 // Dùng class Dog extends Animal
@@ -34,7 +34,7 @@ class Dog extends Animal {
   }
 
   fetch() {
-    console.log(`${this.name} (${this.breed}) đang nhặt bóng 🎾`);
+    return `${this.name} (${this.breed}) đang nhặt bóng 🎾`;
   }
   speak() {
     return `${this.name} (${this.breed}) sủa: ${this.sound}`;
@@ -42,7 +42,8 @@ class Dog extends Animal {
 }
 // test bài 2
 const dog = new Dog("Bốp", "Corgi");
-dog.fetch();
+console.log(dog.speak());
+
 
 // Bài 3 — Override method
 // Trong Dog, override method speak() để in thêm tên giống chó

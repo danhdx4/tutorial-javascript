@@ -98,3 +98,7 @@ let product = new Product(1, "Áo thun", 150000, "Thời trang");
 console.log(product.getInfo());
 
 console.log(product.toJSON());
+
+
+
+
