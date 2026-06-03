@@ -1,4 +1,4 @@
-class ProductComplete {
+class Product {
   constructor(id, name, price, category, inStock) {
     this.id = id;
     this.name = name;
@@ -22,13 +22,15 @@ class ProductComplete {
   }
 }
 
-const productData = {
-  id: 3,
-  name: "Giầy Da",
-  price: 1550000,
-  category: "Thời trang",
-  inStock: false,
-};
+// const productData = {
+//   id: 3,
+//   name: "Giầy Da",
+//   price: 1550000,
+//   category: "Thời trang",
+//   inStock: false,
+// };
 
-const productComplete = ProductComplete.fromJSON(productData);
-console.log(productComplete.getLabel());
+// const productComplete = ProductComplete.fromJSON(productData);
+// console.log(productComplete.getLabel());
+
+module.exports = Product;

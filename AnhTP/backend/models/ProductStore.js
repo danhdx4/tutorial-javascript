@@ -3,9 +3,13 @@
 // getAll() → trả về toàn bộ
 // findById(id) → tìm theo id
 // findByCategory(cat) → lọc theo danh mục
-console.log("BTVN 2 — Class ProductStore");
-class ProductStore {
+// console.log("BTVN 2 — Class ProductStore");
+
+const Product = require("./models/Product");
+
+class ProductStore extends Product {
   constructor(products) {
+    super();
     this.products = products;
   }
   //
@@ -48,28 +52,30 @@ class ProductStore {
   }
 }
 
-const store = new ProductStore([
-  new ProductComplete(1, "Áo Thun", 150000, "Thời trang", false),
-  new ProductComplete(2, "Quần Jean", 350000, "Thời trang", false),
-  new ProductComplete(3, "Giầy Da", 1550000, "Giầy dép", true),
-  new ProductComplete(4, "Giầy Thể Thao", 1200000, "Giầy dép", true),
-]);
+// const store = new ProductStore([
+//   new Product(1, "Áo Thun", 150000, "Thời trang", false),
+//   new Product(2, "Quần Jean", 350000, "Thời trang", false),
+//   new Product(3, "Giầy Da", 1550000, "Giầy dép", true),
+//   new Product(4, "Giầy Thể Thao", 1200000, "Giầy dép", true),
+// ]);
 
-console.log(store.getAll());
-display_log();
-console.log(store.findById(1));
-display_log();
-console.log(store.findByCategory("Giầy dép"));
-display_log();
-console.log(store.findInStock());
-display_log();
-console.log(store.findByPriceRange(300000, 1600000));
-display_log();
-console.log(store.findByName("giầy"));
-display_log();
-console.log(store.findOutOfStock());
-display_log();
-console.log(store.sortByPrice("asc"));
-display_log();
-console.log(store.sortByPrice("desc"));
-display_log();
+// console.log(store.getAll());
+// display_log();
+// console.log(store.findById(1));
+// display_log();
+// console.log(store.findByCategory("Giầy dép"));
+// display_log();
+// console.log(store.findInStock());
+// display_log();
+// console.log(store.findByPriceRange(300000, 1600000));
+// display_log();
+// console.log(store.findByName("giầy"));
+// display_log();
+// console.log(store.findOutOfStock());
+// display_log();
+// console.log(store.sortByPrice("asc"));
+// display_log();
+// console.log(store.sortByPrice("desc"));
+// display_log();
+
+module.exports = ProductStore;
