@@ -18,6 +18,11 @@ class ProductStore {
             product => product.category === cat
         );
     }
+
+    getInStock() {
+        return this.products.filter(p => p.inStock === true);
+    }
+
 }
 
 module.exports = ProductStore;

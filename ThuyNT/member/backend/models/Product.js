@@ -44,4 +44,10 @@ class Product {
             data.inStock
         );
     }
+
+    getInStock(){
+        return this.inStock === true;
+    }
 }
+
+module.exports = Product;
