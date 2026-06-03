@@ -1,19 +1,19 @@
 // Bài 2 — Class ProductStore
 // Constructor nhận mảng Product[]
 class ProductStore {
-    constructor(products){
+    constructor(products) {
         this.products = products
     }
-    getAll(){
-        console.log(this.products)
+    getAll() {
+        return this.products;
     }
-    findById(idFind){
+    findById(idFind) {
         const findID = this.products.find(product => product.id == idFind);
-        console.log(findID);
+        return findID;
     }
-    findByCategory(catFind){
-        const findCat = this.products.find(product1 => product1.category == catFind);
-        console.log(findCat);
+    findByCategory(catFind) {
+        const findCat = this.products.filter(product1 => product1.category == catFind);
+        return findCat;
     }
 
 }
