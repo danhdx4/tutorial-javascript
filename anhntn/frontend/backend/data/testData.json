@@ -1,0 +1,17 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "Admin@123",
+      "expected": "Đăng nhập thành công"
+    },
+    {
+      "id": 2,
+      "username": "wrong_user",
+      "password": "wrong",
+      "expected": "Sai thông tin đăng nhập"
+    }
+  ],
+  "baseUrl": "https://example.com"
+}
