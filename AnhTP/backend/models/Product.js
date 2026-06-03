@@ -12,7 +12,7 @@ class Product {
   }
 
   static fromJSON(data) {
-    return new ProductComplete(
+    return new Product(
       data.id,
       data.name,
       data.price,
