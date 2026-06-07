@@ -1,7 +1,9 @@
 
 // bài học: //so sánh  map, fillter, find.
 /*map = biến đổi tất cả  |  filter = lọc nhiều  |  find = tìm 1 phần tử đầu tiên khớp*/
-
+// map() → sửa tất cả
+// filter() → lọc nhiều
+// find() → tìm một cái đầu tiên
 // //Ví dụ: 1
 // const users = [
 //   { name: "An",   age: 25 },
@@ -131,10 +133,8 @@ const timuser = users.find( u1 => u1.id===2);
 console.log(timuser);
 
 //  Bài 3 — Giống API thật (QA hay gặp!)
+
 console.log ("bài tập 3");
-
-
-
 const orders = [
   { id:1, status:"success", total:100 },
   { id:2, status:"pending", total:200 },

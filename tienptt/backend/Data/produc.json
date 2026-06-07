@@ -1,0 +1,25 @@
+[
+    {
+       "id": 1,
+       "name": "TienPTT",
+       "price": 120000,
+       "category": "áo",
+       "inStock": true
+    },
+    {
+
+       "id": 1,
+       "name": "TienPTT",
+       "price": 120000,
+       "category": "áo",
+       "inStock": true
+    },
+    {
+        
+       "id": 1,
+       "name": "TienPTT",
+       "price": 120000,
+       "category": "áo",
+       "inStock": true
+    }
+]

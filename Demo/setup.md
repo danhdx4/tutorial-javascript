@@ -111,6 +111,21 @@ npm --version
 1. Trong **Settings**, tìm kiếm `default formatter`.
 2. Chọn **Prettier - Code formatter** trong danh sách.
 
+## 4.2. Material Icon Theme – Đổi icon file/thư mục cho dễ nhìn
+
+### Cài extension
+1. Mở VS Code.
+2. Vào tab **Extensions** (Ctrl+Shift+X / Cmd+Shift+X).
+3. Tìm kiếm **Material Icon Theme**.
+4. Nhấn **Install**.
+
+### Bật (enable) icon theme
+1. Mở **Command Palette** (Ctrl+Shift+P / Cmd+Shift+P).
+2. Gõ `File Icon Theme` và chọn **Preferences: File Icon Theme**.
+3. Chọn **Material Icon Theme** trong danh sách.
+
+> Sau khi enable, icon của file `.js`, `.json`, thư mục `models/`, `data/`… sẽ hiển thị màu sắc và biểu tượng riêng, nhìn project rõ ràng hơn.
+
 ---
 
 # 5. Tắt gợi ý code tự động của Copilot

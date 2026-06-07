@@ -1,0 +1,6 @@
+[
+  { "brand": "Mazda",  "maxSpeed": 200, "seats": 4 },
+  { "brand": "Honda",  "maxSpeed": 160, "seats": 5 },
+  { "brand": "Toyota", "maxSpeed": 180, "seats": 7 }
+]
+
