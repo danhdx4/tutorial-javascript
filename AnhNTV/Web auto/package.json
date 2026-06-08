@@ -1,0 +1,12 @@
+{
+  "name": "web-auto-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "pretest": "npx --prefix \"demo test\" playwright install",
+    "test": "npx --prefix \"demo test\" playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  }
+}
