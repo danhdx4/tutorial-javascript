@@ -50,6 +50,27 @@ Link - Anotation: [https://playwright.dev/docs/test-annotations](https://playwri
 
 # Buổi 2: Run Example Test
 
+## Clone Test Appilication
+
+- URL: https://github.com/bondar-artem/pw-practice-app
+  - Command: Git clone URL
+  - Install project: npm i --force
+    - Ý nghĩa: Ép npm cài package bất chấp một số cảnh báo hoặc xung đột.
+  - Command run app: npm start
+    - Localhost: 4200
+
+## Test Structure
+
+Link: [https://playwright.dev/docs/writing-tests](https://playwright.dev/docs/writing-tests)
+
+và [https://playwright.dev/docs/api/class-test#test-describe](https://playwright.dev/docs/api/class-test#test-describe)
+
+- test
+  - Lưu ý về promise, page
+  - Giới thiệu về các hàm sử dụng page
+  - Ví dụ
+- test.describe
+
 ## Test Execution Test With UI
 
 Install extension: Playwright Test for VS Code
@@ -62,44 +83,7 @@ Install extension: Playwright Test for VS Code
 - Debug
 - Test với headed và headless
 
-### Run test with UI mode
-
-Link: [https://playwright.dev/docs/test-ui-mode](https://playwright.dev/docs/test-ui-mode)
-
-- Command: npx playwrigh test --ui
-- Demo
-  - Success case
-  - Fail case
-
-## Clone Test Appilication
-
-- URL: https://github.com/bondar-artem/pw-practice-app
-  - Command: Git clone URL
-  - Install project: npm i --force
-    - Ý nghĩa: Ép npm cài package bất chấp một số cảnh báo hoặc xung đột.
-  - Command run app: npm start
-    - Localhost: 4200
-
-## Test Structure (21)
-
-Link: [https://playwright.dev/docs/writing-tests](https://playwright.dev/docs/writing-tests)
-
-và [https://playwright.dev/docs/api/class-test#test-describe](https://playwright.dev/docs/api/class-test#test-describe)
-
-- test
-  - Lưu ý về promise, page
-  - Giới thiệu về các hàm sử dụng page
-  - Ví dụ
-- test.describe
-
-# Buổi 3: Locator
-
-Note:
-
-- Có 1 bài tập nhỏ thực hành trên lớp
-- Hướng dẫn dùng extension pick locator
-
-## Giới thiệu về DOM - 23
+## Giới thiệu về DOM
 
 Xem thêm trong slide tham khảo
 
@@ -114,6 +98,13 @@ Parent element: phần tử bên trên
 Child element: phần tử bên trong
 Sibling element: phần tử cùng cấp
 ```
+
+# Buổi 3: Locator
+
+Note:
+
+- Có 1 bài tập nhỏ thực hành trên lớp
+- Hướng dẫn dùng extension pick locator
 
 ## Locator Syntax Rules - 24
 
@@ -137,7 +128,7 @@ test("Locator syntax rules", async ({ page }) => {
 
   // by Class value (full)
   page.locator(
-    '[class="input-full-width size-medium status-basic shape-rectangle nb-transition"]',
+    '[class="input-full-width size-medium status-basic shape-rectangle nb-transition"]'
   );
 
   // combine different selectors
@@ -400,17 +391,17 @@ test("radio buttons", async ({ page }) => {
     .isChecked();
   expect(radioStatus).toBeTruthy();
   await expect(
-    usingTheGridForm.getByRole("radio", { name: "Option 1" }),
+    usingTheGridForm.getByRole("radio", { name: "Option 1" })
   ).toBeChecked();
 
   await usingTheGridForm
     .getByRole("radio", { name: "Option 2" })
     .check({ force: true });
   expect(
-    await usingTheGridForm.getByRole("radio", { name: "Option 1" }).isChecked(),
+    await usingTheGridForm.getByRole("radio", { name: "Option 1" }).isChecked()
   ).toBeFalsy();
   expect(
-    await usingTheGridForm.getByRole("radio", { name: "Option 2" }).isChecked(),
+    await usingTheGridForm.getByRole("radio", { name: "Option 2" }).isChecked()
   ).toBeTruthy();
 });
 ```
@@ -515,7 +506,7 @@ test("dialog box", async ({ page }) => {
     .locator(".nb-trash")
     .click();
   await expect(page.locator("table tr").first()).not.toHaveText(
-    "mdo@gmail.com",
+    "mdo@gmail.com"
   );
 });
 ```
@@ -625,7 +616,7 @@ test("sliders", async ({ page }) => {
 
   // Mouse movement
   const tempBox = page.locator(
-    '[tabtitle="Temperature"] ngx-temperature-dragger',
+    '[tabtitle="Temperature"] ngx-temperature-dragger'
   );
 
   await tempBox.scrollIntoViewIfNeeded();
@@ -831,7 +822,7 @@ export class FormLayoutsPage {
   async submitUsingTheGridFormWithCredentialsAndSelectOption(
     email: string,
     password: string,
-    optionText: string,
+    optionText: string
   ) {
     const usingTheGridForm = this.page.locator("nb-card", {
       hasText: "Using the Grid",
@@ -850,7 +841,7 @@ export class FormLayoutsPage {
   async submitInlineFormWithNameEmailAndCheckbox(
     name: string,
     email: string,
-    rememberMe: boolean,
+    rememberMe: boolean
   ) {
     const inlineForm = this.page.locator("nb-card", { hasText: "Inline form" });
     await inlineForm.getByRole("textbox", { name: "Jane Doe" }).fill(name);
@@ -880,12 +871,12 @@ test("parametrized methods", async ({ page }) => {
   await onFormLayoutsPage.submitUsingTheGridFormWithCredentialsAndSelectOption(
     "test@test.com",
     "Welcome1",
-    "Option 2",
+    "Option 2"
   );
   await onFormLayoutsPage.submitInlineFormWithNameEmailAndCheckbox(
     "John Smith",
     "John@test.com",
-    false,
+    false
   );
 });
 ```
@@ -902,19 +893,20 @@ export class DatepickerPage {
     const calendarInputField = this.page.getByPlaceholder("Form Picker");
     await calendarInputField.click();
     const dateToAssert = await this.selectDateInTheCalendar(
-      numberOfDaysFromToday,
+      numberOfDaysFromToday
     );
     await expect(calendarInputField).toHaveValue(dateToAssert);
   }
 
   async selectDatepickerWithRangeFromToday(
     startDayFromToday: number,
-    endDayFromToday: number,
+    endDayFromToday: number
   ) {
     const calendarInputField = this.page.getByPlaceholder("Range Picker");
     await calendarInputField.click();
-    const dateToAssertStart =
-      await this.selectDateInTheCalendar(startDayFromToday);
+    const dateToAssertStart = await this.selectDateInTheCalendar(
+      startDayFromToday
+    );
     const dateToAssertEnd = await this.selectDateInTheCalendar(endDayFromToday);
     const dateToAssert = `${dateToAssertStart} - ${dateToAssertEnd}`;
     await expect(calendarInputField).toHaveValue(dateToAssert);
@@ -968,12 +960,12 @@ test("parametrized methods", async ({ page }) => {
   await onFormLayoutsPage.submitUsingTheGridFormWithCredentialsAndSelectOption(
     "test@test.com",
     "Welcome1",
-    "Option 2",
+    "Option 2"
   );
   await onFormLayoutsPage.submitInlineFormWithNameEmailAndCheckbox(
     "John Smith",
     "John@test.com",
-    false,
+    false
   );
   await navigateTo.datepickerPage();
   await onDatepickerPage.selectCommonDatePickerDateFromToday(10);
@@ -1043,14 +1035,14 @@ test("parametrized methods", async ({ page }) => {
     .submitUsingTheGridFormWithCredentialsAndSelectOption(
       "test@test.com",
       "Welcome1",
-      "Option 2",
+      "Option 2"
     );
   await pm
     .onFormLayoutsPage()
     .submitInlineFormWithNameEmailAndCheckbox(
       "John Smith",
       "John@test.com",
-      false,
+      false
     );
   await pm.navigateTo().datepickerPage();
   await pm.onDatepickerPage().selectCommonDatePickerDateFromToday(10);
@@ -1149,10 +1141,10 @@ test.beforeEach(async ({ page }) => {
 test("has title", async ({ page }) => {
   await expect(page.locator(".navbar-brand")).toHaveText("conduit");
   await expect(page.locator("app-article-list h1").first()).toContainText(
-    "This is a test title",
+    "This is a test title"
   );
   await expect(page.locator("app-article-list p").first()).toContainText(
-    "This is a description",
+    "This is a description"
   );
 });
 ```
@@ -1177,7 +1169,7 @@ test("delete article", async ({ page, request }) => {
       data: {
         user: { email: "pwtest@test.com", password: "Welcome1" },
       },
-    },
+    }
   );
 
   const responseBody = await response.json();
@@ -1196,7 +1188,7 @@ test("delete article", async ({ page, request }) => {
       headers: {
         Authorization: `Token ${accessToken}`,
       },
-    },
+    }
   );
 
   expect(articleResponse.status()).toEqual(201);
@@ -1205,7 +1197,7 @@ test("delete article", async ({ page, request }) => {
   await page.getByRole("button", { name: "Delete Article" }).first().click();
   await page.getByText("Global Feed").click();
   await expect(page.locator("app-article-list h1").first()).not.toContainText(
-    "This is a test title",
+    "This is a test title"
   );
 });
 ```
@@ -1238,10 +1230,10 @@ test("intercept browser API response", async ({ page, request }) => {
   await page.goto("https://angular.realworld.io/");
   await expect(page.locator(".navbar-brand")).toHaveText("conduit");
   await expect(page.locator("app-article-list h1").first()).toContainText(
-    "This is a test title",
+    "This is a test title"
   );
   await expect(page.locator("app-article-list p").first()).toContainText(
-    "This is a description",
+    "This is a description"
   );
 });
 ```
@@ -1258,7 +1250,7 @@ test("delete article", async ({ page, request }) => {
       data: {
         user: { email: "pwtest@test.com", password: "Welcome1" },
       },
-    },
+    }
   );
 
   const responseBody = await response.json();
@@ -1277,7 +1269,7 @@ test("delete article", async ({ page, request }) => {
       headers: {
         Authorization: `Token ${accessToken}`,
       },
-    },
+    }
   );
 
   expect(articleResponse.status()).toEqual(201);
@@ -1306,7 +1298,7 @@ setup("authentication", async ({ request }) => {
       data: {
         user: { email: "pwtest@test.com", password: "Welcome1" },
       },
-    },
+    }
   );
 
   const responseBody = await response.json();
@@ -1341,7 +1333,7 @@ test("delete article", async ({ page, request }) => {
           body: "This is a test body",
         },
       },
-    },
+    }
   );
 
   expect(articleResponse.status()).toEqual(201);
@@ -1416,7 +1408,9 @@ Xem xét bỏ qua
 test("parametrized methods", async ({ page }) => {
   const pm = new PageManager(page);
   const randomFullName = faker.person.fullName();
-  const randomEmail = `${randomFullName.replace(" ", "")}${faker.number.int(1000)}@test.com`;
+  const randomEmail = `${randomFullName.replace(" ", "")}${faker.number.int(
+    1000
+  )}@test.com`;
 
   await pm.navigateTo().formLayoutsPage();
   await pm
@@ -1424,7 +1418,7 @@ test("parametrized methods", async ({ page }) => {
     .submitUsingTheGridFormWithCredentialsAndSelectOption(
       "test@test.com",
       "Welcome1",
-      "Option 2",
+      "Option 2"
     );
   await page.screenshot({ path: "screenshots/formsLayoutsPage.png" });
   const buffer = await page.screenshot();
@@ -1434,7 +1428,7 @@ test("parametrized methods", async ({ page }) => {
     .submitInlineFormWithNameEmailAndCheckbox(
       randomFullName,
       randomEmail,
-      false,
+      false
     );
   await page
     .locator("nb-card", { hasText: "Inline form" })
@@ -1626,7 +1620,7 @@ const responseToken = await context.post(
     data: {
       user: { email: "pwtest@test.com", password: "Welcome1" },
     },
-  },
+  }
 );
 
 const responseBody = await responseToken.json();
@@ -1649,7 +1643,7 @@ const articleResponse = await context.post(
     headers: {
       Authorization: `Token ${process.env.ACCESS_TOKEN}`,
     },
-  },
+  }
 );
 
 expect(articleResponse.status()).toEqual(201);
@@ -1664,7 +1658,7 @@ export default async function globalTeardown() {
       headers: {
         Authorization: `Token ${process.env.ACCESS_TOKEN}`,
       },
-    },
+    }
   );
 
   expect(deleteArticleResponse.status()).toEqual(204);
@@ -1697,7 +1691,9 @@ test("navigate to form page", async ({ page }) => {
 test("parametrized methods", async ({ page }) => {
   const pm = new PageManager(page);
   const randomFullName = faker.person.fullName();
-  const randomEmail = `${randomFullName.replace(" ", "")}${faker.number.int(1000)}@test.com`;
+  const randomEmail = `${randomFullName.replace(" ", "")}${faker.number.int(
+    1000
+  )}@test.com`;
 
   await pm.navigateTo().formLayoutsPage();
   await pm
@@ -1705,14 +1701,14 @@ test("parametrized methods", async ({ page }) => {
     .submitUsingTheGridFormWithCredentialsAndSelectOption(
       process.env.USERNAME,
       process.env.PASSWORD,
-      "Option 2",
+      "Option 2"
     );
   await pm
     .onFormLayoutsPage()
     .submitInlineFormWithNameEmailAndCheckbox(
       randomFullName,
       randomEmail,
-      false,
+      false
     );
 });
 ```
