@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "name": "Áo Thun",
+    "price": 150000,
+    "category": "Thời trang",
+    "inStock": true
+  },
+  {
+    "id": 2,
+    "name": "Quần Jean",
+    "price": 350000,
+    "category": "Thời trang",
+    "inStock": false
+  },
+  {
+    "id": 3,
+    "name": "Giầy Da",
+    "price": 1550000,
+    "category": "Giầy dép",
+    "inStock": true
+  },
+  {
+    "id": 4,
+    "name": "Giầy Thể Thao",
+    "price": 1200000,
+    "category": "Giầy dép",
+    "inStock": true
+  },
+  {
+    "id": 5,
+    "name": "Áo Len",
+    "price": 650000,
+    "category": "Thời trang",
+    "inStock": false
+  },
+  {
+    "id": 6,
+    "name": "Quần Short",
+    "price": 250000,
+    "category": "Thời trang",
+    "inStock": true
+  },
+  {
+    "id": 7,
+    "name": "Dép Sandal",
+    "price": 800000,
+    "category": "Giầy dép",
+    "inStock": false
+  },
+  {
+    "id": 8,
+    "name": "Áo Sơ Mi",
+    "price": 300000,
+    "category": "Thời trang",
+    "inStock": true
+  }
+]

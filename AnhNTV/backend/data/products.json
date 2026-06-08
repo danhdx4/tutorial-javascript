@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Áo thun",
+    "price": 100000,
+    "category": "quần áo",
+    "inStock": false
+  },
+  {
+    "id": 2,
+    "name": "Áo sơ mi",
+    "price": 200000,
+    "category": "quần áo",
+    "inStock": true
+  },
+  {
+    "id": 3,
+    "name": "Túi",
+    "price": 500000,
+    "category": "phụ kiện",
+    "inStock": true
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Laptop Dell XPS 13",
+    "price": 25000000,
+    "category": "electronics",
+    "inStock": true
+  },
+  {
+    "id": 2,
+    "name": "iPhone 15 Pro",
+    "price": 28000000,
+    "category": "electronics",
+    "inStock": true
+  },
+  {
+    "id": 3,
+    "name": "Sony WH-1000XM5",
+    "price": 8000000,
+    "category": "accessories",
+    "inStock": false
+  }
+]
