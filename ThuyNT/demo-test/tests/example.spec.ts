@@ -20,3 +20,9 @@ test('get started link', async ({ page }) => {
 test.only('test-app', async ({ page }) => {
   await page.goto('http://localhost:4200/');
 });
+
+
+test.only('test-ap2p', async ({ page }) => {
+  await page.goto('http://localhost:4200/');
+});
+
