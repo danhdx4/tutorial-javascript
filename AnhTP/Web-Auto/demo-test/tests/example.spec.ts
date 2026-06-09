@@ -1,3 +1,4 @@
+declare module "@playwright/test";
 import { test, expect } from "@playwright/test";
 
 test.only("test app", async ({ page }) => {
