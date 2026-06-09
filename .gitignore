@@ -3,3 +3,4 @@ note.txt
 **/node_modules
 **/.DS_Store
 danhdx/products-api/*
+**/.gitignore
