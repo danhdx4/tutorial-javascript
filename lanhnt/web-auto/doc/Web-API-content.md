@@ -50,6 +50,15 @@ Link - Anotation: [https://playwright.dev/docs/test-annotations](https://playwri
 
 # Buổi 2: Run Example Test
 
+## Clone Test Appilication
+
+- URL: https://github.com/bondar-artem/pw-practice-app
+  - Command: Git clone https://github.com/bondar-artem/pw-practice-app.git
+  - Install project: npm i --force
+    - Ý nghĩa: Ép npm cài package bất chấp một số cảnh báo hoặc xung đột.
+  - Command run app: npm start
+    - Localhost: 4200
+
 ## Test Execution Test With UI
 
 Install extension: Playwright Test for VS Code
@@ -62,36 +71,6 @@ Install extension: Playwright Test for VS Code
 - Debug
 - Test với headed và headless
 
-### Run test with UI mode
-
-Link: [https://playwright.dev/docs/test-ui-mode](https://playwright.dev/docs/test-ui-mode)
-
-- Command: npx playwrigh test --ui
-- Demo
-  - Success case
-  - Fail case
-
-## Clone Test Appilication
-
-- URL: https://github.com/bondar-artem/pw-practice-app
-  - Command: Git clone URL
-  - Install project: npm i --force
-    - Ý nghĩa: Ép npm cài package bất chấp một số cảnh báo hoặc xung đột.
-  - Command run app: npm start
-    - Localhost: 4200
-
-## Test Structure (21)
-
-Link: [https://playwright.dev/docs/writing-tests](https://playwright.dev/docs/writing-tests)
-
-và [https://playwright.dev/docs/api/class-test#test-describe](https://playwright.dev/docs/api/class-test#test-describe)
-
-- test
-  - Lưu ý về promise, page
-  - Giới thiệu về các hàm sử dụng page
-  - Ví dụ
-- test.describe
-
 # Buổi 3: Locator
 
 Note:
@@ -99,7 +78,7 @@ Note:
 - Có 1 bài tập nhỏ thực hành trên lớp
 - Hướng dẫn dùng extension pick locator
 
-## Giới thiệu về DOM - 23
+## Giới thiệu về DOM
 
 Xem thêm trong slide tham khảo
 
@@ -115,7 +94,7 @@ Child element: phần tử bên trong
 Sibling element: phần tử cùng cấp
 ```
 
-## Locator Syntax Rules - 24
+## Locator Syntax Rules
 
 Link: [https://playwright.dev/docs/locators](https://playwright.dev/docs/locators)
 
@@ -154,7 +133,7 @@ test("Locator syntax rules", async ({ page }) => {
 });
 ```
 
-## User-Facing Locators - 25
+## User-Facing Locators
 
 Link: [https://playwright.dev/docs/api/class-framelocator#frame-locator-get-by-role](https://playwright.dev/docs/api/class-framelocator#frame-locator-get-by-role)
 
@@ -167,7 +146,7 @@ page.getByText("Using the Grid");
 
 [https://app.notion.com](https://app.notion.com)
 
-## Child Element - 26
+## Child Element
 
 ```ts
 test("locating child elements", async ({ page }) => {
@@ -188,7 +167,7 @@ test("locating child elements", async ({ page }) => {
 });
 ```
 
-## Parent Element - 27
+## Parent Element
 
 ```ts
 test("locating parent elements", async ({ page }) => {
@@ -244,8 +223,6 @@ test("Reusing the locators", async ({ page }) => {
   await expect(emailField).toHaveValue("test@test.com");
 });
 ```
-
-## Hướng dẫn sử dụng Pick Locator
 
 # Buổi 4: Assertion & Auto-Waiting
 
