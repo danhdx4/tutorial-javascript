@@ -1,0 +1,23 @@
+[
+    {
+    "id": 1,
+    "name": "Áo Thun",
+    "price": 150000,
+    "category": "Ao",
+    "inStock": true
+  },
+  {
+    "id": 2,
+    "name": "Quần Jean",
+    "price": 350000,
+    "category": "Quan",
+    "inStock": false
+  },
+  {
+    "id": 3,
+    "name": "Áo len",
+    "price": 1550000,
+    "category": "Áo",
+    "inStock": true
+  }
+]

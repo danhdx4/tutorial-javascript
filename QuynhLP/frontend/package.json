@@ -1,0 +1,17 @@
+{
+  "name": "quynhlp-frontend",
+  "version": "1.0.0",
+  "description": "Frontend project của QuynhLP",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server",
+    "test": "node test.js"
+  },
+  "author": "QuynhLP",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.2",
+    "playwright": "^1.60.0"
+  }
+}
