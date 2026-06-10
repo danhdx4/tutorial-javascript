@@ -4,3 +4,4 @@ note.txt
 **/.DS_Store
 danhdx/products-api/*
 **/.gitignore
+**/.angular/cache/
