@@ -2,6 +2,14 @@
 
 # Buổi 1: Installation
 
+## Nội Dung Cần Đạt
+
+- Cài đặt đầy đủ môi trường: Node.js, VS Code, Git
+- Khởi tạo dự án Playwright bằng lệnh: <code>npm init playwright@latest</code>
+- Hiểu cấu trúc thư mục và ý nghĩa các file sinh ra sau khi init
+- Chạy test bằng CLI với các lệnh cơ bản và annotation (skip/only)
+- Tự tạo thư mục personal/web-auto và init project Playwright thành công
+
 ## Config Dev Environment
 
 - Nodejs: [https://nodejs.org/en](https://nodejs.org/en)
@@ -50,10 +58,16 @@ Link - Anotation: [https://playwright.dev/docs/test-annotations](https://playwri
 
 # Buổi 2: Run Example Test
 
-## Clone Test Appilication
+## Nội Dung Cần Đạt
 
-- URL: https://github.com/bondar-artem/pw-practice-app
-  - Command: Git clone https://github.com/bondar-artem/pw-practice-app.git
+- Cài đặt extension Playwright Test for VS Code và chạy test bằng extension
+- Cài đặt ứng dụng pw-practice-app bằng <code>npm i --force</code>
+- Khởi chạy app tại localhost:4200 bằng lệnh <code>npm start</code>
+- Viết và chạy bài test xác nhận app hoạt động thành công trên localhost:4200
+
+## Install Test Appilication
+
+- Tại thư mục pw-practice-app của dự án
   - Install project: npm i --force
     - Ý nghĩa: Ép npm cài package bất chấp một số cảnh báo hoặc xung đột.
   - Command run app: npm start
@@ -73,156 +87,70 @@ Install extension: Playwright Test for VS Code
 
 # Buổi 3: Locator
 
-Note:
+## Nội Dung Cần Đạt
 
-- Có 1 bài tập nhỏ thực hành trên lớp
-- Hướng dẫn dùng extension pick locator
+- Hiểu về cấu trúc DOM của web
+- Định vị phần tử bằng common locator
+- Định vị phần tử bằng built-in locator
+- Sử dụng Filter & Chaining để định vị phần tử phức tạp
 
 ## Giới thiệu về DOM
 
 Xem thêm trong slide tham khảo
 
-```html
-<div id="key" class="parent sibling">
-  <button class="child">Click me</button>
-</div>
-```
+## Common Locator
 
-```text
-Parent element: phần tử bên trên
-Child element: phần tử bên trong
-Sibling element: phần tử cùng cấp
-```
+Các loại thường dùng
 
-## Locator Syntax Rules
+- Sử dụng tagName
+  - page.locator("input");
+- Sử dụng ID
+  - page.locator('#inputEmail1')
+- Sử dụng Class
+  - page.locator('.shape-rectangle')
+- Sử dụng XPath
+  - page.locator('//button[text()="Sign in"]')
 
+## Built-in Locator
+
+Các hàm định vị phần tử được viết riêng cho playwright
 Link: [https://playwright.dev/docs/locators](https://playwright.dev/docs/locators)
 
-Command: npx playwright test --ui
+- getByRole()
+  - page.getByRole('button', { name: 'Sign in' })
+- getByText()
+  - page.getByText('Option 1')
+- getByLabel()
+  - page.getByLabel('Email')
+- getByPlaceholder()
+  - page.getByPlaceholder('Jane Doe')
 
-```ts
-test("Locator syntax rules", async ({ page }) => {
-  // by Tag name
-  page.locator("input");
+## Filter & Chaining
 
-  // by ID
-  page.locator("#inputEmail1");
+### Filter
 
-  // by Class value
-  page.locator(".shape-rectangle");
+Định vị phần tử dựa vào lọc các thuộc tính con của nó
 
-  // by attribute
-  page.locator('[placeholder="Email"]');
+- page.locator('nb-card') .filter({ hasText: 'Using the Grid' })
 
-  // by Class value (full)
-  page.locator(
-    '[class="input-full-width size-medium status-basic shape-rectangle nb-transition"]',
-  );
+### Chaining
 
-  // combine different selectors
-  page.locator('input[placeholder="Email"][nbinput]');
+Định vị phần tử dựa vào thuộc tính div cha của nó
 
-  // by XPath (NOT RECOMMENDED)
-  page.locator('//*[@id="inputEmail1"]');
+- page.locator('.using-grid') .locator('button')
 
-  // by partial text match
-  page.locator(':text("Using")');
+## Bài tập thực hành
 
-  // by exact text match
-  page.locator(':text-is("Using the Grid")');
-});
-```
+Vào page layout URL: http://localhost:4200/pages/forms/layouts
 
-## User-Facing Locators
+Định vị các phần tử trong các form:
 
-Link: [https://playwright.dev/docs/api/class-framelocator#frame-locator-get-by-role](https://playwright.dev/docs/api/class-framelocator#frame-locator-get-by-role)
-
-```ts
-// User-facing locators
-page.getByRole("textbox", { name: "Email" });
-page.getByRole("button", { name: "Sign in" });
-page.getByText("Using the Grid");
-```
-
-[https://app.notion.com](https://app.notion.com)
-
-## Child Element
-
-```ts
-test("locating child elements", async ({ page }) => {
-  await page.locator('nb-card nb-radio :text-is("Option 1")').click();
-  await page
-    .locator("nb-card")
-    .locator("nb-radio")
-    .locator(':text-is("Option 2")')
-    .click();
-
-  await page
-    .locator("nb-card")
-    .getByRole("button", { name: "Sign in" })
-    .first()
-    .click();
-
-  await page.locator("nb-card").nth(3).getByRole("button").click();
-});
-```
-
-## Parent Element
-
-```ts
-test("locating parent elements", async ({ page }) => {
-  await page
-    .locator("nb-card", { hasText: "Using the Grid" })
-    .getByRole("textbox", { name: "Email" })
-    .click();
-  await page
-    .locator("nb-card", { has: page.locator("#inputEmail1") })
-    .getByRole("textbox", { name: "Email" })
-    .click();
-
-  await page
-    .locator("nb-card")
-    .filter({ hasText: "Basic form" })
-    .getByRole("textbox", { name: "Email" })
-    .click();
-  await page
-    .locator("nb-card")
-    .filter({ has: page.locator(".status-danger") })
-    .getByRole("textbox", { name: "Password" })
-    .click();
-
-  await page
-    .locator("nb-card")
-    .filter({ has: page.locator("nb-checkbox") })
-    .filter({ hasText: "Sign in" })
-    .getByRole("textbox", { name: "Email" })
-    .click();
-
-  await page
-    .locator(':text-is("Using the Grid")')
-    .locator("..")
-    .getByRole("textbox", { name: "Email" })
-    .click();
-});
-```
-
-Giới thiệu cơ bản: Hiểu được mối quan hệ parent-child. Dòng 1, 2, cuối
-
-## Reusing Locators
-
-```ts
-test("Reusing the locators", async ({ page }) => {
-  const basicForm = page.locator("nb-card").filter({ hasText: "Basic form" });
-  const emailField = basicForm.getByRole("textbox", { name: "Email" });
-
-  await emailField.fill("test@test.com");
-  await basicForm.getByRole("textbox", { name: "Password" }).fill("Welcome123");
-  await basicForm.locator("nb-checkbox").click();
-  await basicForm.getByRole("button").click();
-
-  await expect(emailField).toHaveValue("test@test.com");
-});
-```
+- Inline form
+- Using thr Grid
+- Basic form
+- Form without lables
+- Block form
+- Horizontal form
 
 # Buổi 4: Assertion & Auto-Waiting
 
