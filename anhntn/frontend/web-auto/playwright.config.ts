@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// Bypass corporate proxy for localhost connections
+process.env.NO_PROXY = 'localhost,127.0.0.1';
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -36,18 +39,24 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { 
+        ...devices['Desktop Chrome'], 
+        channel: 'chrome',
+        launchOptions: {
+          executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+        }
+      },
     },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
 
     /* Test against mobile viewports. */
     // {
@@ -72,8 +81,10 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
+  //   command: 'npm start',
+  //   url: 'http://localhost:4200',
   //   reuseExistingServer: !process.env.CI,
+  //   cwd: 'C:\\Users\\Z03492\\Desktop\\Auto\\pw-practice-app',
+  //   timeout: 120000,
   // },
 });
