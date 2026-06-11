@@ -1,0 +1,1 @@
+await page.goto('http://localhost:4200/pages/iot-dashboard')
