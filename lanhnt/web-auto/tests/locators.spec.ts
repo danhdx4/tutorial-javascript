@@ -58,19 +58,40 @@ test("Filter & Chaining locators", async ({ page }) => {
 
 test("Locator for Using the Grid", async ({ page }) => {
     // goto http://localhost:4200/pages/forms/layouts
+    await page.goto('http://localhost:4200/pages/forms/layouts')
 
-    // Email
+    // Using grid form 
+    const usingTheGridForm = page.locator('nb-card').filter({ hasText: 'Using the Grid' })
+    const email = usingTheGridForm.getByLabel('Email')
+    const password = usingTheGridForm.getByLabel('Password')
+    const option1 = usingTheGridForm.getByText('Option 1')
+    const option2 = usingTheGridForm.getByText('Option 2')
+    const disabledOption = usingTheGridForm.getByRole('checkbox', { name: 'Disabled Option' })
+    const signInBtn = usingTheGridForm.getByRole('button', { name: 'Sign in' })
 
-    // Password
-
-    // Option1
-
-    // Option2
-
-    // Disabled Option
-
-    // Sign In Btn
+    await email.fill('test abc')
+    await password.fill('test abc')
+    await option2.check()
+    await signInBtn.click()
 });
 
-// Other form...
+test("Inline form", async ({ page }) => {
+    // todo
+});
+
+test("Basic form", async ({ page }) => {
+    // todo
+});
+
+test("Form without label", async ({ page }) => {
+    // todo
+});
+
+test("Form without label", async ({ page }) => {
+    // todo
+});
+
+test("Horizontal form", async ({ page }) => {
+    // todo
+});
 
