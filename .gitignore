@@ -4,6 +4,7 @@ note.txt
 **/.DS_Store
 danhdx/products-api/*
 **/.gitignore
+<<<<<<< HEAD
 
 # Playwright
 node_modules/
@@ -12,3 +13,6 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+=======
+**/.angular/cache/
+>>>>>>> 17ba8d2bb09934aec6d84d4a1f27cdf6278d569a

@@ -1,3 +1,15 @@
+Install
+- Giải thích ý nghĩa các file, thư mục:
+  - Folder node-modules --> thư mục chứa toàn bộ các thư viện (packages) mà dự án cần sử dụng.
+  - Folder tests --> Đây là nơi chứa các file test chính của dự án.
+  - Folder test-examples  -->Thư mục này chứa các ví dụ mẫu do Playwright tạo sẵn.
+    (Mục đích: Hướng dẫn cách viết test. Minh họa các tính năng của Playwright.
+    Sau khi đã quen với Playwright, bạn có thể: Xóa thư mục này. Hoặc giữ lại để tham khảo.)
+  - File git-ignore  -->Đây là file quy định những file/thư mục Git sẽ bỏ qua.
+  - File package.json
+  - File package-lock.json
+  - File playwright.config.ts  -->Đây là file cấu hình trung tâm của Playwright.
+
 @playwright/test
 1. test() --> Định nghĩa một test case
   test('login successfully', async ({ page }) => {
