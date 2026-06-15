@@ -7,6 +7,12 @@ test.only('has title', async ({ page }) => {
   await expect(page).toHaveTitle(/Playwright/);
 });
 
+<<<<<<< HEAD
+test('get started link', async ({ page }) => {
+  await page.goto('https://localhost:4200/');
+
+  
+=======
 // test('get started link', async ({ page }) => {
 //   await page.goto('https://playwright.dev/');
 
@@ -18,4 +24,5 @@ test.only('has title', async ({ page }) => {
 // });
 test.only('test app', async ({ page }) => {
   await page.goto('http://localhost:4200/');
+>>>>>>> 17ba8d2bb09934aec6d84d4a1f27cdf6278d569a
 });

@@ -154,7 +154,34 @@ Vào page layout URL: http://localhost:4200/pages/forms/layouts
 
 # Buổi 4: Assertion & Auto-Waiting
 
-## Assertions - 30
+## Nội Dung Cần Đạt
+
+- Hiểu mục đích của assertion trong auto test
+- Biết sử dụng `expect()` để kiểm tra text, value, attribute và trạng thái phần tử
+- Phân biệt được hard assertion, soft assertion và khi nào nên dùng từng loại
+- Hiểu cơ chế auto-waiting của Playwright trong các hành động và assertion
+
+## Assertions
+
+Link: https://playwright.dev/docs/test-assertions
+
+Assertions là xác minh kết quả thực tế của ứng dụng có khớp với kết quả mong đợi hay không.
+
+### General assertions
+
+- General Assertion dùng để kiểm tra các giá trị tĩnh hoặc dữ liệu chung không trực tiếp nằm trên UI (như biến, chuỗi, số, trạng thái API).
+- Đặc điểm: Thực hiện ngay lập tức (đồng bộ) mà không có cơ chế auto-waiting hay retry lại.
+
+### Locator assertion
+
+- Đây là loại assertion được thiết kế chuyên biệt cho các phần tử UI.
+- Đặc điểm: Tự động chờ đợi (Auto-waiting) phần tử xuất hiện và sẵn sàng trong DOM. Nó sẽ liên tục thử lại (retry) điều kiện cho đến khi đạt được hoặc hết thời gian chờ mặc định (default expection_timeout = 5s)
+
+### Soft Assertion
+
+- Mặc định, khi một lệnh assertion thất bại (fail), Playwright sẽ dừng ngay lập tức file test đó (Hard Assertion).
+- Tuy nhiên, Soft Assertion cho phép test tiếp tục chạy dù có lỗi, giúp bạn kiểm tra được nhiều bước hơn trong một lần chạy.
+- Đặc điểm: Nếu lệnh này fail, nó sẽ không dừng test mà chỉ đánh dấu (mark) test đó là thất bại và báo lỗi vào cuối kịch bản.
 
 ```ts
 test("assertions", async ({ page }) => {
@@ -179,7 +206,13 @@ test("assertions", async ({ page }) => {
 });
 ```
 
-## Extracting Values - 29
+## Extracting Values
+
+- Việc Extracting Values (lấy giá trị) trong Playwright phụ thuộc vào loại phần tử bạn muốn lấy
+- Các phương pháp phổ biến nhất bao gồm:
+  - Thẻ input: inputValue()
+  - Text: innerText() hoặc textContent() cho single text, allTextContents() cho all text values
+  - Thuộc tính: getAttribute()
 
 ```ts
 test("extracting values", async ({ page }) => {
@@ -200,45 +233,68 @@ test("extracting values", async ({ page }) => {
   const emailValue = await emailField.inputValue();
   expect(emailValue).toEqual("test@test.com");
 
+  // attribute
   const placeholderValue = await emailField.getAttribute("placeholder");
   expect(placeholderValue).toEqual("Email");
 });
 ```
 
-## Auto-Waiting -31
-
-Link web: https://the-internet.herokuapp.com/dynamic_loading/1 or [http://www.uitestingplayground.com/](http://www.uitestingplayground.com/)
+## Auto-Waiting
 
 Link: https://playwright.dev/docs/actionability
 
-```ts
-test("auto waiting", async ({ page }) => {
-  const successButton = page.locator(".bg-success");
+- Auto-waiting trong Playwright là cơ chế tự động đợi các phần tử (elements) trên trang web đạt đến trạng thái "có thể hành động" (actionability) trước khi thực hiện các thao tác như click, điền form, v.v..
+- Các trạng thái Playwright tự động chờ:
+  - Attached: Đã gắn vào DOM.
+  - Visible: Đã hiển thị trên màn hình.
+  - Stable: Đã ổn định, không còn hoạt động animation.
+  - Enabled: Đã được bật (không bị disabled).
+  - Receiving Events: Có thể nhận sự kiện (không bị che khuất bởi phần tử khác).
 
-  await expect(successButton).toHaveText("Data loaded with AJAX get request.", {
-    timeout: 20000,
-  });
+```ts
+test("Auto waiting", async ({ page }) => {
+  // goto http://localhost:4200/pages/forms/layouts
+  await page.goto("http://localhost:4200/pages/forms/layouts");
+
+  // Form without labels
+  const formWithoutLabels = page
+    .locator("nb-card")
+    .filter({ hasText: "Form without labels" });
+  const recipients = page.getByPlaceholder("Recipients");
+  const subject = page.getByPlaceholder("Subject");
+  const msg = page.getByPlaceholder("Message");
+  const sendBtn = page.getByRole("button", { name: "SEND" });
+
+  await recipients.fill("test abc");
+  await subject.fill("test abc");
+  await msg.fill("test abc");
+  await sendBtn.click();
 });
 ```
 
 ```ts
 test("alternative waits", async ({ page }) => {
-  const successButton = page.locator(".bg-success");
+  await page.goto("http://www.uitestingplayground.com/ajax");
 
-  // await page.waitForSelector('.bg-success')
-  // await page.waitForResponse('http://uitestingplayground.com/ajaxdata')
-  await page.waitForLoadState("networkidle");
+  const triggerBtn = page.getByRole("button", {
+    name: "Button Triggering AJAX Request",
+  });
+  await triggerBtn.click();
 
-  const text = await successButton.allTextContents();
-  expect(text).toContain("Data loaded with AJAX get request.");
+  await page.waitForSelector("#content");
+  // await page.waitForResponse('http://www.uitestingplayground.com/ajaxdata')
+  // await page.waitForLoadState("networkidle"); //Đợi cho đến khi không có kết nối mạng nào được thực hiện trong ít nhất 500 mili giây.
+
+  await expect(page.locator("#content")).toHaveText(
+    "Data loaded with AJAX get request.",
+  );
 });
 ```
 
-## Timeouts - 32
-
-Kiến thức nâng cao, xem xét bỏ qua
+## Timeouts (tham khảo)
 
 Link: https://playwright.dev/docs/test-timeouts
+Xem thêm silde
 
 ```ts
 // playwright.config.ts
@@ -254,7 +310,22 @@ export default defineConfig({
 });
 ```
 
-⇒ Kết thúc buổi 4
+## Bài tập về nhà
+
+Viết bài test verify Basic form với các nội dung như sau:
+
+1. Đi tới link http://localhost:4200/
+2. Click vào btn Forms trên menu bar
+3. Click vào bnt Form Layouts trên menu bar
+4. Verify Basic form với các nội dung
+
+- Trường Email có placeholder là 'Email'
+- Trường Password có placeholder là 'Password'
+- Button Submit có mã màu là rgb(255,61,113)
+
+5. Tiến hành filter thông tin Email và Password
+6. Verify text hiển thị trong trường email, password như thông tin đã nhập
+7. Click vào btn Submit
 
 # Buổi 5, 6, 7: UI Components
 
@@ -1321,7 +1392,9 @@ Xem xét bỏ qua
 test("parametrized methods", async ({ page }) => {
   const pm = new PageManager(page);
   const randomFullName = faker.person.fullName();
-  const randomEmail = `${randomFullName.replace(" ", "")}${faker.number.int(1000)}@test.com`;
+  const randomEmail = `${randomFullName.replace(" ", "")}${faker.number.int(
+    1000,
+  )}@test.com`;
 
   await pm.navigateTo().formLayoutsPage();
   await pm
@@ -1602,7 +1675,9 @@ test("navigate to form page", async ({ page }) => {
 test("parametrized methods", async ({ page }) => {
   const pm = new PageManager(page);
   const randomFullName = faker.person.fullName();
-  const randomEmail = `${randomFullName.replace(" ", "")}${faker.number.int(1000)}@test.com`;
+  const randomEmail = `${randomFullName.replace(" ", "")}${faker.number.int(
+    1000,
+  )}@test.com`;
 
   await pm.navigateTo().formLayoutsPage();
   await pm
