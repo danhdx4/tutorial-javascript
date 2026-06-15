@@ -32,7 +32,7 @@ const product1 = new produc(
 );
 
 console.log(product1.getLabel());
-/
+
 
 //exports
 module.exports = Product;
