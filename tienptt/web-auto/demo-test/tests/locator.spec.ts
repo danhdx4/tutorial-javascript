@@ -9,7 +9,7 @@ test("Common Locators", async ({ page }) => {
 //     await page.goto('http://localhost:4200/pages/forms/layouts');
 //     await page.waitForTimeout(15000);
 // });
-
+///test
     // by Tag name nb-card
     page.locator('nb-card')
 
@@ -125,14 +125,10 @@ test(" Form without lables", async ({ page }) => {
   await page.goto("http://localhost:4200/pages/forms/layouts");
   const InputFormWithoutLables = page.locator("nb-card").filter({ hasText: "Form without labels" });
   //recipient
-  const recipientInputFormWithoutLables =
-    InputFormWithoutLables.getByPlaceholder("Recipients");
+  const recipientInputFormWithoutLables =InputFormWithoutLables.getByPlaceholder("Recipients");
   await recipientInputFormWithoutLables.fill("Thuỷ Tiên");
   //subject
-  const subjectInputFormWithoutLables =
-    InputFormWithoutLables.getByPlaceholder("Subject");
-	
-	
+  const subjectInputFormWithoutLables =InputFormWithoutLables.getByPlaceholder("Subject");	
 	await subjectInputFormWithoutLables.fill("ban lam gi");
   //message
   const messageInputFormWithoutLables = InputFormWithoutLables.getByPlaceholder("Message");
