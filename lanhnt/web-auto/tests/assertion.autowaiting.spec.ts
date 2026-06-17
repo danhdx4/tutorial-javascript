@@ -88,3 +88,30 @@ test("alternative waits", async ({ page }) => {
     // await expect(page.locator('#content')).toHaveText("Data loaded with AJAX get request.", { timeout: 20000 });
     await expect(page.locator('#content')).toHaveText("Data loaded with AJAX get request.");
 })
+test('Bài tập về nhà - Basic form should work correctly', async ({ page }) => {
+    // navigate to Layout form page
+    await page.goto('http://localhost:4200/')
+    await page.getByTitle('Forms').click()
+    await page.getByTitle('Form Layouts').click()
+
+    const basicForm = page.locator('nb-card').filter({ hasText: 'Basic Form' })
+    const emailField = basicForm.getByLabel('Email')
+    const passwordField = basicForm.getByLabel('Password')
+    const submitBtn = basicForm.getByRole('button', { name: 'Submit' })
+
+    // Assertion the initial state
+    expect(await passwordField.getAttribute('placeholder')).toBe('Password') // general assertion
+    await expect(emailField).toHaveAttribute('placeholder', 'Email') // locator assertion
+    await expect(submitBtn).toHaveCSS('background-color', 'rgb(255, 61, 113)')
+
+    // Action for each field
+    const emailValue = 'test@test.com'
+    const passwordValue = '123456'
+    await emailField.fill(emailValue)
+    await passwordField.fill(passwordValue)
+
+    await expect(emailField).toHaveValue(emailValue)
+    await expect(passwordField).toHaveValue(passwordValue)
+
+    await submitBtn.click()
+})

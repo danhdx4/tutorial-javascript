@@ -329,9 +329,16 @@ Viết bài test verify Basic form với các nội dung như sau:
 
 # Buổi 5, 6, 7: UI Components
 
-Phần này quan trọng. Nếu không đủ sẽ chia làm 3 buổi.
+# Buổi 5
 
-## Input Fields - 33
+## Input Fields
+
+Các hàm sử dụng:
+
+- fill(): điền nhanh một giá trị vào trường input
+- clear(): xoá nội dung của trường
+- pressSequentially(): gõ từng kí tự
+- inputValue: trích xuất giá trị từ 1 trường input
 
 ```ts
 test.describe("Form Layouts page", () => {
@@ -359,7 +366,15 @@ test.describe("Form Layouts page", () => {
 });
 ```
 
-## Radio Buttons - 34
+## Radio Buttons
+
+Các hàm sử dụng:
+
+- check(): check vào radio button
+- uncheck(): uncheck radio button
+- isChecked(): kiểm tra radio button có đang được check không => return boolean
+- isUnchecked(): kiểm tra radio button có đang uncheck không
+- toBeChecked(): kiểm tra radio button có đang được check không (assertion)
 
 ```ts
 test("radio buttons", async ({ page }) => {
@@ -391,7 +406,15 @@ test("radio buttons", async ({ page }) => {
 });
 ```
 
-## Checkboxes - 35
+## Checkboxes
+
+Các hàm sử dụng:
+
+- check(): check vào radio button
+- uncheck(): uncheck radio button
+- isChecked(): kiểm tra radio button có đang được check không => return boolean
+- isUnchecked(): kiểm tra radio button có đang uncheck không
+- toBeChecked(): kiểm tra radio button có đang được check không (assertion)
 
 Action: Click, check, uncheck
 
@@ -415,11 +438,7 @@ test("checkboxes", async ({ page }) => {
 });
 ```
 
-## Lists and Dropdowns - 36
-
-Làm 1 ví dụ, bài tập về nhà là 1 trong các dropdown còn lại
-
-Khi chữa bài làm bài tập tổng quát, theo vòng for cho tất cả
+## Lists and Dropdowns
 
 ```ts
 test("lists and dropdowns", async ({ page }) => {
@@ -427,31 +446,31 @@ test("lists and dropdowns", async ({ page }) => {
   await dropDownMenu.click();
 
   const optionList = page.locator("nb-option-list nb-option");
-  await expect(optionList).toHaveText(["Light", "Dark", "Cosmic", "Corporate"]);
   await optionList.filter({ hasText: "Cosmic" }).click();
 
   const header = page.locator("nb-layout-header");
   await expect(header).toHaveCSS("background-color", "rgb(50, 50, 89)");
-
-  const colors = {
-    Light: "rgb(255, 255, 255)",
-    Dark: "rgb(34, 43, 69)",
-    Cosmic: "rgb(50, 50, 89)",
-    Corporate: "rgb(255, 255, 255)",
-  };
-
-  await dropDownMenu.click();
-  for (const color in colors) {
-    await optionList.filter({ hasText: color }).click();
-    await expect(header).toHaveCSS("background-color", colors[color]);
-    if (color !== "Corporate") {
-      await dropDownMenu.click();
-    }
-  }
 });
 ```
 
-⇒ Kết thúc buổi 5
+## Bài tập về nhà
+
+Thực hiện các step và các bài kiểm tra sau:
+
+1. Đi tới link: http://localhost:4200/auth/login
+2. Lên kịch bản test verify cho các case màn hình Login. Gợi ý:
+
+- Trạng thái khởi tạo: email, password có placeholder, checkbox ko được chheck, btn login disable
+- Nhập đủ email, password hợp lệ
+  => Verify thông tin phản ánh đúng, btn Login được enable
+- Nhập thiếu email hoặc password
+  => Verify hiển thị msg yêu cầu nhập, btn Login disable
+- Nhập email sai định dạng
+  => Verify hiển thị msg thông báo email không hợp lệ, btn Login disable
+- Nhập password không hợp lệ
+  => Verìy hiển thị msg thông báo password không hợp lệ, btn Login disable
+
+# Buổi 6
 
 ## Tooltips - 37
 
