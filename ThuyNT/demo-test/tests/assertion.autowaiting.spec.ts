@@ -112,12 +112,12 @@ test("Basic form", async ({ page }) => {
         .locator("nb-card")
         .filter({ hasText: "Basic form" });
 
-    const emailField = basicFormButton.getByRole("textbox", { name: "Email" });
+    const emailField = basicFormButton.getByPlaceholder("Email")
     const emailValue = await emailField.getAttribute("placeholder");
     expect(emailValue).toEqual("Email");
     console.log(emailValue);
     
-    const passwordField = basicFormButton.getByRole("textbox", {name : "Password"});
+    const passwordField = basicFormButton.getByPlaceholder("Password");
     const passwordValue = await passwordField.getAttribute("placeholder");
     expect(passwordValue).toEqual("Password")
 
@@ -129,4 +129,6 @@ test("Basic form", async ({ page }) => {
     const emailTest = await emailField.inputValue();
     expect(emailTest).toEqual("abc@gmail.com")
     await submitButton.click();
+
+    
 });
