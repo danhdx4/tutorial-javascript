@@ -13,16 +13,16 @@ test("assertions", async ({ page }) => {
 
     const basicForm = page.locator("nb-card").filter({ hasText: "Basic form" });
     const button = basicForm.getByRole("button");
-    // const buttonText = await button.textContent();
-    // expect(buttonText).toEqual("Submit");
+    const buttonText = await button.textContent();
+    expect(buttonText).toEqual("Submit");
 
     // Locator assertion
-    // await expect(button).toHaveText("Submit1");
+    await expect(button).toHaveText("Submit");
 
     // Soft assertion
-    await expect.soft(button).toHaveText("Submit1");
+    // await expect.soft(button).toHaveText("Submit");
 
-    await button.click()
+    // await button.click()
 });
 
 test("extracting values", async ({ page }) => {
@@ -88,30 +88,46 @@ test("alternative waits", async ({ page }) => {
     // await expect(page.locator('#content')).toHaveText("Data loaded with AJAX get request.", { timeout: 20000 });
     await expect(page.locator('#content')).toHaveText("Data loaded with AJAX get request.");
 })
-test('Bài tập về nhà - Basic form should work correctly', async ({ page }) => {
-    // navigate to Layout form page
-    await page.goto('http://localhost:4200/')
-    await page.getByTitle('Forms').click()
-    await page.getByTitle('Form Layouts').click()
 
-    const basicForm = page.locator('nb-card').filter({ hasText: 'Basic Form' })
-    const emailField = basicForm.getByLabel('Email')
-    const passwordField = basicForm.getByLabel('Password')
-    const submitBtn = basicForm.getByRole('button', { name: 'Submit' })
+test("Link", async ({ page }) => {
+    // 1. Đi tới link http://localhost:4200/
+    // 2. Click vào btn Forms trên menu bar
+    // 3. Click vào bnt Form Layouts trên menu bar
+    // 4. Verify Basic form với các nội dung
+    // - Trường Email có placeholder là 'Email'
+    // - Trường Password có placeholder là 'Password'
+    // - Button Submit có mã màu là rgb(255,61,113)
+    // 5. Tiến hành filter thông tin Email và Password
+    // 6. Verify text hiển thị trong trường email, password như thông tin đã nhập
+    // 7. Click vào btn Submit
+    
+    // 1,2,3
+    await page.goto('http://localhost:4200');
+    const locatorLink = page.locator('nb-menu');
+    locatorLink.getByRole('link', {name: 'Forms'}).click();
+    locatorLink.getByRole('link', {name: 'Form Layouts'}).click();
+    
+    // 4
+    const basicForm = page.locator('nb-card').filter({hasText: 'Basic form'});
+    const inputEmail = basicForm.getByRole('textbox', {name: 'Email'});
+    const inputEmailPlaceholder = await inputEmail.getAttribute('placeholder');
+    expect(inputEmailPlaceholder).toEqual('Email');
+    
+    const inputPwd = basicForm.getByRole('textbox', {name: 'Password'});
+    const inputPwdPlaceholder = await inputPwd.getAttribute('placeholder');
+    expect(inputPwdPlaceholder).toEqual('Password');
 
-    // Assertion the initial state
-    expect(await passwordField.getAttribute('placeholder')).toBe('Password') // general assertion
-    await expect(emailField).toHaveAttribute('placeholder', 'Email') // locator assertion
-    await expect(submitBtn).toHaveCSS('background-color', 'rgb(255, 61, 113)')
+    const btnSubmit = basicForm.getByRole('button', {name: 'SUBMIT'});
+    await expect(btnSubmit).toHaveCSS('background-color', 'rgb(255, 61, 113)');
 
-    // Action for each field
-    const emailValue = 'test@test.com'
-    const passwordValue = '123456'
-    await emailField.fill(emailValue)
-    await passwordField.fill(passwordValue)
+    // 5
+    await inputEmail.fill('xuannt.test@gmail.com');
+    await inputPwd.fill('123456');
 
-    await expect(emailField).toHaveValue(emailValue)
-    await expect(passwordField).toHaveValue(passwordValue)
+    // 6
+    expect(inputEmail).toHaveValue('xuannt.test@gmail.com');
+    expect(inputPwd).toHaveValue('123456');
 
-    await submitBtn.click()
-})
+    // 7
+    await btnSubmit.click();
+});

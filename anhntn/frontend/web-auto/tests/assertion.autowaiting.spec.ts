@@ -20,7 +20,7 @@ test("assertions", async ({ page }) => {
     // await expect(button).toHaveText("Submit1");
 
     // Soft assertion
-    await expect.soft(button).toHaveText("Submit1");
+    await expect.soft(button).toHaveText("Submit");
 
     await button.click()
 });
@@ -88,30 +88,21 @@ test("alternative waits", async ({ page }) => {
     // await expect(page.locator('#content')).toHaveText("Data loaded with AJAX get request.", { timeout: 20000 });
     await expect(page.locator('#content')).toHaveText("Data loaded with AJAX get request.");
 })
-test('Bài tập về nhà - Basic form should work correctly', async ({ page }) => {
-    // navigate to Layout form page
-    await page.goto('http://localhost:4200/')
-    await page.getByTitle('Forms').click()
-    await page.getByTitle('Form Layouts').click()
 
-    const basicForm = page.locator('nb-card').filter({ hasText: 'Basic Form' })
-    const emailField = basicForm.getByLabel('Email')
-    const passwordField = basicForm.getByLabel('Password')
-    const submitBtn = basicForm.getByRole('button', { name: 'Submit' })
+/**## Bài tập về nhà
 
-    // Assertion the initial state
-    expect(await passwordField.getAttribute('placeholder')).toBe('Password') // general assertion
-    await expect(emailField).toHaveAttribute('placeholder', 'Email') // locator assertion
-    await expect(submitBtn).toHaveCSS('background-color', 'rgb(255, 61, 113)')
+Viết bài test verify Basic form với các nội dung như sau:
 
-    // Action for each field
-    const emailValue = 'test@test.com'
-    const passwordValue = '123456'
-    await emailField.fill(emailValue)
-    await passwordField.fill(passwordValue)
+1. Đi tới link http://localhost:4200/
+2. Click vào btn Forms trên menu bar
+3. Click vào bnt Form Layouts trên menu bar
+4. Verify Basic form với các nội dung
 
-    await expect(emailField).toHaveValue(emailValue)
-    await expect(passwordField).toHaveValue(passwordValue)
+- Trường Email có placeholder là 'Email'
+- Trường Password có placeholder là 'Password'
+- Button Submit có mã màu là rgb(255,61,113)
 
-    await submitBtn.click()
-})
+5. Tiến hành filter thông tin Email và Password
+6. Verify text hiển thị trong trường email, password như thông tin đã nhập
+7. Click vào btn Submit */
+

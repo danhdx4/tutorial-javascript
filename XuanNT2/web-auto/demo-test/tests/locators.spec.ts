@@ -118,7 +118,7 @@ test("Horizontal form", async ({ page }) => {
     const horizontalFormEmail = horizontalForm.getByLabel('Email');
     const horizontalFormPwd = horizontalForm.getByLabel('Password');
     const horizontalFormCheck = horizontalForm.getByRole('checkbox', {name: 'Remember me'});
-    const horizontalFormButton = horizontalForm.getByRole('button', {name: 'SIGNIN'});
+    const horizontalFormButton = horizontalForm.getByRole('button', {name: 'SIGN IN'});
 
     await horizontalFormEmail.fill('xuannttest@gmail.com');
     await horizontalFormPwd.fill('123456');

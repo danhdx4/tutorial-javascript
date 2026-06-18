@@ -88,30 +88,71 @@ test("alternative waits", async ({ page }) => {
     // await expect(page.locator('#content')).toHaveText("Data loaded with AJAX get request.", { timeout: 20000 });
     await expect(page.locator('#content')).toHaveText("Data loaded with AJAX get request.");
 })
-test('Bài tập về nhà - Basic form should work correctly', async ({ page }) => {
-    // navigate to Layout form page
+
+
+//BTVN buổi 4 
+// Viết bài test verify Basic form với các nội dung như sau:
+
+// Đi tới link http://localhost:4200/
+// Click vào btn Forms trên menu bar
+// Click vào bnt Form Layouts trên menu bar
+// Verify Basic form với các nội dung
+// Trường Email có placeholder là 'Email'
+// Trường Password có placeholder là 'Password'
+// Button Submit có mã màu là rgb(255,61,113)
+// Tiến hành filter thông tin Email và Password
+// Verify text hiển thị trong trường email, password như thông tin đã nhập
+// Click vào btn Submit
+
+
+test(" Verify Basic form", async ({ page }) => {
     await page.goto('http://localhost:4200/')
-    await page.getByTitle('Forms').click()
-    await page.getByTitle('Form Layouts').click()
+     const forms= page.locator('nb-menu').filter({
+        hasText: 'Forms'
+        });   
+// Click vào btn Forms trên menu bar
+const buttonForms = forms.getByRole("link" , {name:'Forms'})
+await buttonForms.click();
+// Click vào bnt Form Layouts trên menu bar
+const buttonFormLayouts = forms.getByRole("link" , {name:'Form Layouts'})
+await buttonFormLayouts.click();
+// Verify Basic form với các nội dung
+// Trường Email có placeholder là 'Email'
+const basicForm = page.locator('nb-card').filter({
+        hasText: 'Basic form'
+        });   
+// Lấy input email trong Basic form
+  const inputEmaillocator = basicForm.getByPlaceholder('Email');
+  const imputEmail = await inputEmaillocator.getAttribute('placeholder');
 
-    const basicForm = page.locator('nb-card').filter({ hasText: 'Basic Form' })
-    const emailField = basicForm.getByLabel('Email')
-    const passwordField = basicForm.getByLabel('Password')
-    const submitBtn = basicForm.getByRole('button', { name: 'Submit' })
+// Kiểm tra placeholder Email
+await expect(imputEmail).toEqual("Email");
+console.log("placeholder Email = ",imputEmail);
 
-    // Assertion the initial state
-    expect(await passwordField.getAttribute('placeholder')).toBe('Password') // general assertion
-    await expect(emailField).toHaveAttribute('placeholder', 'Email') // locator assertion
-    await expect(submitBtn).toHaveCSS('background-color', 'rgb(255, 61, 113)')
+// Trường Password có placeholder là 'Password'
+const inputPasswordLocator = basicForm.getByPlaceholder('Password');
+const inputPassword = await inputPasswordLocator.getAttribute('placeholder');  
+// Kiểm tra placeholder password
+await expect(inputPassword).toEqual("Password");
+console.log("placeholder Password =",inputPassword);
 
-    // Action for each field
-    const emailValue = 'test@test.com'
-    const passwordValue = '123456'
-    await emailField.fill(emailValue)
-    await passwordField.fill(passwordValue)
+// Button Submit có mã màu là rgb(255,61,113)
+const buttonSubmit = basicForm.getByRole("button", {name:"SUBMIT"});
+await expect(buttonSubmit).toHaveCSS("background-color","rgb(255, 61, 113)");
 
-    await expect(emailField).toHaveValue(emailValue)
-    await expect(passwordField).toHaveValue(passwordValue)
+// Tiến hành filter thông tin Email và Password
+await inputEmaillocator.fill("vananh@gmail.com");
+await inputPasswordLocator.fill("1234567");
 
-    await submitBtn.click()
-})
+// Verify text hiển thị trong trường email, password như thông tin đã nhập
+await expect(imputEmail).toEqual("Email");
+console.log("Input email =","vananh@gmail.com");
+
+await expect(inputPassword).toEqual("Password");
+console.log("Input Password =","1234567");
+
+
+// Click vào btn Submit
+await buttonSubmit.click();
+
+});
