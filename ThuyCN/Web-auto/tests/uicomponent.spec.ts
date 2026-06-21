@@ -41,7 +41,7 @@ expect (page.getByText('Email should be the real one!')).toBeVisible()
 await emailField.fill('abc@gmail@com') //email ko hợp lệ sai domain
 expect (page.getByText('Email should be the real one!')).toBeVisible()
 await emailField.fill('abc@gmail.com') //email hợp lệ
-expect (await emailField.inputValue()).toMatch(/@gmail\.com$/)
+expect (btn).toBeDisabled()
 
 // Validate password
 await passwordField.click() //password là trường bắt buộc
