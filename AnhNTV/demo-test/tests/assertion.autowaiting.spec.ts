@@ -162,3 +162,11 @@ test(" Verify Basic form", async ({ page }) => {
     await buttonSubmit.click();
 
 });
+
+
+// Tất cả các action sẽ phải đi kèm await: 
+// // await page.goto(...);
+// await inputEmail.fill(...);
+// await inputPassword.fill(...);
+// await expect(locator).toHaveValue(...);
+// await buttonSubmit.click();
