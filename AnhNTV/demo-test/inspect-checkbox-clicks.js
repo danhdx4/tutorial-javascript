@@ -1,0 +1,30 @@
+const { chromium } = require('playwright');
+(async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  await page.goto('http://localhost:4200/auth/login');
+  const input = page.locator('nb-checkbox input[type=checkbox]').first();
+  const label = page.locator('nb-checkbox label').first();
+  const custom = page.locator('nb-checkbox .custom-checkbox').first();
+  const text = page.locator('nb-checkbox .text').first();
+  const describe = async (name) => {
+    console.log(`--- ${name} ---`);
+    console.log('checked', await input.evaluate(el => el.checked));
+    console.log('outer', await input.evaluate(el => el.outerHTML));
+    console.log('labelOuter', await label.evaluate(el => el.outerHTML));
+    console.log('customOuter', await custom.evaluate(el => el.outerHTML));
+  };
+  await describe('before');
+  await text.click({ force: true });
+  await page.waitForTimeout(200);
+  await describe('after text click force');
+  await input.evaluate(el => el.checked = false);
+  await label.click({ force: true });
+  await page.waitForTimeout(200);
+  await describe('after label click force');
+  await input.evaluate(el => el.checked = false);
+  await custom.click({ force: true });
+  await page.waitForTimeout(200);
+  await describe('after custom click force');
+  await browser.close();
+})();

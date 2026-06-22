@@ -45,5 +45,4 @@ expect(placeholderValue1).toEqual('Password');
 const btn = basicForm.getByRole("button", { name: "Submit" });
 expect(btn).toHaveCSS('background-color', 'rgb(255, 61, 113)');
 await btn.click()
-
 })

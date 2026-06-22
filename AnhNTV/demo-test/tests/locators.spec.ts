@@ -77,8 +77,8 @@ const name = Inlineform.getByPlaceholder('Jane Doe');
 await name.fill("Jane Doe");
 
 //Email
-const Email1 = Inlineform.getByPlaceholder('Email');
-await Email1.fill("Email");
+const email1 = Inlineform.getByPlaceholder('Email');
+await email1.fill("Email");
 
 //Remember me
 const rememberme = Inlineform.getByLabel('Remember me');
@@ -123,17 +123,17 @@ test("Locator for Form without labels", async ({ page }) => {
         });
 
 //Recipients
-const Recipients = FormWithoutLabels.getByPlaceholder('Recipients');
-await Recipients.fill('Recipients');
+const recipients = FormWithoutLabels.getByPlaceholder('Recipients');
+await recipients.fill('Recipients');
 //Subject
-const Subject = FormWithoutLabels.getByPlaceholder('Subject');
-await Subject.fill('Subject');
+const subject = FormWithoutLabels.getByPlaceholder('Subject');
+await subject.fill('Subject');
 //Message
-const Message = FormWithoutLabels.getByPlaceholder('Message');
-await Message.fill('Hello người nhận');
+const message = FormWithoutLabels.getByPlaceholder('Message');
+await message.fill('Hello người nhận');
 //Button SEND
-const ButtonSend = FormWithoutLabels.getByRole("Button", {name: "SEND"});
-await ButtonSend.click();
+const buttonSend = FormWithoutLabels.getByRole("Button", {name: "SEND"});
+await buttonSend.click();
     });
 
 
@@ -152,8 +152,8 @@ await emailHori.fill("van.anh@gmail.com");
 const passwordHori = HorizontalForm.getByPlaceholder('Password');
 await passwordHori.fill("123456");
 
-const RememberCheckbox = HorizontalForm.getByLabel('Remember me');
-await RememberCheckbox.check({force : true});
+const rememberCheckbox = HorizontalForm.getByLabel('Remember me');
+await rememberCheckbox.check({force : true});
 
 const buttonSignIn = HorizontalForm.getByRole("button", {name: "SIGN IN"});
 await buttonSignIn.click();

@@ -89,20 +89,5 @@ test("alternative waits", async ({ page }) => {
     await expect(page.locator('#content')).toHaveText("Data loaded with AJAX get request.");
 })
 
-/**## Bài tập về nhà
 
-Viết bài test verify Basic form với các nội dung như sau:
-
-1. Đi tới link http://localhost:4200/
-2. Click vào btn Forms trên menu bar
-3. Click vào bnt Form Layouts trên menu bar
-4. Verify Basic form với các nội dung
-
-- Trường Email có placeholder là 'Email'
-- Trường Password có placeholder là 'Password'
-- Button Submit có mã màu là rgb(255,61,113)
-
-5. Tiến hành filter thông tin Email và Password
-6. Verify text hiển thị trong trường email, password như thông tin đã nhập
-7. Click vào btn Submit */
 

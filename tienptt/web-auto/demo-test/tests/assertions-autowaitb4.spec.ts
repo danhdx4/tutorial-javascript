@@ -1,8 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-
-
 test ('test verify basic Form and Submit', async({page})=>{
+ 
   // đi tới link
   await page.goto("http://localhost:4200/");
 

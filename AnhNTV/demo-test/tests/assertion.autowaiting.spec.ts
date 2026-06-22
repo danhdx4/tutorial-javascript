@@ -107,52 +107,66 @@ test("alternative waits", async ({ page }) => {
 
 test(" Verify Basic form", async ({ page }) => {
     await page.goto('http://localhost:4200/')
-     const forms= page.locator('nb-menu').filter({
+    const forms = page.locator('nb-menu').filter({
         hasText: 'Forms'
-        });   
-// Click vào btn Forms trên menu bar
-const buttonForms = forms.getByRole("link" , {name:'Forms'})
-await buttonForms.click();
-// Click vào bnt Form Layouts trên menu bar
-const buttonFormLayouts = forms.getByRole("link" , {name:'Form Layouts'})
-await buttonFormLayouts.click();
-// Verify Basic form với các nội dung
-// Trường Email có placeholder là 'Email'
-const basicForm = page.locator('nb-card').filter({
+    });
+    // Click vào btn Forms trên menu bar
+    const buttonForms = forms.getByRole("link", { name: 'Forms' })
+    await buttonForms.click();
+    // Click vào bnt Form Layouts trên menu bar
+    const buttonFormLayouts = forms.getByRole("link", { name: 'Form Layouts' })
+    await buttonFormLayouts.click();
+    // Verify Basic form với các nội dung
+    // Trường Email có placeholder là 'Email'
+    const basicForm = page.locator('nb-card').filter({
         hasText: 'Basic form'
-        });   
-// Lấy input email trong Basic form
-  const inputEmaillocator = basicForm.getByPlaceholder('Email');
-  const imputEmail = await inputEmaillocator.getAttribute('placeholder');
+    });
+    // Lấy input email trong Basic form
+    const inputEmaillocator = basicForm.getByPlaceholder('Email');
+    const imputEmail = await inputEmaillocator.getAttribute('placeholder');
 
-// Kiểm tra placeholder Email
-await expect(imputEmail).toEqual("Email");
-console.log("placeholder Email = ",imputEmail);
+    // Kiểm tra placeholder Email
+    await expect(imputEmail).toEqual("Email");
+    console.log("placeholder Email = ", imputEmail);
 
-// Trường Password có placeholder là 'Password'
-const inputPasswordLocator = basicForm.getByPlaceholder('Password');
-const inputPassword = await inputPasswordLocator.getAttribute('placeholder');  
-// Kiểm tra placeholder password
-await expect(inputPassword).toEqual("Password");
-console.log("placeholder Password =",inputPassword);
+    // Trường Password có placeholder là 'Password'
+    const inputPasswordLocator = basicForm.getByPlaceholder('Password');
+    const inputPassword = await inputPasswordLocator.getAttribute('placeholder');
+    // Kiểm tra placeholder password
+    await expect(inputPassword).toEqual("Password");
+    console.log("placeholder Password =", inputPassword);
 
-// Button Submit có mã màu là rgb(255,61,113)
-const buttonSubmit = basicForm.getByRole("button", {name:"SUBMIT"});
-await expect(buttonSubmit).toHaveCSS("background-color","rgb(255, 61, 113)");
+    // Button Submit có mã màu là rgb(255,61,113)
+    const buttonSubmit = basicForm.getByRole("button", { name: "SUBMIT" });
+    await expect(buttonSubmit).toHaveCSS("background-color", "rgb(255, 61, 113)");
 
-// Tiến hành filter thông tin Email và Password
-await inputEmaillocator.fill("vananh@gmail.com");
-await inputPasswordLocator.fill("1234567");
+    // Tiến hành filter thông tin Email và Password
+    await inputEmaillocator.fill("vananh@gmail.com");
+    await inputPasswordLocator.fill("1234567");
 
-// Verify text hiển thị trong trường email, password như thông tin đã nhập
-await expect(imputEmail).toEqual("Email");
-console.log("Input email =","vananh@gmail.com");
+    // Verify text hiển thị trong trường email, password như thông tin đã nhập
+    await expect(imputEmail).toEqual("Email");
+    console.log("Input email =", "vananh@gmail.com");
 
-await expect(inputPassword).toEqual("Password");
-console.log("Input Password =","1234567");
+    await expect(inputPassword).toEqual("Password");
+    console.log("Input Password =", "1234567");
+
+    /**
+     * Lanh note:
+     *  biến inputEmail, password để lấy ra value của thuộc tính PlaceHolder -> Assertion này ko đúng vào yêu cầu
+     * phần console.log: phần log này ko có ý nghĩa vì ko có tham số đầu vào
+     */
 
 
-// Click vào btn Submit
-await buttonSubmit.click();
+    // Click vào btn Submit
+    await buttonSubmit.click();
 
 });
+
+
+// Tất cả các action sẽ phải đi kèm await: 
+// // await page.goto(...);
+// await inputEmail.fill(...);
+// await inputPassword.fill(...);
+// await expect(locator).toHaveValue(...);
+// await buttonSubmit.click();

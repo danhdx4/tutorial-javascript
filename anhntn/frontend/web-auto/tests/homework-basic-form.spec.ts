@@ -42,3 +42,19 @@ test('Verify Basic form on Form Layouts page', async ({ page }) => {
 
   await submitButton.click();
 });
+/**## Bài tập về nhà
+
+Thực hiện các step và các bài kiểm tra sau:
+
+1. Đi tới link: http://localhost:4200/auth/login
+2. Lên kịch bản test verify cho các case màn hình Login. Gợi ý:
+
+- Trạng thái khởi tạo: email, password có placeholder, checkbox ko được chheck, btn login disable
+- Nhập đủ email, password hợp lệ
+  => Verify thông tin phản ánh đúng, btn Login được enable
+- Nhập thiếu email hoặc password
+  => Verify hiển thị msg yêu cầu nhập, btn Login disable
+- Nhập email sai định dạng
+  => Verify hiển thị msg thông báo email không hợp lệ, btn Login disable
+- Nhập password không hợp lệ
+  => Verìy hiển thị msg thông báo password không hợp lệ, btn Login disable */
