@@ -84,18 +84,21 @@ test("Locator for Using the Grid", async ({ page }) => {
 test("Inline form", async ({ page }) => {
   await page.goto("http://localhost:4200/pages/forms/layouts");
   const InputInline = page .locator("nb-card") .filter({ hasText: "Inline form" });
+
   //name
   const nameInputInline = InputInline.getByPlaceholder("Jane Doe");
   await nameInputInline.fill("Pham Thi Thuy Tien");
+
   //mail
   const emailInputInline = InputInline.getByPlaceholder("Email");
   await emailInputInline.fill("tienptt1998@gmail.com");
+
   //checkbox
   const rememberMeCheckbox = InputInline.getByRole("checkbox", {
     name: "Remember me",
   });
   await rememberMeCheckbox.check({ force: true });
-  //butotn sign in
+  //button sign in
   const signInButton = InputInline.getByRole("button", { name: "SUBMIT" });
   await signInButton.click();
 });
