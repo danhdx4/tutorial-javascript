@@ -472,50 +472,56 @@ Thực hiện các step và các bài kiểm tra sau:
 
 # Buổi 6
 
-## Tooltips - 37
+## Nội dung cần đạt
 
-// Xem xét bỏ qua phần này
+- Hiểu và sử dụng được các hàm cho dialog
+- Biết cách tìm kiếm row trên table
+- Tương tác với các row trên table
+
+## Dialog
+
+Link: https://playwright.dev/docs/api/class-dialog
+Link thực hành: https://the-internet.herokuapp.com/javascript_alerts
+
+Dialog là các popup native của trình duyệt được tạo bởi JavaScript như:
+
+- alert()
+- confirm()
+- prompt()
+
+Các hàm sử dụng:
+
+- Khi muốn bấm OK: dialog.accept()
+- Khi muốn bấm Cancel: await dialog.dismiss();
+- Lấy nội dung msg: const message = dialog.message();
+- Xác định loại dialog: dialog.type();
+- Lấy giá trị mặc định của ô input trong prompt: dialog.defaultValue()
 
 ```ts
-test("tooltips", async ({ page }) => {
-  await page.getByText("Modal & Overlays").click();
-  await page.getByText("Tooltip").click();
+const { chromium } = require("playwright"); // Or 'firefox' or 'webkit'.
 
-  const toolTipCard = page.locator("nb-card", {
-    hasText: "Tooltip Placements",
+(async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  page.on("dialog", async (dialog) => {
+    console.log(dialog.message());
+    await dialog.dismiss();
   });
-  await toolTipCard.getByRole("button", { name: "Top" }).hover();
-
-  page.getByRole("tooltip");
-  const tooltip = await page.locator("nb-tooltip").textContent();
-  expect(tooltip).toEqual("This is a tooltip");
-});
+  await page.evaluate(() => alert("1"));
+  await browser.close();
+})();
 ```
 
-## Dialog Boxes - 38
+## Web Tables
 
-```ts
-test("dialog box", async ({ page }) => {
-  await page.getByText("Tables & Data").click();
-  await page.getByText("Smart Table").click();
+Dữ liệu được hiển thị dưới dạng bảng. Trong Auto test xử lý:
 
-  page.on("dialog", (dialog) => {
-    expect(dialog.message()).toEqual("Are you sure you want to delete?");
-    dialog.accept();
-  });
-
-  await page
-    .getByRole("table")
-    .locator("tr", { hasText: "mdo@gmail.com" })
-    .locator(".nb-trash")
-    .click();
-  await expect(page.locator("table tr").first()).not.toHaveText(
-    "mdo@gmail.com",
-  );
-});
-```
-
-## Web Tables - 39,40
+- Tìm một row
+- Tìm một cell
+- Chỉnh sửa dữ liệu
+- Xoá dữ lệu
+- Verify dữ liệu hiển thị
+- Làm việc với phân trang
 
 ```ts
 test("web tables", async ({ page }) => {
@@ -545,7 +551,12 @@ test("web tables", async ({ page }) => {
 });
 ```
 
-⇒ Kết thúc buổi 6
+## Bài tập về nhà
+
+Vào link http://localhost:4200/pages/tables/smart-table
+
+- Tìm kiếm row có id = 11
+- Thực hiện xoá row này. (Gợi ý dùng dialog confirm)
 
 ## Date Picker - 41,42
 

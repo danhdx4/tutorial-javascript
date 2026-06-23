@@ -130,5 +130,9 @@ test("Basic form", async ({ page }) => {
     expect(emailTest).toEqual("abc@gmail.com")
     await submitButton.click();
 
+
+// các action thì dùng await
+// các hàm đánh giá thì dùng await VD: toEqual
+
     
 });

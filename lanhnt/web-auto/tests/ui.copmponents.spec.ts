@@ -83,3 +83,52 @@ test("lists and dropdowns", async ({ page }) => {
     }
 
 });
+
+test('dialogs', async ({ page }) => {
+    // Navigate to Dialog demo URL
+    await page.goto('https://the-internet.herokuapp.com/javascript_alerts')
+    const resultTxt = page.locator('#result')
+    const alertTriggerBtn = page.getByRole('button', { name: 'Click for JS Alert' })
+    const confirmTriggerBtn = page.getByRole('button', { name: 'Click for JS Confirm' })
+    const promtTriggerBtn = page.getByRole('button', { name: 'Click for JS Prompt' })
+
+    // bắt sự kiện dialog
+    page.on('dialog', async dialog => {
+        console.log('Check message text: ', dialog.message())
+        console.log('Check dialog type: ', dialog.type())
+        // await dialog.accept();
+    });
+
+    // Alert
+
+    // Confirm dialog
+
+    // Prompt
+
+})
+
+test("web tables", async ({ page }) => {
+    // Navigate to Smart Table Page
+    await page.getByText("Tables & Data").click();
+    await page.getByText("Smart Table").click();
+
+    /**
+     * 1 get the row by any text in this row
+     * Tìm kiếm row có text twitter@outlook.com
+     * clear data ở cột Age, và nhập giá trị mới
+     * verify kết quả nhận được
+     */
+
+
+    /**
+     * 2 get the row based on the value in the specific column
+     * Tìm kiếm row có id = 27
+     * clear data ở cột Email và nhập giá trị mới
+     * verify kết quả tìm được
+     */
+
+    let found = false
+    while (!found) {
+        // todo
+    }
+});
