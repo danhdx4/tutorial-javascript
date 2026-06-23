@@ -20,8 +20,9 @@ test('Table', async ({ page }) => {
   // - Thực hiện xoá row này. (Gợi ý dùng dialog confirm)
   const row11 = page.locator('tr', {hasText: 'mark@gmail.com'});
   const btnDelete = row11.locator('.ng2-smart-action-delete-delete');
+  
   page.on('dialog', async dialog => {
-    await dialog.accept();
+    setTimeout(() => dialog.accept(), 3000);
   });
   await btnDelete.click();
 });
