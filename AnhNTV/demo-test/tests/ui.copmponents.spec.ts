@@ -97,7 +97,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Login Page', () => {
-  
+
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:4200/auth/login');
   });
@@ -113,6 +113,9 @@ test.describe('Login Page', () => {
     await loginButton.click();
 
     await expect(page).toHaveURL('http://localhost:4200/pages/forms/layouts');
+    // Lanh note: C chạt thử case này sẽ bị fail. Nguyên nhân là nó sẽ coi như em click vào màn hình nên sẽ validate trường email. Lần thứ 2 e click vào link này mới redirect được.
+    // Chỗ này là em tìm ra bug này =))
+
     await expect(page.getByText('Layouts')).toBeVisible();
   });
 
@@ -135,7 +138,7 @@ test.describe('Login Page', () => {
     await passwordInput.fill('Abc123!');
     await loginButton.click();
 
-    await expect(page.getByText(/Email.*không.*hợp lệ/i)).toBeVisible();
+    await expect(page.getByText(/Email.*không.*hợp lệ/i)).toBeVisible(); // Lanh note: em dùng text đúng theo web của mình để pass nha 'Email should be the real one!'
     await expect(page).toHaveURL('http://localhost:4200/auth/login');
   });
 

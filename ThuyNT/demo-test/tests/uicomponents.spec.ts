@@ -2,6 +2,13 @@ import { expect, test } from '@playwright/test';
 
 // 2. Lên kịch bản test verify cho các case màn hình Login. Gợi ý:
 
+/**
+ Lanh note: Về kịch bản test, nên chia theo các case như trong thực tế test em nhé. Ví dụ các bài test của em nên đặt lại là:
+ Verify the intialization state for Login page
+ Verify when inputing a correct credential data
+ Verify when inputing an invalid data ...
+ */
+
 // - Trạng thái khởi tạo: email, password có placeholder, checkbox ko được chheck, btn login disable
 test("initialization state", async ({ page }) => {
     await page.goto('http://localhost:4200/auth/login');
@@ -85,7 +92,7 @@ test('Invalid email password', async ({ page }) => {
         'abc',
     ]
 
-    for(const password of testPassword){
+    for (const password of testPassword) {
         await passwordField.fill(password);
         await passwordField.blur();
         await expect(page.getByText('Password should contain from 4 to 50 characters')).toBeVisible();
