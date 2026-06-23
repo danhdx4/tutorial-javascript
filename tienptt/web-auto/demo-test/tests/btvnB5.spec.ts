@@ -1,5 +1,20 @@
 import { test, expect } from '@playwright/test';
 
+// // BTVN buổi 5
+// Thực hiện các step và các bài kiểm tra sau:
+
+// 1. Đi tới link: http://localhost:4200/auth/login
+// 2. Lên kịch bản test verify cho các case màn hình Login. Gợi ý:
+
+// - Trạng thái khởi tạo: email, password có placeholder, checkbox ko được chheck, btn login disable
+// - Nhập đủ email, password hợp lệ
+//   => Verify thông tin phản ánh đúng, btn Login được enable
+// - Nhập thiếu email hoặc password
+//   => Verify hiển thị msg yêu cầu nhập, btn Login disable
+// - Nhập email sai định dạng
+//   => Verify hiển thị msg thông báo email không hợp lệ, btn Login disable
+// - Nhập password không hợp lệ
+//   => Verìy hiển thị msg thông báo password không hợp lệ, btn Login disable
 test.describe('Login Layout', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:4200/auth/login');
@@ -31,9 +46,7 @@ test.describe('Login Layout', () => {
 
   // TC04 - Check Forgot Password Link
   test('TC05 - Check Forgot Password link', async ({ page }) => {
-    await expect(
-      page.getByText('Forgot Password?')
-    ).toBeVisible();
+    await expect(page.getByText('Forgot Password?')).toBeVisible();
   });
 
   // TC05 - Check Remember me Checkbox
@@ -62,16 +75,7 @@ test.describe('Login Layout', () => {
     ).toBeVisible();
   });
 
-  // Case Forgot Password mở đúng trang
-  test('TC8: Verify Forgot Password page', async ({ page }) => {
-    const forgotPasswordLink = page.getByRole('link', { name: 'Forgot Password?' });
-    await forgotPasswordLink.click();
-
-    await expect(page).toHaveURL('http://localhost:4200/auth/request-password');
-    await expect(page.getByRole('heading', { name: 'Forgot Password' })).toBeVisible();
-  });
 // check click Forgot Password? di chuyển đến màn hình Forgot Password
-// có lỗi
 test('TC10 - Verify Forgot Password page', async ({ page }) => {
 const link = page.getByRole('link', { name: 'Forgot Password?' });
 await expect(link).toBeVisible();
@@ -80,7 +84,7 @@ console.log(await page.url());
 });
 
 // check nhập password , k nhập email button login disable
-test('TC9 - Login button is disabled when only Password is entered', async ({ page }) => {
+test('TC11 - Login button is disabled when only Password is entered', async ({ page }) => {
   const passwordInput = page.getByPlaceholder('Password');
   const loginButton = page.getByRole('button', { name: 'LOG IN' });
 
@@ -89,7 +93,7 @@ test('TC9 - Login button is disabled when only Password is entered', async ({ pa
   await expect(loginButton).toBeDisabled();
 });
 // check nhập email, ko nhập password button disable
-test('TC10 - Login button is disabled when only Email is entered', async ({ page }) => {
+test('TC12 - Login button is disabled when only Email is entered', async ({ page }) => {
   //await page.goto('http://localhost:4200/auth/login');
 
   const emailInput = page.getByPlaceholder('Email address');
@@ -99,7 +103,7 @@ test('TC10 - Login button is disabled when only Email is entered', async ({ page
 });
 
 // check nhập email sai định dạng, show messge lỗi 
-test('TC11 - Show error message when email format is invalid', async ({ page }) => {
+test('TC13 - Show error message when email format is invalid', async ({ page }) => {
    // Nhập email sai định dạng
   await page.getByPlaceholder('Email address').fill('abc');
 
@@ -117,7 +121,7 @@ test('TC11 - Show error message when email format is invalid', async ({ page }) 
 
 // check email,pass hợp lệ  button login enable, vào màn hình pw-test
 
-test('TC12 - Login success', async ({ page }) => {
+test('TC14 - Login success', async ({ page }) => {
   //await page.goto('http://localhost:4200/auth/login');
 
   await page.getByPlaceholder('Email address').fill('test@gmail.com');
@@ -132,7 +136,7 @@ test('TC12 - Login success', async ({ page }) => {
   await expect(page.getByText('IOT Dashboard')).toBeVisible();
 });
 //check validate trường passowrd < 4 kí tự
-test('TC13- Password < 4 ki tu', async ({ page }) => {
+test('TC15- Password < 4 ki tu', async ({ page }) => {
   //await page.goto('http://localhost:4200/auth/login');
 
   await page.getByPlaceholder('Email address').fill('tienptt@gmail.com');
@@ -143,7 +147,7 @@ test('TC13- Password < 4 ki tu', async ({ page }) => {
   await expect(loginButton).toBeDisabled();
 });
 //check validate trường passowrd = 4 kí tự
-test('TCPassword =4 kitu', async ({ page }) => {
+test('TC16- Password =4 kitu', async ({ page }) => {
   await page.goto('http://localhost:4200/auth/login');
 
   await page.getByPlaceholder('Email address').fill('test@gmail.com');
@@ -154,7 +158,7 @@ test('TCPassword =4 kitu', async ({ page }) => {
   await expect(loginButton).toBeEnabled();
 });
 //check validate trường passowrd = 50 kí tự
-test('Password =50 ki tu', async ({ page }) => {
+test('TC17- Password =50 ki tu', async ({ page }) => {
   //await page.goto('http://localhost:4200/auth/login');
   const longPassword = 'a'.repeat(50);
   await page.getByPlaceholder('Email address').fill('test@gmail.com');
@@ -164,7 +168,7 @@ test('Password =50 ki tu', async ({ page }) => {
   await expect(loginButton).toBeEnabled();
 });
 //check validate trường passowrd >50  kí tự
-test('Password > 50 characters', async ({ page }) => {
+test('TC18- Password > 50 characters', async ({ page }) => {
  const emailInput = page.getByPlaceholder('Email address');
   const passwordInput = page.getByPlaceholder('Password');
   const loginButton = page.getByRole('button', { name: 'LOG IN' });

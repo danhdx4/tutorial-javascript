@@ -45,7 +45,57 @@ const fieldemail = basicform.getByRole('textbox', { name: 'Email',
   // const passwordValue = await fieldemail.inputValue();
   // expect(passwordValue).toEqual('123456');
 
+
   // 7. Click Submit
   await submitButton.click();
-})
 
+});
+//BTVN BÀI 6
+
+
+test('BTVN 6 - Tìm và xóa row có ID = 11', async ({ page }) => {
+  await page.goto('http://localhost:4200/pages/tables/smart-table');
+test('BTVN 6 - Tìm và xóa row có ID = 11', async ({ page }) => {
+
+  // Mở trang Smart Table
+  await page.goto('http://localhost:4200/pages/tables/smart-table');
+
+  // Lấy nút ">" để chuyển sang trang tiếp theo
+  const nextBtn = page.locator('.ng2-smart-pagination-nav').getByText('>');
+
+  // Biến đánh dấu đã tìm thấy hay chưa
+  let found = false;
+
+  // Lặp cho đến khi tìm thấy ID = 11
+  while (!found) {
+
+    // Tìm dòng có cột ID = 11 trên trang hiện tại
+    const targetRowById = page.getByRole('row').filter({has: page.locator('td').nth(1).filter({ hasText: '11' }),
+    });
+
+    // In ra số dòng tìm được (để debug)
+    console.log('Số dòng tìm thấy:', await targetRowById.count());
+
+    // Nếu tìm thấy row có ID = 11
+    if (await targetRowById.count() > 0) {
+      found = true;
+
+      // Đăng ký xử lý hộp thoại xác nhận xóa (Confirm)
+      page.once('dialog', async (dialog) => {
+        // Nhấn nút OK trên popup
+        await dialog.accept();
+      });
+
+      // Click vào icon thùng rác để xóa
+      await targetRowById.locator('.nb-trash').click();
+
+      // Thoát khỏi vòng lặp vì đã xóa xong
+      break;
+
+    } else {
+      // Nếu chưa tìm thấy thì chuyển sang trang tiếp theo
+      await nextBtn.click();
+    }
+  }
+});
+});
