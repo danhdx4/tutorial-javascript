@@ -31,6 +31,8 @@ test("Login button enable", async ({ page }) => {
     await passwordField.fill("123456");
     await expect(loginBtn).toBeEnabled();
     await loginBtn.click();
+    await expect(page).toHaveURL('http://localhost:4200/pages/iot-dashboard');
+
 });
 
 test('Login button disable', async ({ page }) => {
@@ -90,18 +92,6 @@ test('Invalid email password', async ({ page }) => {
     }
 })
 
-test('Login success', async ({ page }) => {
-    await page.goto('http://localhost:4200/auth/login')
-
-    const emailField = page.getByPlaceholder("Email");
-    const passwordField = page.getByPlaceholder("Password");
-    const loginBtn = page.getByRole("button", { name: "Log in" })
-
-    await emailField.fill("abc@gmail.com");
-    await passwordField.fill("123456");
-    await loginBtn.click();
-    await expect(page).toHaveURL('http://localhost:4200/pages/iot-dashboard');
-})
 
 
 
