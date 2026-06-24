@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:4200/pages/forms/layouts')
-})
+// test.beforeEach(async ({ page }) => {
+//     await page.goto('http://localhost:4200/pages/forms/layouts')
+// })
 
 test("input fields", async ({ page }) => {
     const usingTheGridEmailInput = page
@@ -159,3 +159,17 @@ test("web tables", async ({ page }) => {
         await nextBtn.click()
     }
 });
+
+test('date picker', async ({ page }) => {
+    // navigate to date picker page
+    await page.goto('http://localhost:4200/pages/forms/datepicker')
+    const formPickerField = page.getByPlaceholder('Form Picker')
+
+    await formPickerField.click()
+    const calendarContainer = page.locator('nb-calendar')
+    let calendarMonthAndYear = await page.locator("nb-calendar-view-mode").textContent();
+
+    // Choose the specific date in the month
+
+    // Choose dynamic date in the month
+})
