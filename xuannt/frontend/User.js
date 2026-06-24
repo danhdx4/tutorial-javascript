@@ -1,4 +1,4 @@
-class User {
+/**class User {
     constructor(id,name){
         this.id=id;
         this.name=name;
@@ -18,22 +18,22 @@ console.log(user,object)
 Dùng template literal in ra thông tin sản phẩm:
 "Sản phẩm: Áo thun — Giá: 150.000 VND — Còn hàng: ✅" */
 
-const sanpham="Sản phẩm: Áo thun";
+/**const sanpham="Sản phẩm: Áo thun";
 const gia= "Giá: 150000 VND";
 const trangthai= "Còn hàng: ✅";
 console.log(`${sanpham}-${gia}-${trangthai}`)
 
 /**
  in ra tên, giá, danh mục của sản phẩm
- */
+ 
 const tensp="Tủ lạnh";
 const giasp="15000000 vnd";
 const danhmuc="Đồ gia dụng";
 console.log(`${tensp} ${giasp} ${danhmuc}`)
 
-/**
+
  Cho original và discount(%) tính và in ra giá sau khi giảm ngay trong template literal
- */
+ 
 const giagoc=15000000;
 const giamgia=15;
 
@@ -44,7 +44,7 @@ console.log(`Gia sau giam= ${giagoc-giagoc*giamgia/100}`);
  Constructor: id, name, price, category
  tạo method getInfo() dùng template literal
  tạo method toJSON() trả về plain object
- */
+ 
  class Product {
     constructor(id, name_2, price_2, category) {
       this.id = id;
@@ -155,7 +155,7 @@ console.log(product.getLabel());
 //console.log(product.toJson()); // Chuyển thành plain Object
 const product_2 = Product1.fromJSON(product.toJson());
 console.log(product_2);
-*/ 
+
 // Bài 2 — Class ProductStore
 // Constructor nhận mảng Product[]
 // getAll() → trả về toàn bộ
@@ -200,3 +200,28 @@ console.log("===== Tìm theo ID =====");
 console.log(pro.findById(1));
 console.log("===== Lọc theo category =====");
 console.log(pro.findByCategory("Trang sức"));
+*/
+class ProductStore{
+  constructor(product = []){
+    this.list_product_nhan= product;
+  }
+  getAll(){
+    return this.list_product_nhan;
+  }
+  find
+}
+  const list = [
+    {
+      id:1,
+      name:"Áo sơ mi",
+      categopry: "ao"
+    },
+    {
+      id:2,
+      name: "Quần dài",
+      category:"quan"
+    }
+  ]
+  const classProductStore= new ProductStore(list);
+  console.log()
+

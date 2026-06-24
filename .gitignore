@@ -3,3 +3,17 @@ note.txt
 **/node_modules
 **/.DS_Store
 danhdx/products-api/*
+**/.gitignore
+lanhnt/mobile-auto
+<<<<<<< HEAD
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+=======
+**/.angular/cache/
+>>>>>>> 17ba8d2bb09934aec6d84d4a1f27cdf6278d569a
