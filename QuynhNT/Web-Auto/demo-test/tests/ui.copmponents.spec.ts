@@ -23,6 +23,10 @@ export class LoginPage {
 test(`Verify Title Login`, async ({ page }) => {
   //Title Login
   await page.goto("http://localhost:4200/auth/login");
+
+  // Lanh note: Case này sẽ ko có ý nghĩa vì e định vị bằng text, rồi lại verify bằng chính text đó thì luôn pass nha
+  // Ví dụ e dùng id để định vị như cách sau: 
+  // const locatortitleLogin = page.locator("#title")
   const locatortitleLogin = page.getByText("Login");
   await expect(locatortitleLogin).toHaveText("Login");
   await expect(locatortitleLogin).toHaveCSS("color", "rgb(34, 43, 69)");

@@ -44,6 +44,9 @@ test("verify login with valid email and password", async ({ page }) => {
   expect(await emailInput.inputValue()).toEqual("anhtp@example.com");
   expect(await passwordInput.inputValue()).toEqual("Password123");
   await expect(loginButton).toBeEnabled();
+
+  await loginButton.click();
+  //await expect(page).toHaveURL("http://localhost:4200/dashboard");
 });
 
 // - Nhập thiếu email hoặc password
@@ -88,6 +91,7 @@ test("verify login with invalid email format", async ({ page }) => {
   expect(await passwordInput.inputValue()).toEqual("Password123");
   await expect(msgInvalidEmail).toBeVisible();
   console.log(await msgInvalidEmail.textContent());
+  // await expect.any(msgInvalidEmail).toHaveText("Email should be the real one!");
   await expect(loginButton).toBeDisabled();
 });
 

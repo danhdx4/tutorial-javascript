@@ -7,7 +7,7 @@ test.describe('Login Page Tests', () => {
   });
 
   //  1. Verify UI ban đầu
- 
+
   test('Verify initial UI', async ({ page }) => {
 
     // Title + subtitle
@@ -48,6 +48,8 @@ test.describe('Login Page Tests', () => {
     await expect(passwordInput).toHaveValue('Xuan1234@');
 
     await expect(loginBtn).toBeEnabled();
+
+    // Lanh note: Em nên thêm action click vào button Login và verify page direct tới nữa nha
   });
 
   //  3. Thiếu email
@@ -96,7 +98,7 @@ test.describe('Login Page Tests', () => {
   });
 
   //  6. Password không hợp lệ
-  
+
   test('Invalid password', async ({ page }) => {
 
     const emailInput = page.getByPlaceholder('Email address');
