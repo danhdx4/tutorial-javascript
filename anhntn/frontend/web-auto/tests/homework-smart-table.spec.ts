@@ -15,6 +15,7 @@ test("Delete row with ID 11 from smart table", async ({ page }) => {
     // Navigate to page 2
     await page.getByRole('link', { name: '2' }).click()
     await page.waitForLoadState('networkidle')
+    //Lanh note: Cách click trực tiếp vào page 2 sẽ khó mở rộng. Em nên tìm kiếm common để linh hoạt cách tìm nha
 
     // Count rows before deletion
     const rowsBefore = await page.locator('tbody tr').count()
