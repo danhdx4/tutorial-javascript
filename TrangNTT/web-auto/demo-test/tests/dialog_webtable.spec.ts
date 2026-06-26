@@ -12,6 +12,7 @@ test('Delete row with ID = 11', async ({ page }) => {
     .filter({
       has: page.locator('td').first().getByText('11', { exact: true }),
     });
+  // Lanh note: id là cột thứ 2 nên cần sửa thành dùng nth(1) thay vì first e nhé.  
 
   await expect(row).toHaveCount(1);
 
