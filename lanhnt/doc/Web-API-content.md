@@ -558,7 +558,16 @@ Vào link http://localhost:4200/pages/tables/smart-table
 - Tìm kiếm row có id = 11
 - Thực hiện xoá row này. (Gợi ý dùng dialog confirm)
 
-## Date Picker - 41,42
+# Buổi 7: Date Picker
+
+## Nội dung cần đạt
+
+- Chọn ngày trong Date Picker
+- Chọn ngày động (ví dụ: hôm nay + 30 ngày, + 1 năm)
+- Viết vòng lặp để điều hướng calendar
+- Hiểu khi nào dùng Date của JavaScript
+
+Date Picker là component cho phép người dùng chọn ngày tháng.
 
 ```ts
 test("datepicker", async ({ page }) => {
@@ -585,13 +594,24 @@ test("datepicker", async ({ page }) => {
   await calendarInputField.click();
 
   let date = new Date();
-  date.setDate(date.getDate() + 500);
+  let newDate = date.setDate(date.getDate() + 3);
 
   const expectedDate = date.getDate().toString();
   const expectedMonthShort = date.toLocaleString("en-US", { month: "short" });
   const expectedMonthLong = date.toLocaleString("en-US", { month: "long" });
   const expectedYear = date.getFullYear();
   const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
+  const expectedMonthAndYear = `${expectedMonthLong} ${expectedYear}`;
+  console.log(`
+        date = ${date},
+        newDate = ${newDate},
+        expectedDate = ${expectedDate},
+        expectedMonthShort = ${expectedMonthShort},
+        expectedMonthLong = ${expectedMonthLong},
+        expectedYear = ${expectedYear},
+        dateToAssert = ${dateToAssert},
+        expectedMonthAndYear = ${expectedMonthAndYear}
+        `);
 
   let calendarMonthAndYear = await page
     .locator("nb-calendar-view-mode")
@@ -615,70 +635,13 @@ test("datepicker", async ({ page }) => {
 });
 ```
 
-## Sliders - 43
+## Bài tập về nhà
 
-// Xem xét bỏ qua phần này - Nếu học tốt thì mới nên đưa vào
+1. Vào link 'http://localhost:4200/pages/forms/datepicker'
+2. Chọn form input range-datepicker
+3. Chọn khoảng thời gian từ ngày hiện tại tới cách đó 5 ngày.
 
-```ts
-test("sliders", async ({ page }) => {
-  // Update attribute
-  // const tempGauge = page.locator('[tabtitle="Temperature"] ngx-temperature-dragger circle')
-  // await tempGauge.evaluate(node => {
-  //   node.setAttribute('cx', '232.630')
-  //   node.setAttribute('cy', '232.630')
-  // })
-  // await tempGauge.click()
-
-  // Mouse movement
-  const tempBox = page.locator(
-    '[tabtitle="Temperature"] ngx-temperature-dragger',
-  );
-
-  await tempBox.scrollIntoViewIfNeeded();
-
-  const box = await tempBox.boundingBox();
-  const x = box.x + box.width / 2;
-  const y = box.y + box.height / 2;
-
-  await page.mouse.move(x, y);
-  await page.mouse.down();
-  await page.mouse.move(x + 100, y);
-  await page.mouse.move(x + 100, y + 100);
-  await page.mouse.up();
-
-  await expect(tempBox).toContainText("30");
-});
-```
-
-## Drag & Drop with iFrames (cần học)
-
-Link: https://www.globalsqa.com/demo-site/draganddrop/
-
-```ts
-test("drag and drop with iframe", async ({ page }) => {
-  await page.goto("https://www.globalsqa.com/demo-site/draganddrop/");
-
-  const frame = page.frameLocator('[rel-title="Photo Manager"] iframe');
-  await frame
-    .locator("li", { hasText: "High Tatras 2" })
-    .dragTo(frame.locator("#trash"));
-
-  // more precise control
-  await frame.locator("li", { hasText: "High Tatras 4" }).hover();
-  await page.mouse.down();
-  await frame.locator("#trash").hover();
-  await page.mouse.up();
-
-  await expect(frame.locator("#trash li h5")).toHaveText([
-    "High Tatras 2",
-    "High Tatras 4",
-  ]);
-});
-```
-
-⇒ Kết thúc buổi 7
-
-Hết mục này, bài tập về nhà sẽ là nhập userName, passWord, chọn option rồi ấn Submit
+- Ví dụ: today = 28/6/2026 => range '28/6/2026 - 2/7/2026'
 
 # Buổi 8,9: Page Object Model
 
