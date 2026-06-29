@@ -31,8 +31,7 @@ test("date picket", async ({ page }) => {
     if (date.getMonth() === endDate.getMonth() && date.getFullYear() === endDate.getFullYear()) {
         await page.locator('.day-cell').getByText(expectedEndDate, { exact: true }).click();
     } else {
-        const btnNext = page.locator('.next-month');
-        await btnNext.click();
+        await page.locator('.next-month').click();
         await page.locator('.day-cell').getByText(expectedEndDate, { exact: true }).click();
     }
 
