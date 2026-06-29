@@ -138,7 +138,7 @@ test.describe('Login Page', () => {
     await passwordInput.fill('Abc123!');
     await loginButton.click();
 
-    await expect(page.getByText(Email should be the real one!)).toBeVisible(); // Lanh note: em dùng text đúng theo web của mình để pass nha 'Email should be the real one!'
+    await expect(page.getByText('Email should be the real one!')).toBeVisible(); // Lanh note: em dùng text đúng theo web của mình để pass nha 'Email should be the real one!'
     await expect(page).toHaveURL('http://localhost:4200/auth/login');
   });
 
