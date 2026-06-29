@@ -20,11 +20,12 @@ test('Date Picker', async ({ page }) => {
   await page.locator('.day-cell').getByText('29', { exact: true }).click();
 
   // check month, year
-  if (startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear()) {
-    await page.locator('.day-cell').getByText(endDate.getDate().toString(), { exact: true }).click();
-  } else {
+  const checked = startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
+  if (!checked) {
     const btnNext = page.locator('.next-month');
     await btnNext.click();
-    await page.locator('.day-cell').getByText(endDate.getDate().toString(), { exact: true }).click();
+  } else {
+    // do nothing
   }
+  await page.locator('.day-cell').getByText(endDate.getDate().toString(), { exact: true }).click();
 });
