@@ -58,3 +58,61 @@ Thực hiện các step và các bài kiểm tra sau:
   => Verify hiển thị msg thông báo email không hợp lệ, btn Login disable
 - Nhập password không hợp lệ
   => Verìy hiển thị msg thông báo password không hợp lệ, btn Login disable */
+
+  /**## Bài tập về nhà
+
+1. Vào link 'http://localhost:4200/pages/forms/datepicker'
+2. Chọn form input range-datepicker
+3. Chọn khoảng thời gian từ ngày hiện tại tới cách đó 5 ngày. */
+
+test('Select range datepicker from today to 5 days later', async ({ page }) => {
+  await page.goto('http://localhost:4200/pages/forms/datepicker');
+
+  // Tính toán ngày động
+  const today = new Date();
+  const endDate = new Date();
+  endDate.setDate(today.getDate() + 5);
+
+  const startDay = today.getDate().toString();
+  const endDay = endDate.getDate().toString();
+  const startMonthShort = today.toLocaleString('en-US', { month: 'short' });
+  const endMonthShort = endDate.toLocaleString('en-US', { month: 'short' });
+  const startYear = today.getFullYear();
+  const endYear = endDate.getFullYear();
+
+  const expectedStartDate = `${startMonthShort} ${startDay}, ${startYear}`;
+  const expectedEndDate = `${endMonthShort} ${endDay}, ${endYear}`;
+  const expectedRangeValue = `${expectedStartDate} - ${expectedEndDate}`;
+
+  console.log('Expected range:', expectedRangeValue);
+
+  // Mở range datepicker
+  const rangePickerInput = page.getByPlaceholder('Range Picker');
+  await rangePickerInput.click();
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(300);
+
+  // Click ngày bắt đầu (hôm nay)
+  const startDateCell = page
+    .locator('[class="day-cell ng-star-inserted"]')
+    .filter({ hasText: new RegExp(`^${startDay}$`) });
+  await startDateCell.first().click();
+  await page.waitForTimeout(500);
+
+  // Click ngày kết thúc (hôm nay + 5)
+  // Nếu month khác nhau, click next-month để navigate
+  if (startMonthShort !== endMonthShort || startYear !== endYear) {
+    const nextButton = page.locator('button.next-month').first();
+    await nextButton.click();
+    await page.waitForTimeout(300);
+  }
+
+  const endDateCell = page
+    .locator('[class="day-cell ng-star-inserted"]')
+    .filter({ hasText: new RegExp(`^${endDay}$`) });
+  await endDateCell.first().click();
+  await page.waitForTimeout(500);
+
+  // Verify giá trị input
+  await expect(rangePickerInput).toHaveValue(expectedRangeValue);
+});
