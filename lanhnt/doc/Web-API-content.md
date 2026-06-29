@@ -756,11 +756,10 @@ export enum PageUrl {
 
 ### Sửa file script theo page object
 
-doing...
-
-### Bài tập về nhà
-
-Viết lại bài tập về nhà date picker theo POM
+1. Login Page
+2. Form Layout Page
+3. Date Picker Page
+4. Smart Table Page
 
 ## Parametrized Methods
 
