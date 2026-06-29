@@ -481,7 +481,7 @@ Thực hiện các step và các bài kiểm tra sau:
 ## Dialog
 
 Link: https://playwright.dev/docs/api/class-dialog
-Link thực hành: https://the-internet.herokuapp.com/javascript_alerts
+Link thực hành: n 
 
 Dialog là các popup native của trình duyệt được tạo bởi JavaScript như:
 
