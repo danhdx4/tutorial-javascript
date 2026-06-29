@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:4200/pages/forms/layouts')
-})
+// test.beforeEach(async ({ page }) => {
+//     await page.goto('http://localhost:4200/pages/forms/layouts')
+// })
 
 test("input fields", async ({ page }) => {
     const usingTheGridEmailInput = page
@@ -159,3 +159,49 @@ test("web tables", async ({ page }) => {
         await nextBtn.click()
     }
 });
+
+test('date picker', async ({ page }) => {
+    // navigate to date picker page
+    await page.goto('http://localhost:4200/pages/forms/datepicker')
+    const formPickerField = page.getByPlaceholder('Form Picker')
+
+    await formPickerField.click()
+    const calendarContainer = page.locator('nb-calendar')
+    let calendarMonthAndYearField = page.locator("nb-calendar-view-mode")
+
+    // Choose the specific date in the month
+    // await page.locator('[class="day-cell ng-star-inserted"]').getByText('1', { exact: true }).click()
+    // await expect(formPickerField).toHaveValue('Jun 1, 2026')
+
+    // Choose dynamic date in the month
+    let date = new Date();
+    date.setDate(date.getDate() + 500);
+
+    const expectedDate = date.getDate().toString();
+    const expectedMonthShort = date.toLocaleString("en-US", { month: "short" });
+    const expectedMonthLong = date.toLocaleString("en-US", { month: "long" });
+    const expectedYear = date.getFullYear();
+    const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
+    const expectedMonthAndYear = `${expectedMonthLong} ${expectedYear}`;
+    console.log(`
+          date = ${date},
+          newDate = ${date.setDate(date.getDate() + 500)},
+          expectedDate = ${expectedDate},
+          expectedMonthShort = ${expectedMonthShort},
+          expectedMonthLong = ${expectedMonthLong},
+          expectedYear = ${expectedYear},
+          dateToAssert = ${dateToAssert},
+          expectedMonthAndYear = ${expectedMonthAndYear}
+          `);
+
+    // await page.locator('[class="day-cell ng-star-inserted"]').getByText(expectedDate, { exact: true }).click()
+    // await expect(formPickerField).toHaveValue(dateToAssert)
+
+    while (!(await calendarMonthAndYearField.textContent())?.includes(expectedMonthAndYear)) {
+        await page.locator('button.next-month').click()
+        // await page.locator("nb-calendar-view-mode").textContent();
+    }
+
+    await page.locator('[class="day-cell ng-star-inserted"]').getByText(expectedDate, { exact: true }).click()
+    await expect(formPickerField).toHaveValue(dateToAssert)
+})

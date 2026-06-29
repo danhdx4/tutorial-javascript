@@ -175,3 +175,116 @@ test("web tables", async ({ page }) => {
     await nextBtn.click();
   }
 });
+
+// 1. Vào link 'http://localhost:4200/pages/forms/datepicker'
+// 2. Chọn form input range-datepicker
+// 3. Chọn khoảng thời gian từ ngày hiện tại tới cách đó 5 ngày.
+
+// - Ví dụ: today = 28/6/2026 => range '28/6/2026 - 2/7/2026'
+test("Form date picker - specific date", async ({ page }) => {
+  // navigate to date picker page
+  await page.goto("http://localhost:4200/pages/forms/datepicker");
+  const formPickerField = page.getByPlaceholder("Form Picker");
+
+  await formPickerField.click();
+  const calendarContainer = page.locator("nb-calendar");
+  let calendarMonthAndYear = await page
+    .locator("nb-calendar-view-mode")
+    .textContent();
+
+  // Choose the specific date in the month
+  await page
+    .locator('[class="day-cell ng-star-inserted"]')
+    .getByText("21", { exact: true })
+    .click();
+  await expect(formPickerField).toHaveValue("Jun 21, 2026");
+  // Choose dynamic date in the month
+});
+
+test("Form date picker - dynamic date", async ({ page }) => {
+  // navigate to date picker page
+  await page.goto("http://localhost:4200/pages/forms/datepicker");
+  const formPickerField = page.getByPlaceholder("Form Picker");
+
+  await formPickerField.click();
+  const calendarContainer = page.locator("nb-calendar");
+  let calendarMonthAndYear = await page
+    .locator("nb-calendar-view-mode")
+    .textContent();
+
+  // Choose the specific date in the month
+
+  // Choose dynamic date in the month
+  let date = new Date();
+  date.setDate(date.getDate() - 5); // subtract 5 days from the current date
+
+  const expectedDate = date.getDate().toString();
+  const expectedMonthShort = date.toLocaleString("en-US", { month: "short" });
+  const expectedMonthLong = date.toLocaleString("en-US", { month: "long" });
+  const expectedYear = date.getFullYear();
+  const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
+  const expectedMonthAndYear = `${expectedMonthLong} ${expectedYear}`;
+  console.log(`
+        date = ${date},
+        newDate = ${date.setDate(date.getDate() - 5)},
+        expectedDate = ${expectedDate},
+        expectedMonthShort = ${expectedMonthShort},
+        expectedMonthLong = ${expectedMonthLong},
+        expectedYear = ${expectedYear},
+        dateToAssert = ${dateToAssert},
+        expectedMonthAndYear = ${expectedMonthAndYear}
+        `);
+
+  await page
+    .locator('[class="day-cell ng-star-inserted"]')
+    .getByText(expectedDate, { exact: true })
+    .click();
+  await expect(formPickerField).toHaveValue(dateToAssert);
+});
+
+test("Date picker next month", async ({ page }) => {
+  // navigate to date picker page
+  await page.goto("http://localhost:4200/pages/forms/datepicker");
+  const formPickerField = page.getByPlaceholder("Form Picker");
+
+  await formPickerField.click();
+  const calendarContainer = page.locator("nb-calendar");
+  let calendarMonthAndYearField = page.locator("nb-calendar-view-mode");
+
+  // Choose dynamic date in the month
+  let date = new Date();
+  date.setDate(date.getDate() + 365);
+
+  const expectedDate = date.getDate().toString();
+  const expectedMonthShort = date.toLocaleString("en-US", { month: "short" });
+  const expectedMonthLong = date.toLocaleString("en-US", { month: "long" });
+  const expectedYear = date.getFullYear();
+  const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
+  const expectedMonthAndYear = `${expectedMonthLong} ${expectedYear}`;
+  console.log(`
+          date = ${date},
+          newDate = ${date.setDate(date.getDate() + 365)},
+          expectedDate = ${expectedDate},
+          expectedMonthShort = ${expectedMonthShort},
+          expectedMonthLong = ${expectedMonthLong},
+          expectedYear = ${expectedYear},
+          dateToAssert = ${dateToAssert},
+          expectedMonthAndYear = ${expectedMonthAndYear}
+          `);
+
+  // hàm while() sẽ lặp lại cho đến khi điều kiện trong while() là false, nếu điều kiện là true thì sẽ tiếp tục lặp lại
+  // điều kiện hàm while là click vào button next-month cho đến khi text content của element calendarMonthAndYearField chứa expectedMonthAndYear
+  while (
+    !(await calendarMonthAndYearField.textContent())?.includes(
+      expectedMonthAndYear,
+    )
+  ) {
+    await page.locator("button.next-month").click();
+  }
+
+  await page
+    .locator('[class="day-cell ng-star-inserted"]')
+    .getByText(expectedDate, { exact: true })
+    .click();
+  await expect(formPickerField).toHaveValue(dateToAssert);
+});
