@@ -14,18 +14,19 @@ test('Date Picker', async ({ page }) => {
 
   // tới sau 5 ngày 
   const endDate = new Date();
-  endDate.setDate(endDate.getDate() + 5);
+  // endDate.setDate(endDate.getDate() + 5);
+  endDate.setDate(endDate.getDate() + 29);
 
   // click current date
-  await page.locator('.day-cell').getByText('29', { exact: true }).click();
+  const currentDateText = startDate.getDate().toString();
+  await page.locator('.day-cell').getByText(currentDateText, { exact: true }).click();
 
   // check month, year
-  const checked = startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear();
-  if (!checked) {
+  while (startDate.getMonth() !== endDate.getMonth() || startDate.getFullYear() !== endDate.getFullYear()) {
     const btnNext = page.locator('.next-month');
     await btnNext.click();
-  } else {
-    // do nothing
+    startDate.setMonth(startDate.getMonth() + 1)
   }
-  await page.locator('.day-cell').getByText(endDate.getDate().toString(), { exact: true }).click();
+  const endDateText = endDate.getDate().toString();
+  await page.locator('[class="range-cell day-cell ng-star-inserted"]').getByText(endDateText, { exact: true }).click();
 });
