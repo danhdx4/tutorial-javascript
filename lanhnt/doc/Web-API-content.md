@@ -481,7 +481,7 @@ Thực hiện các step và các bài kiểm tra sau:
 ## Dialog
 
 Link: https://playwright.dev/docs/api/class-dialog
-Link thực hành: https://the-internet.herokuapp.com/javascript_alerts
+Link thực hành: n
 
 Dialog là các popup native của trình duyệt được tạo bởi JavaScript như:
 
@@ -645,145 +645,121 @@ test("datepicker", async ({ page }) => {
 
 # Buổi 8,9: Page Object Model
 
-Lưu ý: Sẽ cần chỉnh sửa 1 chút
+Link: https://playwright.dev/docs/pom
 
-- Tạo basePage để quy định hàm common
-- Tạo hàm common waitForLoad() để đảm bảo page được load trước khi thực hiện các action khác
+## Nội dung cần đạt
 
-**1 buổi giới thiệu, làm bài demo**
+1. Hiểu Page Object Model là gì và tại sao cần sử dụng
 
-- Giới thiệu về PageObject
-- Chia thư mục, tổ chức code tạo class, import khi dùng trong file test
-- Tối ưu hóa code cơ bản ở buổi 1
-- ⇒ Bài tập về nhà: 1 bài tương tự bài trên lớp
+- Nhược điểm khi viết locator trực tiếp trong test.
+- Các vấn đề: code lặp, khó bảo trì, locator thay đổi phải sửa nhiều nơi.
 
-**1 page object buổi 2**
+2. Hiểu cấu trúc một Page Object
 
-- Datepicker page Object
-- Tối ưu hóa code buổi 2 (xem xét bỏ, vì thực tế mình không dùng như này)
+- Constructor.
+- Khai báo page.
+- Định nghĩa locator.
+- Định nghĩa action (method).
 
-⇒ Refactor code
+3. Tách locator khỏi test
 
-Code mình sẽ không hẳn giống cái này
+- Chuyển các locator vào class Page.
+- Giữ test chỉ chứa business flow.
 
-```text
-Framework Architecture
-```
+4. Đóng gói các thao tác thành method
 
-## What is Page Objects
+- Ví dụ:
+  - login()
+  - searchProduct()
+  - selectDate()
 
-Giải thích theo slide - Có thể giải thích simple, vào các phần sau luôn: tối đa 5p
+5. Viết test sử dụng Page Object
 
-## First Page Object
+## Page Object Model là gì?
 
-Thử code export class xem có dùng luôn được không? Mình nghĩ là được
+- Page Object là một design pattern trong Automation Testing, trong đó mỗi trang (hoặc một phần lớn của trang web) được biểu diễn bằng một class. Class này chịu trách nhiệm:
+  - Chứa các locator của trang.
+  - Cung cấp các method để thao tác với trang.
+  - Che giấu chi tiết implementation khỏi test case.
+
+- Nói đơn giản:
+  - Test case chỉ mô tả "người dùng làm gì", còn Page Object biết "làm như thế nào".
+
+- Thư mục:
+  - src/pages: chứa các class định nghĩa các page
+  - src/tests: chứa các testcase theo kịch bản test
+  - utils: chứa các files định nghĩa các function helper, constaints, types...
+
+### Tạo Class Base Page
 
 ```ts
-import { Page } from "@playwright/test";
+import { Locator, Page as PlaywrightPage, expect } from "@playwright/test";
 
-export class NavigationPage {
-  readonly page: Page;
+export class Page {
+  readonly page: PlaywrightPage;
+  readonly logoutButton: Locator;
 
-  constructor(page: Page) {
+  constructor(page: PlaywrightPage) {
     this.page = page;
-  }
 
-  async formLayoutsPage() {
-    await this.page.getByText("Forms").click();
-    await this.page.getByText("Form Layouts").click();
+    /** Common Locators */
+
+    /** Common Functions */
   }
 }
 ```
 
-```ts
-import { test, expect } from "@playwright/test";
-import { NavigationPage } from "../page-objects/navigationPage";
-
-test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200/");
-});
-
-test("navigate to form page", async ({ page }) => {
-  const navigateTo = new NavigationPage(page);
-  await navigateTo.formLayoutsPage();
-});
-```
-
-## Navigation Page Object
-
-⇒ Xem xét bỏ qua, hoặc đưa vào mục refactor code
+### Tạo Class cho từng Page
 
 ```ts
-import { Locator, Page } from "@playwright/test";
+import { Page as PlaywrightPage, expect } from "@playwright/test";
+import { Page } from "./base.page";
+import { PageUrl } from "../utils/constants";
 
-export class NavigationPage {
-  readonly page: Page;
-  readonly formLayoutsMenuItem: Locator;
-  readonly datePickerMenuItem: Locator;
-  readonly smartTableMenuItem: Locator;
-  readonly toastrMenuItem: Locator;
-  readonly tooltipMenuItem: Locator;
+export class LoginPage extends Page {
+  readonly pageUrl: string;
 
-  constructor(page: Page) {
-    this.page = page;
-    this.formLayoutsMenuItem = page.getByText("Form Layouts");
-    this.datePickerMenuItem = page.getByText("Datepicker");
-    this.smartTableMenuItem = page.getByText("Smart Table");
-    this.toastrMenuItem = page.getByText("Toastr");
-    this.tooltipMenuItem = page.getByText("Tooltip");
+  // Khởi tạo dữ liệu ban đầu cho object
+  constructor(page: PlaywrightPage) {
+    super(page);
+    this.pageUrl = PageUrl.LOGIN_URL;
   }
 
-  async formLayoutsPage() {
-    await this.selectGroupMenuItem("Forms");
-    await this.formLayoutsMenuItem.click();
+  /** Locators */
+  emailField = this.page.getByLabel("Email address:");
+  passwordField = this.page.getByLabel("Password:");
+  loginBtn = this.page.getByRole("button", { name: " Log In " });
+
+  //Action & Assertion functions
+  async goto() {
+    const response = await this.page.goto(this.pageUrl);
+    expect(response?.status()).toBeLessThan(400);
   }
 
-  async datepickerPage() {
-    await this.selectGroupMenuItem("Forms");
-    await this.datePickerMenuItem.click();
-  }
-
-  async smartTablePage() {
-    await this.selectGroupMenuItem("Tables & Data");
-    await this.smartTableMenuItem.click();
-  }
-
-  async toastrPage() {
-    await this.selectGroupMenuItem("Modal & Overlays");
-    await this.toastrMenuItem.click();
-  }
-
-  async tooltipPage() {
-    await this.selectGroupMenuItem("Modal & Overlays");
-    await this.tooltipMenuItem.click();
-  }
-
-  private async selectGroupMenuItem(groupItemTitle: string) {
-    const groupMenuItem = this.page.getByTitle(groupItemTitle);
-    const expandedState = await groupMenuItem.getAttribute("aria-expanded");
-    if (expandedState === "false") {
-      await groupMenuItem.click();
-    }
+  async waitForLoad() {
+    await this.page.waitForURL(this.pageUrl);
+    await expect(this.page).toHaveTitle(
+      "playwright-test-admin Demo Application",
+    );
   }
 }
 ```
 
-## Locators in Page Objects
+### Tạo utils/constaint
 
 ```ts
-test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200/");
-});
-
-test("navigate to form page", async ({ page }) => {
-  const navigateTo = new NavigationPage(page);
-  await navigateTo.formLayoutsPage();
-  await navigateTo.datepickerPage();
-  await navigateTo.smartTablePage();
-  await navigateTo.toastrPage();
-  await navigateTo.tooltipPage();
-});
+export enum PageUrl {
+  LOGIN_URL = "/auth/login",
+  HOME_URL = "/pages/iot-dashboard",
+}
 ```
+
+### Sửa file script theo page object
+
+1. Login Page
+2. Form Layout Page
+3. Date Picker Page
+4. Smart Table Page
 
 ## Parametrized Methods
 
