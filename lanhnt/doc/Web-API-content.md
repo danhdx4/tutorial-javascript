@@ -838,174 +838,135 @@ test("parametrized methods", async ({ page }) => {
 ## Date Picker Page Object
 
 ```ts
-import { expect, Page } from "@playwright/test";
+import { Page as PlaywrightPage, expect } from "@playwright/test";
+import { Page } from "./base.page";
+import { PageUrl } from "../utils/constants";
 
-export class DatepickerPage {
-  constructor(private readonly page: Page) {}
+export class DatePickerPage extends Page {
+  readonly pageUrl: string;
 
-  async selectCommonDatePickerDateFromToday(numberOfDaysFromToday: number) {
-    const calendarInputField = this.page.getByPlaceholder("Form Picker");
-    await calendarInputField.click();
-    const dateToAssert = await this.selectDateInTheCalendar(
-      numberOfDaysFromToday,
-    );
-    await expect(calendarInputField).toHaveValue(dateToAssert);
+  // Khởi tạo dữ liệu ban đầu cho object
+  constructor(page: PlaywrightPage) {
+    super(page);
+    this.pageUrl = PageUrl.DATE_PICKER_URL;
   }
 
-  async selectDatepickerWithRangeFromToday(
-    startDayFromToday: number,
-    endDayFromToday: number,
-  ) {
-    const calendarInputField = this.page.getByPlaceholder("Range Picker");
-    await calendarInputField.click();
-    const dateToAssertStart =
-      await this.selectDateInTheCalendar(startDayFromToday);
-    const dateToAssertEnd = await this.selectDateInTheCalendar(endDayFromToday);
-    const dateToAssert = `${dateToAssertStart} - ${dateToAssertEnd}`;
-    await expect(calendarInputField).toHaveValue(dateToAssert);
+  /** Locators */
+  logo = this.page.locator(".logo");
+  formPickerField = this.page.getByPlaceholder("Form Picker");
+  rangePickerField = this.page.getByPlaceholder("Range Picker");
+  calendarContainer = this.page.locator("nb-calendar");
+  calendarMonthAndYearField = this.page.locator("nb-calendar-view-mode");
+  nextBtn = this.page.locator("button.next-month");
+
+  //Action & Assertion functions
+  async goto() {
+    const response = await this.page.goto(this.pageUrl);
+    expect(response?.status()).toBeLessThan(400);
   }
 
-  private async selectDateInTheCalendar(numberOfDaysFromToday: number) {
-    let date = new Date();
-    date.setDate(date.getDate() + numberOfDaysFromToday);
+  async waitForLoad() {
+    await this.page.waitForURL(this.pageUrl);
+    await expect(this.logo).toHaveText("PW-test");
+  }
 
-    const expectedDate = date.getDate().toString();
-    const expectedMonthShort = date.toLocaleString("en-US", { month: "short" });
-    const expectedMonthLong = date.toLocaleString("en-US", { month: "long" });
-    const expectedYear = date.getFullYear();
-    const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
-
-    let calendarMonthAndYear = await this.page
-      .locator("nb-calendar-view-mode")
-      .textContent();
-    const expectedMonthAndYear = `${expectedMonthLong} ${expectedYear}`;
-
-    while (!calendarMonthAndYear.includes(expectedMonthAndYear)) {
-      await this.page
-        .locator('nb-calendar-pageable-navigation [data-name="chevron-right"]')
-        .click();
-      calendarMonthAndYear = await this.page
-        .locator("nb-calendar-view-mode")
-        .textContent();
+  async chooseTargetDate(date: string, monthYear: string) {
+    while (
+      !(await this.calendarMonthAndYearField.textContent())?.includes(monthYear)
+    ) {
+      await this.nextBtn.click();
     }
-
-    await this.page
-      .locator('[class="day-cell ng-star-inserted"]')
-      .getByText(expectedDate, { exact: true })
-      .click();
-    return dateToAssert;
+    const targetDate = this.page
+      .locator(".day-cell.ng-star-inserted")
+      .getByText(date, { exact: true });
+    await targetDate.click();
   }
 }
 ```
 
 ```ts
-import { test } from "@playwright/test";
-import { NavigationPage } from "../page-objects/navigationPage";
-import { FormLayoutsPage } from "../page-objects/formLayoutsPage";
-import { DatepickerPage } from "../page-objects/datepickerPage";
+export function getDateFromToday(count: number) {
+  let date = new Date();
+  date.setDate(date.getDate() + count);
 
-test("parametrized methods", async ({ page }) => {
-  const navigateTo = new NavigationPage(page);
-  const onFormLayoutsPage = new FormLayoutsPage(page);
-  const onDatepickerPage = new DatepickerPage(page);
+  const expectedDate = date.getDate().toString();
+  const expectedMonthShort = date.toLocaleString("en-US", { month: "short" });
+  const expectedMonthLong = date.toLocaleString("en-US", { month: "long" });
+  const expectedYear = date.getFullYear();
+  const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
+  const expectedMonthAndYear = `${expectedMonthLong} ${expectedYear}`;
 
-  await navigateTo.formLayoutsPage();
-  await onFormLayoutsPage.submitUsingTheGridFormWithCredentialsAndSelectOption(
-    "test@test.com",
-    "Welcome1",
-    "Option 2",
-  );
-  await onFormLayoutsPage.submitInlineFormWithNameEmailAndCheckbox(
-    "John Smith",
-    "John@test.com",
-    false,
-  );
-  await navigateTo.datepickerPage();
-  await onDatepickerPage.selectCommonDatePickerDateFromToday(10);
-  await onDatepickerPage.selectDatepickerWithRangeFromToday(6, 15);
-});
-```
-
-## Page Object Manager
-
-Xem xét bỏ phần này
-
-```ts
-import { Page } from "@playwright/test";
-import { NavigationPage } from "../page-objects/navigationPage";
-import { FormLayoutsPage } from "../page-objects/formLayoutsPage";
-import { DatepickerPage } from "../page-objects/datepickerPage";
-
-export class PageManager {
-  private readonly page: Page;
-  private readonly navigationPage: NavigationPage;
-  private readonly formLayoutsPage: FormLayoutsPage;
-  private readonly datepickerPage: DatepickerPage;
-
-  constructor(page: Page) {
-    this.page = page;
-    this.navigationPage = new NavigationPage(this.page);
-    this.formLayoutsPage = new FormLayoutsPage(this.page);
-    this.datepickerPage = new DatepickerPage(this.page);
-  }
-
-  navigateTo() {
-    return this.navigationPage;
-  }
-
-  onFormLayoutsPage() {
-    return this.formLayoutsPage;
-  }
-
-  onDatepickerPage() {
-    return this.datepickerPage;
-  }
+  return {
+    date: expectedDate,
+    dateMonthYear: dateToAssert,
+    monthYear: expectedMonthAndYear,
+  };
 }
 ```
 
 ```ts
-import { test } from "@playwright/test";
-import { PageManager } from "../page-objects/pageManager";
+import { test, expect } from "@playwright/test";
+import { getDateFromToday } from "../utils/helper";
+import { DatePickerPage } from "../pages/date.picker.page";
 
-test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200/");
+test("date picker", async ({ page }) => {
+  const datePickerPage = new DatePickerPage(page);
+  const count = 100;
+  // navigate to date picker page
+  await datePickerPage.goto();
+  await datePickerPage.formPickerField.click();
+
+  const targetDate = getDateFromToday(count);
+  console.log("checkly>>>>>>>", targetDate);
+
+  await datePickerPage.chooseTargetDate(targetDate.date, targetDate.monthYear);
+  await expect(datePickerPage.formPickerField).toHaveValue(
+    targetDate.dateMonthYear,
+  );
 });
 
-test("navigate to form page", async ({ page }) => {
-  const pm = new PageManager(page);
-  await pm.navigateTo().formLayoutsPage();
-  await pm.navigateTo().datepickerPage();
-  await pm.navigateTo().smartTablePage();
-  await pm.navigateTo().toastrPage();
-  await pm.navigateTo().tooltipPage();
+test("date picker - range", async ({ page }) => {
+  const datePickerPage = new DatePickerPage(page);
+  const count = 20;
+  // navigate to date picker page
+  await datePickerPage.goto();
+  await datePickerPage.formPickerField.click();
+
+  const today = getDateFromToday(0);
+  const end = getDateFromToday(count);
+  console.log("checkly>>>>>>>", end);
+
+  const rangeDateToAssert = `${today.dateMonthYear} - ${end.dateMonthYear}`;
+
+  // Trigger date picker
+  await datePickerPage.rangePickerField.click();
+
+  // Choose today
+  await datePickerPage.chooseTargetDate(today.date, today.monthYear);
+
+  // Choose end date
+  await datePickerPage.chooseTargetDate(end.date, end.monthYear);
+
+  await expect(datePickerPage.rangePickerField).toHaveValue(rangeDateToAssert);
 });
 
-test("parametrized methods", async ({ page }) => {
-  const pm = new PageManager(page);
-  await pm.navigateTo().formLayoutsPage();
-  await pm
-    .onFormLayoutsPage()
-    .submitUsingTheGridFormWithCredentialsAndSelectOption(
-      "test@test.com",
-      "Welcome1",
-      "Option 2",
-    );
-  await pm
-    .onFormLayoutsPage()
-    .submitInlineFormWithNameEmailAndCheckbox(
-      "John Smith",
-      "John@test.com",
-      false,
-    );
-  await pm.navigateTo().datepickerPage();
-  await pm.onDatepickerPage().selectCommonDatePickerDateFromToday(10);
-  await pm.onDatepickerPage().selectDatepickerWithRangeFromToday(6, 10);
+test("checkly", async ({ page }) => {
+  console.log("checkly >>>>>>>>>>", getDateFromToday(100));
 });
 ```
 
-## Page Object Helper Base
+## Bài tập về nhà
 
-Xem xét bỏ phần này như có note trên đầu
+Tạo kịch bản test page Register sử dụng Page Object Model.
+Gợi ý:
+
+- Tạo class RegisterPage trong lanhnt/web-auto/src/pages/register.page.ts
+- Tạo script test với các case sau:
+  - Nhập thông tin hợp lệ => đăng kí user thành công
+  - Bỏ trống các trường bắt buộc
+  - Nhập sai định dạng email
+  - Nhập sai định dạng password
+  - Nhập password và confirm password ko match
 
 # Buổi 10,11,12: Working With API
 

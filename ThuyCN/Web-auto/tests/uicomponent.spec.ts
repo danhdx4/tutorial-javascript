@@ -31,34 +31,34 @@ test('Login', async ({ page }) => {
     expect(await emailField.getAttribute('placeholder')).toEqual('Email address');
     expect(await passwordField.getAttribute('placeholder')).toEqual('Password');
     expect(await checkboxField.isChecked()).toBeFalsy();
-    expect(btn).toBeDisabled();
+    await expect(btn).toBeDisabled();
 
     // Validate email
     await page.locator('body').click() //email là trường bắt buộc
-    expect(page.getByText('Email is required!')).toBeVisible()
+    await expect(page.getByText('Email is required!')).toBeVisible()
     await emailField.fill('abc') //email ko hợp lệ thiếu domain
-    expect(page.getByText('Email should be the real one!')).toBeVisible()
+    await expect(page.getByText('Email should be the real one!')).toBeVisible()
     await emailField.fill('@gmail.com') //email ko hợp lệ thiếu local part
-    expect(page.getByText('Email should be the real one!')).toBeVisible()
+    await expect(page.getByText('Email should be the real one!')).toBeVisible()
     await emailField.fill('abc@gmail') //email ko hợp lệ thiếu .com
-    expect(page.getByText('Email should be the real one!')).toBeVisible()
+    await expect(page.getByText('Email should be the real one!')).toBeVisible()
     await emailField.fill('abcgmail.com') //email ko hợp lệ thiếu @
-    expect(page.getByText('Email should be the real one!')).toBeVisible()
+    await expect(page.getByText('Email should be the real one!')).toBeVisible()
     await emailField.fill('abc@gmail@com') //email ko hợp lệ sai domain
-    expect(page.getByText('Email should be the real one!')).toBeVisible()
+    await expect(page.getByText('Email should be the real one!')).toBeVisible()
     await emailField.fill('abc@gmail.com') //email hợp lệ
-    expect(btn).toBeDisabled()
+    await expect(btn).toBeDisabled()
 
     // Validate password
     await passwordField.click() //password là trường bắt buộc
     await page.locator('body').click()
-    expect(page.getByText('Password is required!')).toBeVisible()
+    await expect(page.getByText('Password is required!')).toBeVisible()
     await passwordField.fill('111') //password ko hợp lệ 
-    expect(page.getByText('Password should contain from 4 to 50 characters')).toBeVisible()
+    await expect(page.getByText('Password should contain from 4 to 50 characters')).toBeVisible()
     await passwordField.fill('1'.repeat(50) + '22222') //cắt kí tự thứ 51 trở đi
     expect(await passwordField.inputValue()).toEqual('1'.repeat(50))
     await passwordField.fill('1111') //password hợp lệ
-    expect(btn).toBeEnabled()
+    await expect(btn).toBeEnabled()
 
     //Tick checkbox
     await checkboxField.check({ force: true })
@@ -79,12 +79,12 @@ test('Login', async ({ page }) => {
     const register = page.locator('.text-link').filter({ hasText: 'Register' });
     // Check trạng thái khởi tạo
     expect(await emailField1.getAttribute('placeholder')).toEqual('Email address');
-    expect(btn1).toBeDisabled();
+    await expect(btn1).toBeDisabled();
     // Validate email
     await page.locator('body').click() //email là trường bắt buộc
     await expect(page.getByText('Email is required!')).toBeVisible()
     await emailField1.fill('abc') // email ko hợp lệ
-    expect(page.getByText('Email should be the real one!')).toBeVisible()
+    await expect(page.getByText('Email should be the real one!')).toBeVisible()
     await emailField1.fill('abc@gmail.com') // email hợp lệ
-    expect(btn).toBeEnabled()
+    await expect(btn).toBeEnabled()
 })
