@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-
 test.describe('Login feature should work correctly', () => {
     test.beforeEach(async ({ page }) => {
         // Navigate to login screen
