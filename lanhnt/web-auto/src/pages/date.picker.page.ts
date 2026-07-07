@@ -12,7 +12,12 @@ export class DatePickerPage extends Page {
     }
 
     /** Locators */
-    logo = this.page.locator('.logo')
+    logo = this.page.locator(".logo");
+    formPickerField = this.page.getByPlaceholder("Form Picker");
+    rangePickerField = this.page.getByPlaceholder("Range Picker");
+    calendarContainer = this.page.locator("nb-calendar");
+    calendarMonthAndYearField = this.page.locator("nb-calendar-view-mode");
+    nextBtn = this.page.locator("button.next-month");
 
     //Action & Assertion functions
     async goto() {
@@ -22,6 +27,16 @@ export class DatePickerPage extends Page {
 
     async waitForLoad() {
         await this.page.waitForURL(this.pageUrl);
-        await expect(this.logo).toHaveText('PW-test')
+        await expect(this.logo).toHaveText("PW-test");
+    }
+
+    async chooseTargetDate(date: string, monthYear: string) {
+        while (
+            !(await this.calendarMonthAndYearField.textContent())?.includes(monthYear)
+        ) {
+            await this.nextBtn.click();
+        }
+        const targetDate = this.page.locator(".day-cell.ng-star-inserted:not(.bounding-month)").getByText(date, { exact: true });
+        await targetDate.click();
     }
 }
