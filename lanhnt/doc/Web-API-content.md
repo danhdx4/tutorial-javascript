@@ -970,13 +970,15 @@ Gợi ý:
 
 # Buổi 10,11,12: Working With API
 
-[https://playwright.dev/docs/api-testing](https://playwright.dev/docs/api-testing)
+Link: [https://playwright.dev/docs/api-testing](https://playwright.dev/docs/api-testing)
+Link thực hành: https://conduit.bondaracademy.com/
+Account: lanh.zensho@test.com/123456789
 
-Không kết nối được vào trang web bằng máy công ty, mạng công ty.
+# Buổi 10: Set up API project and handling mock API
 
 ## What is API
 
-Slide
+- API (Application Programming Interface) là cầu nối giúp các hệ thống hoặc ứng dụng giao tiếp và trao đổi dữ liệu với nhau mà không cần thông qua giao diện người dùng.
 
 ## Setup New Project
 
@@ -988,40 +990,23 @@ Tạo new project → setup ban đầu → code ban đầu
 
 Download Postman
 
-```ts
-test.beforeEach(async ({ page }) => {
-  await page.goto("https://conduit.bondaracademy.com/");
-});
-
-test("has title", async ({ page }) => {
-  await expect(page.locator(".navbar-brand")).toHaveText("conduit");
-});
-```
-
 ## Mocking API
 
-```json
-{
-  "tags": ["automation", "playwright"]
-}
-```
-
 ```ts
-import { test, expect } from "@playwright/test";
-import tags from "../test-data/tags.json";
-
 test.beforeEach(async ({ page }) => {
-  await page.route("**/api/tags", async (route) => {
+  await page.route("*/**/tags", async (route) => {
+    const tags = {
+      tags: ["HSC", "SO", "ZApp", "WF", "ACCS"],
+    };
     await route.fulfill({
       body: JSON.stringify(tags),
     });
   });
-
-  await page.goto("https://angular.realworld.io/");
+  await page.goto("https://conduit.bondaracademy.com/");
 });
 
-test("has title", async ({ page }) => {
-  await expect(page.locator(".navbar-brand")).toHaveText("conduit");
+test("mocking api", async ({ page }) => {
+  await expect(page.getByText("ACCS")).toBeVisible();
 });
 ```
 
