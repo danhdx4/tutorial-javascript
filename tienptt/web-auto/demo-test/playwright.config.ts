@@ -12,6 +12,7 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  // chú ý sửa đường dẫn chạy folder cần muốn chạy
   testDir: './src/tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -34,12 +35,13 @@ export default defineConfig({
   //   trace: 'on-first-retry',
   // },
   use: {
-  headless: false,
-  launchOptions: {
-    slowMo: 1000,
+    baseURL: 'http://localhost:4200',
+    headless: false,
+    launchOptions: {
+      slowMo: 1000,
+    },
+    trace: 'on-first-retry',
   },
-  trace: 'on-first-retry',
-},
 
   /* Configure projects for major browsers */
   projects: [
