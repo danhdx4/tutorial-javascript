@@ -1,67 +1,28 @@
-import test, { expect } from "@playwright/test";
-test(`verify Date Picker`, async ({ page }) => {
-  await page.goto("http://localhost:4200/pages/forms/datepicker");
-  const formRangerPicker = page.getByPlaceholder("Range Picker");
-  await formRangerPicker.click();
-  const calendarMonthAndYearField = page.locator("nb-calendar-view-mode");
+import test from "@playwright/test";
 
-  const currentDate = new Date();
-  const featureDate = new Date(currentDate);
-  featureDate.setDate(currentDate.getDate() + 5);
+import { DatePickerPage } from "../src/page/datepicker.page";
 
-  const expectedDateCurrent = currentDate.getDate().toString();
-  const expectFutureDate = featureDate.getDate().toString();
+import { getRangeDate } from "../src/utils/helper";
 
-  const expectedMonthCurentShort = currentDate.toLocaleString("en-US", {
-    month: "short",
-  });
-  const expectFutureMonthShort = featureDate.toLocaleString("en-US", {
-    month: "short",
-  });
+test("Verify Date Picker", async ({ page }) => {
+  const datePicker = new DatePickerPage(page);
 
-  const expectedMonthCurrentLong = currentDate.toLocaleString("en-US", {
-    month: "long",
-  });
-  const expectFutureMonthLong = featureDate.toLocaleString("en-US", {
-    month: "long",
-  });
+  const {
+    expectedDateCurrent,
+    expectFutureDate,
+    expectedMonthAndYear,
+    datetoAssert,
+  } = getRangeDate(5);
 
-  const expectedCurrentYear = currentDate.getFullYear();
-  const expectFutureYear = featureDate.getFullYear();
+  await datePicker.goto();
 
-  // Tháng cần hiển thị để chọn ngày kết thúc
-  const expectedMonthAndYear = `${expectFutureMonthLong} ${expectFutureYear}`;
-  const datetoAssert = `${expectedMonthCurentShort} ${expectedDateCurrent}, ${expectedCurrentYear} - ${expectFutureMonthShort} ${expectFutureDate}, ${expectFutureYear}`;
-  console.log(
-    `Ngay hien tai: ${expectedDateCurrent}
-    Tháng hiện tại: ${expectedMonthCurentShort}
-    Năm hiện tại: ${expectedCurrentYear}
-    Ngày tương lai: ${expectFutureDate}
-    Tháng tương lai: ${expectFutureMonthShort}
-    Năm tương lai: ${expectFutureYear}
-    Bộ ngày đúng sau khi chọn: ${datetoAssert}`,
-  );
-  // Chọn ngày bắt đầu
-  await page
-    .locator(".day-cell:not(.bounding-month)") //Chọn tất cả các ô ngày thuộc tháng hiện tại, bỏ qua các ngày của tháng trước hoặc tháng sau.
-    .getByText(expectedDateCurrent, { exact: true })
-    .click();
+  await datePicker.openRangePicker();
 
-  // Chỉ chuyển tháng nếu ngày kết thúc ở tháng khác
-  while (
-    !(await calendarMonthAndYearField.textContent())?.includes(
-      expectedMonthAndYear,
-    )
-  ) {
-    await page.locator("button.next-month").click();
-  }
+  await datePicker.selectStartDate(expectedDateCurrent);
 
-  // Chọn ngày kết thúc
-  await page
-    .locator(".day-cell:not(.bounding-month)")
-    .getByText(expectFutureDate, { exact: true })
-    .click();
+  await datePicker.gotoExpectedMonth(expectedMonthAndYear);
 
-  // Verify
-  await expect(formRangerPicker).toHaveValue(datetoAssert);
+  await datePicker.selectEndDate(expectFutureDate);
+
+  await datePicker.verifyRange(datetoAssert);
 });
