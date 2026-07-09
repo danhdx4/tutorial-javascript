@@ -36,16 +36,19 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-        channel: 'chrome',
-        launchOptions: {
-          executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-        },
-      },
+      use: { ...devices['Desktop Chrome'] },
     },
 
-    // firefox and webkit disabled - use Chrome installed on machine
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
