@@ -2,13 +2,13 @@ import { Page as PlaywrightPage, expect } from "@playwright/test";
 import { Page } from "./base.page";
 import { PageUrl } from "../utils/constants";
 
-export class DatePickerPage extends Page {
+export class HomePage extends Page {
     readonly pageUrl: string;
 
     // Khởi tạo dữ liệu ban đầu cho object
     constructor(page: PlaywrightPage) {
         super(page);
-        this.pageUrl = PageUrl.DATE_PICKER_URL;
+        this.pageUrl = PageUrl.HOME_URL;
     }
 
     /** Locators */

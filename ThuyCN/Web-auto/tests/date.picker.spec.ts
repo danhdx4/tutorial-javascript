@@ -14,7 +14,7 @@ test ('Date picker', async ({page}) => {
     const pickedDate = new Date(today);
     pickedDate.setDate(today.getDate() + 5);
 
-    console.log(`Today = ${today}, Picked = ${pickedDate}`);
+    console.log(`Today = ${today}, Picked = ${pickedDate}`;
 
     const startDate = today.getDate().toString();
     const endDate = pickedDate.getDate().toString();
