@@ -1002,7 +1002,7 @@ test("has title", async ({ page }) => {
 
 ```json
 {
-  "tags": ["automation", "playwright"]
+  "tags": ["Zensho Holding", "Automation", "Playwright"]
 }
 ```
 
@@ -1017,11 +1017,12 @@ test.beforeEach(async ({ page }) => {
     });
   });
 
-  await page.goto("https://angular.realworld.io/");
+  await page.goto("https://conduit.bondaracademy.com/");
 });
 
-test("has title", async ({ page }) => {
-  await expect(page.locator(".navbar-brand")).toHaveText("conduit");
+test("mocking API", async ({ page }) => {
+  const tagsList = page.locator(".tag-list");
+  await expect(tagsList.getByText("Zensho Holding")).toBeVisible();
 });
 ```
 
