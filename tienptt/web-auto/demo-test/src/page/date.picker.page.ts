@@ -28,6 +28,7 @@ export class DatePickerPage extends Page {
     // Cac picker selector
     formPickerField = this.page.getByPlaceholder('Form Picker')
     rangePickerField = this.page.getByPlaceholder('Range Picker')
+    // Lanh note: Gom các locator về 1 group, ko khai báo rời rạc như này e nhé
 
     // Chon mot ngay cu the theo so ngay va thang-nam (vi du 'July 2026')
     async chooseTargetDate(date: string, monthYear: string) {
@@ -36,6 +37,7 @@ export class DatePickerPage extends Page {
             await this.page.locator('button.next-month').click()
         }
         await this.page.locator('.day-cell').getByText(date, { exact: true }).click()
+        // Lanh note: Hàm này sẽ chọn sai ngày nếu có nhiều 2 ngày trùng nhau trong 1 tháng. Ví dụ: 1/7 và 1/8
     }
 
     // Chon khoang thoi gian dua tren hai object Date

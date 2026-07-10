@@ -13,6 +13,7 @@ export class DatePickerPage extends Page {
     }
 
     /** Locators */
+    // Lanh note: Chưa hiểu hàm này làm gì, e return dateRange làm gì vậy Thúy ơi 
     public LocatorsDate (){ 
     const dateRange = this.page.getByPlaceholder('Range Picker')
     const calendarContainer = this.page.locator('nb-calendar')

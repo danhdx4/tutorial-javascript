@@ -13,13 +13,17 @@ export class DatePickerPage {
 
   async goto() {
     await this.page.goto('http://localhost:4200/pages/forms/datepicker');
+    // Lanh note: Em đã định nghĩa baseURL trong file config rồi, thì không cần gọi ra đây nữa
+    // Nên đưa URL vào biến constants để tái sử dụng code, tránh hardcode
   }
 
   async openRangePicker() {
     await this.rangeInput.click();
+    // Lanh note:  các hàm chỉ gọi 1 action thì không cần thêm hàm
   }
 
   private buildRange(daysAhead: number) {
+    // Lanh note: hàm này không phụ thuộc vào class, nên có thể tách ra thành 1 helper function để tái sử dụng code
     const start = new Date();
     const end = new Date(start);
     end.setDate(start.getDate() + daysAhead);
@@ -52,9 +56,11 @@ export class DatePickerPage {
       .click();
 
     return expected;
+    // Lanh note: chị chưa hiểu expected này để làm gì, nếu là để verify thì nên đưa vào hàm verifyRangeValue
   }
 
   async expectRangeValue(expected: string) {
     await expect(this.rangeInput).toHaveValue(expected);
+    // Lanh note: hàm này không có ý nghĩa, vì expected là giá trị mà em vừa chọn, nên chắc chắn nó sẽ bằng nhau
   }
 }

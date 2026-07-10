@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 
+
+// Lanh note: hàm getDateInfoFromToday và selectDate có thể tách ra thành 1 file helper.ts để tái sử dụng code
 function getDateInfoFromToday(offset: number) {
     const date = new Date();
     date.setDate(date.getDate() + offset);
