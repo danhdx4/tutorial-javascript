@@ -72,8 +72,8 @@ Link: [https://playwright.dev/docs/test-ui-mode](https://playwright.dev/docs/tes
   - Fail case
 
 ## Clone Test Appilication
-
-- URL: https://github.com/bondar-artem/pw-practice-app
+ https://github.com/bondar-artem/pw-practice-app
+- URL:
   - Command: Git clone URL
   - Install project: npm i --force
     - Ý nghĩa: Ép npm cài package bất chấp một số cảnh báo hoặc xung đột.

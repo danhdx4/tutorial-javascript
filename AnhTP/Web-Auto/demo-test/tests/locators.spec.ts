@@ -1,8 +1,9 @@
 import test from "@playwright/test";
+const baseURL = "http://localhost:4200/pages/forms/layouts";
 
 test("Common Locators", async ({ page }) => {
   // goto http://localhost:4200/pages/forms/layouts
-  await page.goto("http://localhost:4200/pages/forms/layouts");
+  await page.goto(baseURL);
   // by Tag name nb-card
   page.locator("nb-card");
   // by ID id="inputEmail1"
@@ -15,7 +16,7 @@ test("Common Locators", async ({ page }) => {
 
 test("Built-in Locators", async ({ page }) => {
   // goto http://localhost:4200/pages/forms/layouts
-  await page.goto("http://localhost:4200/pages/forms/layouts");
+  await page.goto(baseURL);
   // getByRole() button/SEND
   page.getByRole("button", { name: "SEND" });
   //   page.getByRole("button"); lấy ra tất cả button
@@ -35,7 +36,7 @@ test("Built-in Locators", async ({ page }) => {
 
 test("Filter & Chaining locators", async ({ page }) => {
   // goto http://localhost:4200/pages/forms/layouts
-  await page.goto("http://localhost:4200/pages/forms/layouts");
+  await page.goto(baseURL);
   //filter
   page.locator("nb-card").filter({ hasText: "Using the Grid" }); // lọc ra nb-card có text là Using the Grid
   //chaining nb-card/button
@@ -47,34 +48,27 @@ test("Filter & Chaining locators", async ({ page }) => {
 
 test("Locator for Using the Grid", async ({ page }) => {
   // goto http://localhost:4200/pages/forms/layouts
-  await page.goto("http://localhost:4200/pages/forms/layouts");
-  // Email
-  const emailInput = page
+  await page.goto(baseURL);
+  const usingTheGridCard = page
     .locator("nb-card")
-    .filter({ hasText: "Using the Grid" })
-    .getByLabel("Email"); // lọc ra nb-card có text là Using the Grid rồi lấy ra input có label là Email trong nb-card đó
+    .filter({ hasText: "Using the Grid" }); // lọc ra nb-card có text là Using the Grid rồi gán vào biến usingTheGridCard
+  // Email
+  const emailInput = usingTheGridCard.getByLabel("Email");
   await emailInput.fill("AnhTP@example.com"); // fill vào input email
   // Password
-  const passwordInput = page
-    .locator("nb-card")
-    .filter({ hasText: "Using the Grid" })
-    .getByLabel("Password"); // lọc ra nb-card có text là Using the Grid rồi lấy ra input có label là Password trong nb-card đó
+  const passwordInput = usingTheGridCard.getByLabel("Password");
   await passwordInput.fill("123456"); // fill vào input password
   // Option1
-  const option1Input = page
-    .locator("nb-card")
-    .filter({ hasText: "Using the Grid" })
-    .getByLabel("Option1"); // lọc ra nb-card có text là Using the Grid rồi lấy ra input có label là Option1 trong nb-card đó
+  const option1Input = usingTheGridCard.getByLabel("Option1"); // lọc ra nb-card có text là Using the Grid rồi lấy ra input có label là Option1 trong nb-card đó
 
   // Option2
-  // const option2Input = page.getByLabel("Option2");
+  // const option2Input = usingTheGridCard.getByLabel("Option2");
   // // Disabled Option
-  // const disabledOptionInput = page.getByLabel("Disabled Option");
+  // const disabledOptionInput = usingTheGridCard.getByLabel("Disabled Option");
   // Sign In Btn
-  const signInButton = page
-    .locator("nb-card")
-    .filter({ hasText: "Using the Grid" })
-    .getByRole("button", { name: "Sign In" });
+  const signInButton = usingTheGridCard.getByRole("button", {
+    name: "Sign In",
+  });
   await signInButton.click();
   // const submitButton = page
   //   .locator("nb-card")
@@ -83,151 +77,112 @@ test("Locator for Using the Grid", async ({ page }) => {
 });
 
 test("Locator for Basic form", async ({ page }) => {
-  await page.goto("http://localhost:4200/pages/forms/layouts");
-  // Email input
-  const emailInputBasic = page
+  await page.goto(baseURL);
+  const basicFormCard = page
     .locator("nb-card")
-    .filter({ hasText: "Basic form" })
-    .getByLabel("Email address");
+    .filter({ hasText: "Basic form" }); // lọc ra nb-card có text là Basic form rồi gán vào biến basicFormCard
+  // Email input
+  const emailInputBasic = basicFormCard.getByLabel("Email address");
   await emailInputBasic.fill("AnhTP2@exam.com");
   // Password input
-  const passwordInputBasic = page
-    .locator("nb-card")
-    .filter({ hasText: "Basic form" })
-    .getByLabel("Password");
+  const passwordInputBasic = basicFormCard.getByLabel("Password");
   await passwordInputBasic.fill("123456");
   // Check me out checkbox
-  const checkboxBasic = page
-    .locator("nb-card")
-    .filter({ hasText: "Basic form" })
-    .getByLabel("Check me out");
+  const checkboxBasic = basicFormCard.getByLabel("Check me out");
   await checkboxBasic.check({ force: true });
   // Submit Btn
-  const submitButtonBasic = page
-    .locator("nb-card")
-    .filter({ hasText: "Basic form" })
-    .getByRole("button", { name: "SUBMIT" });
+  const submitButtonBasic = basicFormCard.getByRole("button", {
+    name: "SUBMIT",
+  });
   await submitButtonBasic.click();
 });
 
 test("Locator for Form without labels", async ({ page }) => {
   // goto http://localhost:4200/pages/forms/layouts
-  await page.goto("http://localhost:4200/pages/forms/layouts");
-  // Recipients input
-  const recipientsInput = page
+  await page.goto(baseURL);
+  const formWithoutLabelsCard = page
     .locator("nb-card")
-    .filter({ hasText: "Form without labels" })
-    .getByPlaceholder("Recipients");
+    .filter({ hasText: "Form without labels" }); // lọc ra nb-card có text là Form without labels rồi gán vào biến formWithoutLabelsCard
+  // Recipients input
+  const recipientsInput = formWithoutLabelsCard.getByPlaceholder("Recipients");
   await recipientsInput.fill("AnhTP3@example.com");
   // Subject input
-  const subjectInput = page
-    .locator("nb-card")
-    .filter({ hasText: "Form without labels" })
-    .getByPlaceholder("Subject");
+  const subjectInput = formWithoutLabelsCard.getByPlaceholder("Subject");
   await subjectInput.fill("AnhTP Test Subject");
   // Message input
-  const messageInput = page
-    .locator("nb-card")
-    .filter({ hasText: "Form without labels" })
-    .getByPlaceholder("Message");
+  const messageInput = formWithoutLabelsCard.getByPlaceholder("Message");
   await messageInput.fill("This is a test message. From AnhTP");
   // Send Btn
-  const sendButton = page
-    .locator("nb-card")
-    .filter({ hasText: "Form without labels" })
-    .getByRole("button", { name: "Send" });
+  const sendButton = formWithoutLabelsCard.getByRole("button", {
+    name: "Send",
+  });
   await sendButton.click();
 });
 
 test("Locator for Block form", async ({ page }) => {
   // goto http://localhost:4200/pages/forms/layouts
-  await page.goto("http://localhost:4200/pages/forms/layouts");
-  // Frist Name input
-  const firstNameInput = page
+  await page.goto(baseURL);
+  const blockFormCard = page
     .locator("nb-card")
-    .filter({ hasText: "Block form" })
-    .getByPlaceholder("First Name");
+    .filter({ hasText: "Block form" }); // lọc ra nb-card có text là Block form rồi gán vào biến blockFormCard
+
+  // Frist Name input
+  const firstNameInput = blockFormCard.getByPlaceholder("First Name");
   await firstNameInput.fill("Anh");
   // Last Name input
-  const lastNameInput = page
-    .locator("nb-card")
-    .filter({ hasText: "Block form" })
-    .getByPlaceholder("Last Name");
+  const lastNameInput = blockFormCard.getByPlaceholder("Last Name");
   await lastNameInput.fill("Tran");
   // Email input
-  const emailInputBlock = page
-    .locator("nb-card")
-    .filter({ hasText: "Block form" })
-    .getByPlaceholder("Email");
+  const emailInputBlock = blockFormCard.getByPlaceholder("Email");
   await emailInputBlock.fill("AnhTP4@example.com");
   //Website input
-  const websiteInput = page
-    .locator("nb-card")
-    .filter({ hasText: "Block form" })
-    .getByPlaceholder("Website");
+  const websiteInput = blockFormCard.getByPlaceholder("Website");
   await websiteInput.fill("https://anhtp.autotraining.com");
   // Submit Btn
-  const signUpButton = page
-    .locator("nb-card")
-    .filter({ hasText: "Block form" })
-    .getByRole("button", { name: "SUBMIT" });
+  const signUpButton = blockFormCard.getByRole("button", { name: "SUBMIT" });
   await signUpButton.click();
 });
 
 test("Locator for Horizontal form", async ({ page }) => {
   // goto http://localhost:4200/pages/forms/layouts
-  await page.goto("http://localhost:4200/pages/forms/layouts");
-  // Email input
-  const emailInputHorizontal = page
+  await page.goto(baseURL);
+  const horizontalFormCard = page
     .locator("nb-card")
-    .filter({ hasText: "Horizontal form" })
-    .getByLabel("Email");
+    .filter({ hasText: "Horizontal form" }); // lọc ra nb-card có text là Horizontal form rồi gán vào biến horizontalFormCard
+  // Email input
+  const emailInputHorizontal = horizontalFormCard.getByLabel("Email");
   await emailInputHorizontal.fill("AnhTP5@example.com");
   // Password input
-  const passwordInputHorizontal = page
-    .locator("nb-card")
-    .filter({ hasText: "Horizontal form" })
-    .getByLabel("Password");
+  const passwordInputHorizontal = horizontalFormCard.getByLabel("Password");
   await passwordInputHorizontal.fill("123456");
   // Remember me checkbox
-  const rememberMeCheckbox = page
-    .locator("nb-card")
-    .filter({ hasText: "Horizontal form" })
-    .getByLabel("Remember me");
+  const rememberMeCheckbox = horizontalFormCard.getByLabel("Remember me");
   await rememberMeCheckbox.check({ force: true });
   // Sign In Btn
-  const signInButtonHorizontal = page
-    .locator("nb-card")
-    .filter({ hasText: "Horizontal form" })
-    .getByRole("button", { name: "Sign in" });
+  const signInButtonHorizontal = horizontalFormCard.getByRole("button", {
+    name: "Sign in",
+  });
   await signInButtonHorizontal.click();
 });
 
 test("Locator for Inline form", async ({ page }) => {
   // goto http://localhost:4200/pages/forms/layouts
-  await page.goto("http://localhost:4200/pages/forms/layouts");
-  // Text input
-  const textInputInline = page
+  await page.goto(baseURL);
+  const inlineFormCard = page
     .locator("nb-card")
-    .filter({ hasText: "Inline form" })
-    .getByPlaceholder("Jane Doe");
+    .filter({ hasText: "Inline form" }); // lọc ra nb-card có text là Inline form rồi gán vào biến inlineFormCard
+  // Text input
+  const textInputInline = inlineFormCard.getByPlaceholder("Jane Doe");
   await textInputInline.fill("Tran Phuong Anh");
   // Email input
-  const emailInputInline = page
-    .locator("nb-card")
-    .filter({ hasText: "Inline form" })
-    .getByPlaceholder("Email");
+  const emailInputInline = inlineFormCard.getByPlaceholder("Email");
   await emailInputInline.fill("AnhTP0@example.com");
   // Remember me checkbox
-  const rememberMeCheckboxInline = page
-    .locator("nb-card")
-    .filter({ hasText: "Inline form" })
-    .getByLabel("Remember me");
+  const rememberMeCheckboxInline = inlineFormCard.getByLabel("Remember me");
   await rememberMeCheckboxInline.check({ force: true });
   // Submit Btn
-  const submitButtonInline = page
-    .locator("nb-card")
-    .filter({ hasText: "Inline form" })
-    .getByRole("button", { name: "SUBMIT" });
+  const submitButtonInline = inlineFormCard.getByRole("button", {
+    name: "SUBMIT",
+  });
   await submitButtonInline.click();
 });

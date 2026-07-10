@@ -329,9 +329,16 @@ Viết bài test verify Basic form với các nội dung như sau:
 
 # Buổi 5, 6, 7: UI Components
 
-Phần này quan trọng. Nếu không đủ sẽ chia làm 3 buổi.
+# Buổi 5
 
-## Input Fields - 33
+## Input Fields
+
+Các hàm sử dụng:
+
+- fill(): điền nhanh một giá trị vào trường input
+- clear(): xoá nội dung của trường
+- pressSequentially(): gõ từng kí tự
+- inputValue: trích xuất giá trị từ 1 trường input
 
 ```ts
 test.describe("Form Layouts page", () => {
@@ -359,7 +366,15 @@ test.describe("Form Layouts page", () => {
 });
 ```
 
-## Radio Buttons - 34
+## Radio Buttons
+
+Các hàm sử dụng:
+
+- check(): check vào radio button
+- uncheck(): uncheck radio button
+- isChecked(): kiểm tra radio button có đang được check không => return boolean
+- isUnchecked(): kiểm tra radio button có đang uncheck không
+- toBeChecked(): kiểm tra radio button có đang được check không (assertion)
 
 ```ts
 test("radio buttons", async ({ page }) => {
@@ -391,7 +406,15 @@ test("radio buttons", async ({ page }) => {
 });
 ```
 
-## Checkboxes - 35
+## Checkboxes
+
+Các hàm sử dụng:
+
+- check(): check vào radio button
+- uncheck(): uncheck radio button
+- isChecked(): kiểm tra radio button có đang được check không => return boolean
+- isUnchecked(): kiểm tra radio button có đang uncheck không
+- toBeChecked(): kiểm tra radio button có đang được check không (assertion)
 
 Action: Click, check, uncheck
 
@@ -415,11 +438,7 @@ test("checkboxes", async ({ page }) => {
 });
 ```
 
-## Lists and Dropdowns - 36
-
-Làm 1 ví dụ, bài tập về nhà là 1 trong các dropdown còn lại
-
-Khi chữa bài làm bài tập tổng quát, theo vòng for cho tất cả
+## Lists and Dropdowns
 
 ```ts
 test("lists and dropdowns", async ({ page }) => {
@@ -427,76 +446,82 @@ test("lists and dropdowns", async ({ page }) => {
   await dropDownMenu.click();
 
   const optionList = page.locator("nb-option-list nb-option");
-  await expect(optionList).toHaveText(["Light", "Dark", "Cosmic", "Corporate"]);
   await optionList.filter({ hasText: "Cosmic" }).click();
 
   const header = page.locator("nb-layout-header");
   await expect(header).toHaveCSS("background-color", "rgb(50, 50, 89)");
-
-  const colors = {
-    Light: "rgb(255, 255, 255)",
-    Dark: "rgb(34, 43, 69)",
-    Cosmic: "rgb(50, 50, 89)",
-    Corporate: "rgb(255, 255, 255)",
-  };
-
-  await dropDownMenu.click();
-  for (const color in colors) {
-    await optionList.filter({ hasText: color }).click();
-    await expect(header).toHaveCSS("background-color", colors[color]);
-    if (color !== "Corporate") {
-      await dropDownMenu.click();
-    }
-  }
 });
 ```
 
-⇒ Kết thúc buổi 5
+## Bài tập về nhà
 
-## Tooltips - 37
+Thực hiện các step và các bài kiểm tra sau:
 
-// Xem xét bỏ qua phần này
+1. Đi tới link: http://localhost:4200/auth/login
+2. Lên kịch bản test verify cho các case màn hình Login. Gợi ý:
+
+- Trạng thái khởi tạo: email, password có placeholder, checkbox ko được chheck, btn login disable
+- Nhập đủ email, password hợp lệ
+  => Verify thông tin phản ánh đúng, btn Login được enable
+- Nhập thiếu email hoặc password
+  => Verify hiển thị msg yêu cầu nhập, btn Login disable
+- Nhập email sai định dạng
+  => Verify hiển thị msg thông báo email không hợp lệ, btn Login disable
+- Nhập password không hợp lệ
+  => Verìy hiển thị msg thông báo password không hợp lệ, btn Login disable
+
+# Buổi 6
+
+## Nội dung cần đạt
+
+- Hiểu và sử dụng được các hàm cho dialog
+- Biết cách tìm kiếm row trên table
+- Tương tác với các row trên table
+
+## Dialog
+
+Link: https://playwright.dev/docs/api/class-dialog
+Link thực hành: n
+
+Dialog là các popup native của trình duyệt được tạo bởi JavaScript như:
+
+- alert()
+- confirm()
+- prompt()
+
+Các hàm sử dụng:
+
+- Khi muốn bấm OK: dialog.accept()
+- Khi muốn bấm Cancel: await dialog.dismiss();
+- Lấy nội dung msg: const message = dialog.message();
+- Xác định loại dialog: dialog.type();
+- Lấy giá trị mặc định của ô input trong prompt: dialog.defaultValue()
 
 ```ts
-test("tooltips", async ({ page }) => {
-  await page.getByText("Modal & Overlays").click();
-  await page.getByText("Tooltip").click();
+const { chromium } = require("playwright"); // Or 'firefox' or 'webkit'.
 
-  const toolTipCard = page.locator("nb-card", {
-    hasText: "Tooltip Placements",
+(async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  page.on("dialog", async (dialog) => {
+    console.log(dialog.message());
+    await dialog.dismiss();
   });
-  await toolTipCard.getByRole("button", { name: "Top" }).hover();
-
-  page.getByRole("tooltip");
-  const tooltip = await page.locator("nb-tooltip").textContent();
-  expect(tooltip).toEqual("This is a tooltip");
-});
+  await page.evaluate(() => alert("1"));
+  await browser.close();
+})();
 ```
 
-## Dialog Boxes - 38
+## Web Tables
 
-```ts
-test("dialog box", async ({ page }) => {
-  await page.getByText("Tables & Data").click();
-  await page.getByText("Smart Table").click();
+Dữ liệu được hiển thị dưới dạng bảng. Trong Auto test xử lý:
 
-  page.on("dialog", (dialog) => {
-    expect(dialog.message()).toEqual("Are you sure you want to delete?");
-    dialog.accept();
-  });
-
-  await page
-    .getByRole("table")
-    .locator("tr", { hasText: "mdo@gmail.com" })
-    .locator(".nb-trash")
-    .click();
-  await expect(page.locator("table tr").first()).not.toHaveText(
-    "mdo@gmail.com",
-  );
-});
-```
-
-## Web Tables - 39,40
+- Tìm một row
+- Tìm một cell
+- Chỉnh sửa dữ liệu
+- Xoá dữ lệu
+- Verify dữ liệu hiển thị
+- Làm việc với phân trang
 
 ```ts
 test("web tables", async ({ page }) => {
@@ -526,9 +551,23 @@ test("web tables", async ({ page }) => {
 });
 ```
 
-⇒ Kết thúc buổi 6
+## Bài tập về nhà
 
-## Date Picker - 41,42
+Vào link http://localhost:4200/pages/tables/smart-table
+
+- Tìm kiếm row có id = 11
+- Thực hiện xoá row này. (Gợi ý dùng dialog confirm)
+
+# Buổi 7: Date Picker
+
+## Nội dung cần đạt
+
+- Chọn ngày trong Date Picker
+- Chọn ngày động (ví dụ: hôm nay + 30 ngày, + 1 năm)
+- Viết vòng lặp để điều hướng calendar
+- Hiểu khi nào dùng Date của JavaScript
+
+Date Picker là component cho phép người dùng chọn ngày tháng.
 
 ```ts
 test("datepicker", async ({ page }) => {
@@ -555,13 +594,24 @@ test("datepicker", async ({ page }) => {
   await calendarInputField.click();
 
   let date = new Date();
-  date.setDate(date.getDate() + 500);
+  let newDate = date.setDate(date.getDate() + 3);
 
   const expectedDate = date.getDate().toString();
   const expectedMonthShort = date.toLocaleString("en-US", { month: "short" });
   const expectedMonthLong = date.toLocaleString("en-US", { month: "long" });
   const expectedYear = date.getFullYear();
   const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
+  const expectedMonthAndYear = `${expectedMonthLong} ${expectedYear}`;
+  console.log(`
+        date = ${date},
+        newDate = ${newDate},
+        expectedDate = ${expectedDate},
+        expectedMonthShort = ${expectedMonthShort},
+        expectedMonthLong = ${expectedMonthLong},
+        expectedYear = ${expectedYear},
+        dateToAssert = ${dateToAssert},
+        expectedMonthAndYear = ${expectedMonthAndYear}
+        `);
 
   let calendarMonthAndYear = await page
     .locator("nb-calendar-view-mode")
@@ -585,212 +635,131 @@ test("datepicker", async ({ page }) => {
 });
 ```
 
-## Sliders - 43
+## Bài tập về nhà
 
-// Xem xét bỏ qua phần này - Nếu học tốt thì mới nên đưa vào
+1. Vào link 'http://localhost:4200/pages/forms/datepicker'
+2. Chọn form input range-datepicker
+3. Chọn khoảng thời gian từ ngày hiện tại tới cách đó 5 ngày.
 
-```ts
-test("sliders", async ({ page }) => {
-  // Update attribute
-  // const tempGauge = page.locator('[tabtitle="Temperature"] ngx-temperature-dragger circle')
-  // await tempGauge.evaluate(node => {
-  //   node.setAttribute('cx', '232.630')
-  //   node.setAttribute('cy', '232.630')
-  // })
-  // await tempGauge.click()
-
-  // Mouse movement
-  const tempBox = page.locator(
-    '[tabtitle="Temperature"] ngx-temperature-dragger',
-  );
-
-  await tempBox.scrollIntoViewIfNeeded();
-
-  const box = await tempBox.boundingBox();
-  const x = box.x + box.width / 2;
-  const y = box.y + box.height / 2;
-
-  await page.mouse.move(x, y);
-  await page.mouse.down();
-  await page.mouse.move(x + 100, y);
-  await page.mouse.move(x + 100, y + 100);
-  await page.mouse.up();
-
-  await expect(tempBox).toContainText("30");
-});
-```
-
-## Drag & Drop with iFrames (cần học)
-
-Link: https://www.globalsqa.com/demo-site/draganddrop/
-
-```ts
-test("drag and drop with iframe", async ({ page }) => {
-  await page.goto("https://www.globalsqa.com/demo-site/draganddrop/");
-
-  const frame = page.frameLocator('[rel-title="Photo Manager"] iframe');
-  await frame
-    .locator("li", { hasText: "High Tatras 2" })
-    .dragTo(frame.locator("#trash"));
-
-  // more precise control
-  await frame.locator("li", { hasText: "High Tatras 4" }).hover();
-  await page.mouse.down();
-  await frame.locator("#trash").hover();
-  await page.mouse.up();
-
-  await expect(frame.locator("#trash li h5")).toHaveText([
-    "High Tatras 2",
-    "High Tatras 4",
-  ]);
-});
-```
-
-⇒ Kết thúc buổi 7
-
-Hết mục này, bài tập về nhà sẽ là nhập userName, passWord, chọn option rồi ấn Submit
+- Ví dụ: today = 28/6/2026 => range '28/6/2026 - 2/7/2026'
 
 # Buổi 8,9: Page Object Model
 
-Lưu ý: Sẽ cần chỉnh sửa 1 chút
+Link: https://playwright.dev/docs/pom
 
-- Tạo basePage để quy định hàm common
-- Tạo hàm common waitForLoad() để đảm bảo page được load trước khi thực hiện các action khác
+## Nội dung cần đạt
 
-**1 buổi giới thiệu, làm bài demo**
+1. Hiểu Page Object Model là gì và tại sao cần sử dụng
 
-- Giới thiệu về PageObject
-- Chia thư mục, tổ chức code tạo class, import khi dùng trong file test
-- Tối ưu hóa code cơ bản ở buổi 1
-- ⇒ Bài tập về nhà: 1 bài tương tự bài trên lớp
+- Nhược điểm khi viết locator trực tiếp trong test.
+- Các vấn đề: code lặp, khó bảo trì, locator thay đổi phải sửa nhiều nơi.
 
-**1 page object buổi 2**
+2. Hiểu cấu trúc một Page Object
 
-- Datepicker page Object
-- Tối ưu hóa code buổi 2 (xem xét bỏ, vì thực tế mình không dùng như này)
+- Constructor.
+- Khai báo page.
+- Định nghĩa locator.
+- Định nghĩa action (method).
 
-⇒ Refactor code
+3. Tách locator khỏi test
 
-Code mình sẽ không hẳn giống cái này
+- Chuyển các locator vào class Page.
+- Giữ test chỉ chứa business flow.
 
-```text
-Framework Architecture
-```
+4. Đóng gói các thao tác thành method
 
-## What is Page Objects
+- Ví dụ:
+  - login()
+  - searchProduct()
+  - selectDate()
 
-Giải thích theo slide - Có thể giải thích simple, vào các phần sau luôn: tối đa 5p
+5. Viết test sử dụng Page Object
 
-## First Page Object
+## Page Object Model là gì?
 
-Thử code export class xem có dùng luôn được không? Mình nghĩ là được
+- Page Object là một design pattern trong Automation Testing, trong đó mỗi trang (hoặc một phần lớn của trang web) được biểu diễn bằng một class. Class này chịu trách nhiệm:
+  - Chứa các locator của trang.
+  - Cung cấp các method để thao tác với trang.
+  - Che giấu chi tiết implementation khỏi test case.
+
+- Nói đơn giản:
+  - Test case chỉ mô tả "người dùng làm gì", còn Page Object biết "làm như thế nào".
+
+- Thư mục:
+  - src/pages: chứa các class định nghĩa các page
+  - src/tests: chứa các testcase theo kịch bản test
+  - utils: chứa các files định nghĩa các function helper, constaints, types...
+
+### Tạo Class Base Page
 
 ```ts
-import { Page } from "@playwright/test";
+import { Locator, Page as PlaywrightPage, expect } from "@playwright/test";
 
-export class NavigationPage {
-  readonly page: Page;
+export class Page {
+  readonly page: PlaywrightPage;
+  readonly logoutButton: Locator;
 
-  constructor(page: Page) {
+  constructor(page: PlaywrightPage) {
     this.page = page;
-  }
 
-  async formLayoutsPage() {
-    await this.page.getByText("Forms").click();
-    await this.page.getByText("Form Layouts").click();
+    /** Common Locators */
+
+    /** Common Functions */
   }
 }
 ```
 
-```ts
-import { test, expect } from "@playwright/test";
-import { NavigationPage } from "../page-objects/navigationPage";
-
-test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200/");
-});
-
-test("navigate to form page", async ({ page }) => {
-  const navigateTo = new NavigationPage(page);
-  await navigateTo.formLayoutsPage();
-});
-```
-
-## Navigation Page Object
-
-⇒ Xem xét bỏ qua, hoặc đưa vào mục refactor code
+### Tạo Class cho từng Page
 
 ```ts
-import { Locator, Page } from "@playwright/test";
+import { Page as PlaywrightPage, expect } from "@playwright/test";
+import { Page } from "./base.page";
+import { PageUrl } from "../utils/constants";
 
-export class NavigationPage {
-  readonly page: Page;
-  readonly formLayoutsMenuItem: Locator;
-  readonly datePickerMenuItem: Locator;
-  readonly smartTableMenuItem: Locator;
-  readonly toastrMenuItem: Locator;
-  readonly tooltipMenuItem: Locator;
+export class LoginPage extends Page {
+  readonly pageUrl: string;
 
-  constructor(page: Page) {
-    this.page = page;
-    this.formLayoutsMenuItem = page.getByText("Form Layouts");
-    this.datePickerMenuItem = page.getByText("Datepicker");
-    this.smartTableMenuItem = page.getByText("Smart Table");
-    this.toastrMenuItem = page.getByText("Toastr");
-    this.tooltipMenuItem = page.getByText("Tooltip");
+  // Khởi tạo dữ liệu ban đầu cho object
+  constructor(page: PlaywrightPage) {
+    super(page);
+    this.pageUrl = PageUrl.LOGIN_URL;
   }
 
-  async formLayoutsPage() {
-    await this.selectGroupMenuItem("Forms");
-    await this.formLayoutsMenuItem.click();
+  /** Locators */
+  emailField = this.page.getByLabel("Email address:");
+  passwordField = this.page.getByLabel("Password:");
+  loginBtn = this.page.getByRole("button", { name: " Log In " });
+
+  //Action & Assertion functions
+  async goto() {
+    const response = await this.page.goto(this.pageUrl);
+    expect(response?.status()).toBeLessThan(400);
   }
 
-  async datepickerPage() {
-    await this.selectGroupMenuItem("Forms");
-    await this.datePickerMenuItem.click();
-  }
-
-  async smartTablePage() {
-    await this.selectGroupMenuItem("Tables & Data");
-    await this.smartTableMenuItem.click();
-  }
-
-  async toastrPage() {
-    await this.selectGroupMenuItem("Modal & Overlays");
-    await this.toastrMenuItem.click();
-  }
-
-  async tooltipPage() {
-    await this.selectGroupMenuItem("Modal & Overlays");
-    await this.tooltipMenuItem.click();
-  }
-
-  private async selectGroupMenuItem(groupItemTitle: string) {
-    const groupMenuItem = this.page.getByTitle(groupItemTitle);
-    const expandedState = await groupMenuItem.getAttribute("aria-expanded");
-    if (expandedState === "false") {
-      await groupMenuItem.click();
-    }
+  async waitForLoad() {
+    await this.page.waitForURL(this.pageUrl);
+    await expect(this.page).toHaveTitle(
+      "playwright-test-admin Demo Application",
+    );
   }
 }
 ```
 
-## Locators in Page Objects
+### Tạo utils/constaint
 
 ```ts
-test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200/");
-});
-
-test("navigate to form page", async ({ page }) => {
-  const navigateTo = new NavigationPage(page);
-  await navigateTo.formLayoutsPage();
-  await navigateTo.datepickerPage();
-  await navigateTo.smartTablePage();
-  await navigateTo.toastrPage();
-  await navigateTo.tooltipPage();
-});
+export enum PageUrl {
+  LOGIN_URL = "/auth/login",
+  HOME_URL = "/pages/iot-dashboard",
+}
 ```
+
+### Sửa file script theo page object
+
+1. Login Page
+2. Form Layout Page
+3. Date Picker Page
+4. Smart Table Page
 
 ## Parametrized Methods
 
@@ -869,174 +838,135 @@ test("parametrized methods", async ({ page }) => {
 ## Date Picker Page Object
 
 ```ts
-import { expect, Page } from "@playwright/test";
+import { Page as PlaywrightPage, expect } from "@playwright/test";
+import { Page } from "./base.page";
+import { PageUrl } from "../utils/constants";
 
-export class DatepickerPage {
-  constructor(private readonly page: Page) {}
+export class DatePickerPage extends Page {
+  readonly pageUrl: string;
 
-  async selectCommonDatePickerDateFromToday(numberOfDaysFromToday: number) {
-    const calendarInputField = this.page.getByPlaceholder("Form Picker");
-    await calendarInputField.click();
-    const dateToAssert = await this.selectDateInTheCalendar(
-      numberOfDaysFromToday,
-    );
-    await expect(calendarInputField).toHaveValue(dateToAssert);
+  // Khởi tạo dữ liệu ban đầu cho object
+  constructor(page: PlaywrightPage) {
+    super(page);
+    this.pageUrl = PageUrl.DATE_PICKER_URL;
   }
 
-  async selectDatepickerWithRangeFromToday(
-    startDayFromToday: number,
-    endDayFromToday: number,
-  ) {
-    const calendarInputField = this.page.getByPlaceholder("Range Picker");
-    await calendarInputField.click();
-    const dateToAssertStart =
-      await this.selectDateInTheCalendar(startDayFromToday);
-    const dateToAssertEnd = await this.selectDateInTheCalendar(endDayFromToday);
-    const dateToAssert = `${dateToAssertStart} - ${dateToAssertEnd}`;
-    await expect(calendarInputField).toHaveValue(dateToAssert);
+  /** Locators */
+  logo = this.page.locator(".logo");
+  formPickerField = this.page.getByPlaceholder("Form Picker");
+  rangePickerField = this.page.getByPlaceholder("Range Picker");
+  calendarContainer = this.page.locator("nb-calendar");
+  calendarMonthAndYearField = this.page.locator("nb-calendar-view-mode");
+  nextBtn = this.page.locator("button.next-month");
+
+  //Action & Assertion functions
+  async goto() {
+    const response = await this.page.goto(this.pageUrl);
+    expect(response?.status()).toBeLessThan(400);
   }
 
-  private async selectDateInTheCalendar(numberOfDaysFromToday: number) {
-    let date = new Date();
-    date.setDate(date.getDate() + numberOfDaysFromToday);
+  async waitForLoad() {
+    await this.page.waitForURL(this.pageUrl);
+    await expect(this.logo).toHaveText("PW-test");
+  }
 
-    const expectedDate = date.getDate().toString();
-    const expectedMonthShort = date.toLocaleString("en-US", { month: "short" });
-    const expectedMonthLong = date.toLocaleString("en-US", { month: "long" });
-    const expectedYear = date.getFullYear();
-    const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
-
-    let calendarMonthAndYear = await this.page
-      .locator("nb-calendar-view-mode")
-      .textContent();
-    const expectedMonthAndYear = `${expectedMonthLong} ${expectedYear}`;
-
-    while (!calendarMonthAndYear.includes(expectedMonthAndYear)) {
-      await this.page
-        .locator('nb-calendar-pageable-navigation [data-name="chevron-right"]')
-        .click();
-      calendarMonthAndYear = await this.page
-        .locator("nb-calendar-view-mode")
-        .textContent();
+  async chooseTargetDate(date: string, monthYear: string) {
+    while (
+      !(await this.calendarMonthAndYearField.textContent())?.includes(monthYear)
+    ) {
+      await this.nextBtn.click();
     }
-
-    await this.page
-      .locator('[class="day-cell ng-star-inserted"]')
-      .getByText(expectedDate, { exact: true })
-      .click();
-    return dateToAssert;
+    const targetDate = this.page
+      .locator(".day-cell.ng-star-inserted")
+      .getByText(date, { exact: true });
+    await targetDate.click();
   }
 }
 ```
 
 ```ts
-import { test } from "@playwright/test";
-import { NavigationPage } from "../page-objects/navigationPage";
-import { FormLayoutsPage } from "../page-objects/formLayoutsPage";
-import { DatepickerPage } from "../page-objects/datepickerPage";
+export function getDateFromToday(count: number) {
+  let date = new Date();
+  date.setDate(date.getDate() + count);
 
-test("parametrized methods", async ({ page }) => {
-  const navigateTo = new NavigationPage(page);
-  const onFormLayoutsPage = new FormLayoutsPage(page);
-  const onDatepickerPage = new DatepickerPage(page);
+  const expectedDate = date.getDate().toString();
+  const expectedMonthShort = date.toLocaleString("en-US", { month: "short" });
+  const expectedMonthLong = date.toLocaleString("en-US", { month: "long" });
+  const expectedYear = date.getFullYear();
+  const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
+  const expectedMonthAndYear = `${expectedMonthLong} ${expectedYear}`;
 
-  await navigateTo.formLayoutsPage();
-  await onFormLayoutsPage.submitUsingTheGridFormWithCredentialsAndSelectOption(
-    "test@test.com",
-    "Welcome1",
-    "Option 2",
-  );
-  await onFormLayoutsPage.submitInlineFormWithNameEmailAndCheckbox(
-    "John Smith",
-    "John@test.com",
-    false,
-  );
-  await navigateTo.datepickerPage();
-  await onDatepickerPage.selectCommonDatePickerDateFromToday(10);
-  await onDatepickerPage.selectDatepickerWithRangeFromToday(6, 15);
-});
-```
-
-## Page Object Manager
-
-Xem xét bỏ phần này
-
-```ts
-import { Page } from "@playwright/test";
-import { NavigationPage } from "../page-objects/navigationPage";
-import { FormLayoutsPage } from "../page-objects/formLayoutsPage";
-import { DatepickerPage } from "../page-objects/datepickerPage";
-
-export class PageManager {
-  private readonly page: Page;
-  private readonly navigationPage: NavigationPage;
-  private readonly formLayoutsPage: FormLayoutsPage;
-  private readonly datepickerPage: DatepickerPage;
-
-  constructor(page: Page) {
-    this.page = page;
-    this.navigationPage = new NavigationPage(this.page);
-    this.formLayoutsPage = new FormLayoutsPage(this.page);
-    this.datepickerPage = new DatepickerPage(this.page);
-  }
-
-  navigateTo() {
-    return this.navigationPage;
-  }
-
-  onFormLayoutsPage() {
-    return this.formLayoutsPage;
-  }
-
-  onDatepickerPage() {
-    return this.datepickerPage;
-  }
+  return {
+    date: expectedDate,
+    dateMonthYear: dateToAssert,
+    monthYear: expectedMonthAndYear,
+  };
 }
 ```
 
 ```ts
-import { test } from "@playwright/test";
-import { PageManager } from "../page-objects/pageManager";
+import { test, expect } from "@playwright/test";
+import { getDateFromToday } from "../utils/helper";
+import { DatePickerPage } from "../pages/date.picker.page";
 
-test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200/");
+test("date picker", async ({ page }) => {
+  const datePickerPage = new DatePickerPage(page);
+  const count = 100;
+  // navigate to date picker page
+  await datePickerPage.goto();
+  await datePickerPage.formPickerField.click();
+
+  const targetDate = getDateFromToday(count);
+  console.log("checkly>>>>>>>", targetDate);
+
+  await datePickerPage.chooseTargetDate(targetDate.date, targetDate.monthYear);
+  await expect(datePickerPage.formPickerField).toHaveValue(
+    targetDate.dateMonthYear,
+  );
 });
 
-test("navigate to form page", async ({ page }) => {
-  const pm = new PageManager(page);
-  await pm.navigateTo().formLayoutsPage();
-  await pm.navigateTo().datepickerPage();
-  await pm.navigateTo().smartTablePage();
-  await pm.navigateTo().toastrPage();
-  await pm.navigateTo().tooltipPage();
+test("date picker - range", async ({ page }) => {
+  const datePickerPage = new DatePickerPage(page);
+  const count = 20;
+  // navigate to date picker page
+  await datePickerPage.goto();
+  await datePickerPage.formPickerField.click();
+
+  const today = getDateFromToday(0);
+  const end = getDateFromToday(count);
+  console.log("checkly>>>>>>>", end);
+
+  const rangeDateToAssert = `${today.dateMonthYear} - ${end.dateMonthYear}`;
+
+  // Trigger date picker
+  await datePickerPage.rangePickerField.click();
+
+  // Choose today
+  await datePickerPage.chooseTargetDate(today.date, today.monthYear);
+
+  // Choose end date
+  await datePickerPage.chooseTargetDate(end.date, end.monthYear);
+
+  await expect(datePickerPage.rangePickerField).toHaveValue(rangeDateToAssert);
 });
 
-test("parametrized methods", async ({ page }) => {
-  const pm = new PageManager(page);
-  await pm.navigateTo().formLayoutsPage();
-  await pm
-    .onFormLayoutsPage()
-    .submitUsingTheGridFormWithCredentialsAndSelectOption(
-      "test@test.com",
-      "Welcome1",
-      "Option 2",
-    );
-  await pm
-    .onFormLayoutsPage()
-    .submitInlineFormWithNameEmailAndCheckbox(
-      "John Smith",
-      "John@test.com",
-      false,
-    );
-  await pm.navigateTo().datepickerPage();
-  await pm.onDatepickerPage().selectCommonDatePickerDateFromToday(10);
-  await pm.onDatepickerPage().selectDatepickerWithRangeFromToday(6, 10);
+test("checkly", async ({ page }) => {
+  console.log("checkly >>>>>>>>>>", getDateFromToday(100));
 });
 ```
 
-## Page Object Helper Base
+## Bài tập về nhà
 
-Xem xét bỏ phần này như có note trên đầu
+Tạo kịch bản test page Register sử dụng Page Object Model.
+Gợi ý:
+
+- Tạo class RegisterPage trong lanhnt/web-auto/src/pages/register.page.ts
+- Tạo script test với các case sau:
+  - Nhập thông tin hợp lệ => đăng kí user thành công
+  - Bỏ trống các trường bắt buộc
+  - Nhập sai định dạng email
+  - Nhập sai định dạng password
+  - Nhập password và confirm password ko match
 
 # Buổi 10,11,12: Working With API
 
