@@ -13,10 +13,10 @@ registerData.forEach((data) => {
         // verify the register btn state
         await registerPage.verifyRegisterBtnState(data.isEnableLogin)
 
-        // click to register btn
-        await registerPage.registerBtn.click({ force: true })
-
         // verify error msg
         await registerPage.verifyErrMsg(data.message)
+
+        // click to register btn
+        await registerPage.registerBtn.click({ force: true })
     });
 });

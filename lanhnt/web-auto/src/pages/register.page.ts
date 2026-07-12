@@ -44,6 +44,7 @@ export class RegisterPage extends Page {
 
     async verifyErrMsg(msg: string) {
         const errMsg = this.page.locator('.caption.status-danger')
+        await this.repeatPasswordField.blur()
         if (msg) {
             await expect(errMsg).toHaveText(msg)
         } else {
