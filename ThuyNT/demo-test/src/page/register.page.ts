@@ -16,7 +16,7 @@ export class RegisterPage extends basePage {
     passwordField = this.page.getByPlaceholder("Password", { exact: true });
     confirmPasswordField = this.page.getByPlaceholder("Confirm Password", { exact: true });
     agreeTermsCheckbox = this.page.getByRole("checkbox", { name: "Agree to Terms & Conditions" });
-    registerBtn = this.page.getByRole("button", { name: "REGISTER" });
+    registerBtn = this.page.getByRole("button", { name: "Register" });
     heading = this.page.getByRole("heading", { name: "Register" });
 
     fullNameError = this.page.locator('.form-control-group').filter({ hasText: 'Full name:' }).locator('.caption.status-danger');
@@ -55,7 +55,11 @@ export class RegisterPage extends basePage {
     }
 
     async submit() {
-        await this.registerBtn.click();
+        // Click the register button and wait for navigation to home page
+        await Promise.all([
+            this.page.waitForURL(PageUrl.HOME_URL),
+            this.registerBtn.click(),
+        ]);
     }
 
     async fillRegisterForm(data: { fullName?: string; email?: string; password?: string; confirmPassword?: string; acceptTerms?: boolean }) {

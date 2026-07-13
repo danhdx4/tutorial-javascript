@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { RegisterPage } from '../page/register.page';
+import { PageUrl } from '../utils/constants';
 
 const validUser = {
     fullName: 'Test User',
@@ -9,6 +10,7 @@ const validUser = {
 
 const invalidEmails = ['abc', 'abc@', 'abc.com', '@gmail.com', '@@','abc@gmail'];
 const invalidPasswords = ['a', 'ab', 'abc'];
+const invalidConfirmPasswords = ['654321', '123','12345678'];
 
 test.describe('Register feature should work correctly', () => {
     test.beforeEach(async ({ page }) => {
@@ -31,7 +33,7 @@ test.describe('Register feature should work correctly', () => {
         await registerPage.verifyRegisterButtonStatus(true);
         await registerPage.submit();
 
-        await expect(page).not.toHaveURL(registerPage.pageUrl);
+        await expect(page).toHaveURL(PageUrl.HOME_URL);
     });
 
     test('Should show required field errors when required fields are empty', async ({ page }) => {
@@ -86,15 +88,18 @@ test.describe('Register feature should work correctly', () => {
     test('Should not register when password and confirm password do not match', async ({ page }) => {
         const registerPage = new RegisterPage(page);
 
-        await registerPage.fillRegisterForm({
-            fullName: validUser.fullName,
-            email: validUser.email,
-            password: validUser.password,
-            confirmPassword: '654321',
-            acceptTerms: true,
-        });
+        for (const cp of invalidConfirmPasswords) {
+            await registerPage.fillRegisterForm({
+                fullName: validUser.fullName,
+                email: validUser.email,
+                password: validUser.password,
+                confirmPassword: cp,
+                acceptTerms: true,
+            });
 
-        await registerPage.confirmPasswordField.blur();
-        await expect(page).toHaveURL(registerPage.pageUrl);
+            await registerPage.confirmPasswordField.blur();
+            await registerPage.submit();
+            await expect(page).toHaveURL(registerPage.pageUrl);
+        }
     });
 });

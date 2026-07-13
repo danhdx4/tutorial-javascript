@@ -7,7 +7,7 @@
 # Test info
 
 - Name: src\tests\register.spec.ts >> Register feature should work correctly >> Should show an error when email format is invalid
-- Location: demo-test\src\tests\register.spec.ts:53:9
+- Location: demo-test\src\tests\register.spec.ts:54:9
 
 # Error details
 
