@@ -28,10 +28,12 @@ export class DatePickerPage extends Page {
 
   async openRangePicker() {
     await this.formRangerPicker.click();
+    // Lanh note:  các hàm chỉ gọi 1 action thì không cần thêm hàm
   }
 
   async selectStartDate(date: string) {
     await this.dayCell.getByText(date, { exact: true }).click();
+    // Lanh note: Hàm này sẽ chọn sai ngày nếu có nhiều 2 ngày trùng nhau trong 1 tháng. Ví dụ: 1/7 và 1/8
   }
 
   async gotoExpectedMonth(expectedMonthAndYear: string) {
@@ -48,7 +50,10 @@ export class DatePickerPage extends Page {
     await this.dayCell.getByText(date, { exact: true }).click();
   }
 
+  // Lanh note: hàm selectStartDate và selectEndDate có thể gộp lại thành 1 hàm selectDate(date: string) để tái sử dụng code
+
   async verifyRange(expectedValue: string) {
     await expect(this.formRangerPicker).toHaveValue(expectedValue);
+    // Lanh note: hàm này không có ý nghĩa.
   }
 }

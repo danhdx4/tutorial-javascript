@@ -972,13 +972,12 @@ Gợi ý:
 
 Link: [https://playwright.dev/docs/api-testing](https://playwright.dev/docs/api-testing)
 Link thực hành: https://conduit.bondaracademy.com/
-Account: lanh.zensho@test.com/123456789
 
-# Buổi 10: Set up API project and handling mock API
+# Buổi 10: Giới thiệu về API, Setup project & Mocking API
 
 ## What is API
 
-- API (Application Programming Interface) là cầu nối giúp các hệ thống hoặc ứng dụng giao tiếp và trao đổi dữ liệu với nhau mà không cần thông qua giao diện người dùng.
+Slide
 
 ## Setup New Project
 
@@ -990,27 +989,23 @@ Tạo new project → setup ban đầu → code ban đầu
 
 Download Postman
 
-## Mocking API
-
 ```ts
 test.beforeEach(async ({ page }) => {
-  await page.route("*/**/tags", async (route) => {
-    const tags = {
-      tags: ["HSC", "SO", "ZApp", "WF", "ACCS"],
-    };
-    await route.fulfill({
-      body: JSON.stringify(tags),
-    });
-  });
   await page.goto("https://conduit.bondaracademy.com/");
 });
 
-test("mocking api", async ({ page }) => {
-  await expect(page.getByText("ACCS")).toBeVisible();
+test("has title", async ({ page }) => {
+  await expect(page.locator(".navbar-brand")).toHaveText("conduit");
 });
 ```
 
-## Modify API Response
+## Mocking API
+
+```json
+{
+  "tags": ["Zensho Holding", "Automation", "Playwright"]
+}
+```
 
 ```ts
 import { test, expect } from "@playwright/test";
@@ -1023,21 +1018,50 @@ test.beforeEach(async ({ page }) => {
     });
   });
 
+  await page.goto("https://conduit.bondaracademy.com/");
+});
+
+test("mocking API", async ({ page }) => {
+  const tagsList = page.locator(".tag-list");
+  await expect(tagsList.getByText("Zensho Holding")).toBeVisible();
+});
+```
+
+## Bài tập về nhà
+
+Tạo mock cho API get dữ liệu bài viết https://conduit-api.bondaracademy.com/api/articles?limit=10&offset=0 (`**/api/articles*`) với các thông tin như sau:
+
+- Giả lập chỉ trả về 2 bài viết
+- Sửa các thông tin sau trong bài viết đầu:
+  - title
+  - description
+
+# Buổi 11: Modify API Response & Perform API Request
+
+## Modify API Response
+
+```ts
+import { test, expect } from "@playwright/test";
+import tags from "../test-data/tags.json";
+
+test("Modify API response - Articles API", async ({ page }) => {
+  //Working with API
+  // 1. Chặn yêu cầu API
   await page.route("**/api/articles*", async (route) => {
+    // 2. Thực hiện yêu cầu gốc và nhận phản hồi
     const response = await route.fetch();
     const responseBody = await response.json();
+
+    // 3. Sửa nội dung phản hồi
     responseBody.articles[0].title = "This is a test title";
     responseBody.articles[0].description = "This is a description";
 
+    // 4. Gửi phản hồi đã sửa đổi cho trình duyệt
     await route.fulfill({
       body: JSON.stringify(responseBody),
     });
   });
 
-  await page.goto("https://angular.realworld.io/");
-});
-
-test("has title", async ({ page }) => {
   await expect(page.locator(".navbar-brand")).toHaveText("conduit");
   await expect(page.locator("app-article-list h1").first()).toContainText(
     "This is a test title",
@@ -1048,94 +1072,141 @@ test("has title", async ({ page }) => {
 });
 ```
 
-⇒ Kết thúc buổi 10
-
 ## Perform API Request
 
-// Sửa 1 article (đã làm bên trên)
-
-// Delete article vừa sửa
-
-Login tài khoản lấy Token ⇒ Tạo mới 1 article bằng API ⇒ Kiểm tra tồn tại trong tab Global
-
-Xóa article bằng browser ⇒ Kiểm tra ko còn trong tab Global
+// Delete article with API
 
 ```ts
-test("delete article", async ({ page, request }) => {
+test("Should be create a articel successfully", async ({ page, request }) => {
+  // navigate to the creating article page
+  await page.getByRole("link", { name: " New Article " }).click();
+
+  // fill all data
+  await page.getByPlaceholder("Article Title").fill("The article title");
+  await page
+    .getByPlaceholder("What's this article about?")
+    .fill("The article description");
+  await page
+    .getByPlaceholder("Write your article (in markdown)")
+    .fill("The article content");
+  await page.getByPlaceholder("Enter tags").fill("Zensho Holding");
+
+  // click to 'public article' btn
+  await page.getByRole("button", { name: " Publish Article " }).click();
+  const createAritcleResponse = await page.waitForResponse(
+    "https://conduit-api.bondaracademy.com/api/articles/",
+  );
+  const createAritcleResponseBody = await createAritcleResponse.json();
+  const slug = createAritcleResponseBody.article.slug;
+
+  // Back to Home page and verify the created article is existing
+  await page.goto("https://conduit.bondaracademy.com/");
+  await expect(
+    page.locator("app-article-preview h1", { hasText: "The article title" }),
+  ).toBeVisible();
+  await expect(
+    page.locator("app-article-preview p", {
+      hasText: "The article description",
+    }),
+  ).toBeVisible();
+
+  // Tear down: Clean data after testing | Delete the article
+  // Get access token by the loginn API
   const response = await request.post(
-    "https://api.realworld.io/api/users/login",
+    "https://conduit-api.bondaracademy.com/api/users/login",
     {
-      data: {
-        user: { email: "pwtest@test.com", password: "Welcome1" },
-      },
+      data: { user: { email: "lanh.zensho@test.com", password: "123456789" } },
     },
   );
-
   const responseBody = await response.json();
   const accessToken = responseBody.user.token;
-  const articleResponse = await request.post(
-    "https://api.realworld.io/api/articles/",
+
+  // Delete the article by the delete API
+  const deleteArticleResponse = await request.delete(
+    `https://conduit-api.bondaracademy.com/api/articles/${slug}`,
     {
-      data: {
-        article: {
-          tagList: [],
-          title: "This is a test title",
-          description: "This is a test description",
-          body: "This is a test body",
-        },
-      },
       headers: {
         Authorization: `Token ${accessToken}`,
       },
     },
   );
 
-  expect(articleResponse.status()).toEqual(201);
-  await page.getByText("Global Feed").click();
-  await page.getByText("This is a test title").click();
-  await page.getByRole("button", { name: "Delete Article" }).first().click();
-  await page.getByText("Global Feed").click();
-  await expect(page.locator("app-article-list h1").first()).not.toContainText(
-    "This is a test title",
-  );
+  expect(deleteArticleResponse.status()).toEqual(204);
 });
 ```
 
-BTVN:
+# Buổi 12: Perform API Request (continue)
 
-Hướng dẫn lấy slugId bằng hàm waitForResponse
-
-Create article bằng browser ⇒ Xóa Article bằng API
-
-⇒ Kết thúc buổi 11
-
-## Intercept Browser API Response
-
-⇒ Đã là bài tập về nhà, đến lớp chỉ chữa bài tập
+// Create a article with API
 
 ```ts
-test("intercept browser API response", async ({ page, request }) => {
-  await page.route("**/api/articles*", async (route) => {
-    const response = await route.fetch();
-    const responseBody = await response.json();
-    responseBody.articles[0].title = "This is a test title";
-    responseBody.articles[0].description = "This is a description";
-
-    await route.fulfill({
-      body: JSON.stringify(responseBody),
-    });
-  });
-
-  await page.goto("https://angular.realworld.io/");
-  await expect(page.locator(".navbar-brand")).toHaveText("conduit");
-  await expect(page.locator("app-article-list h1").first()).toContainText(
-    "This is a test title",
+test("Should delete the article successfully", async ({ page, request }) => {
+  // Setup: Create a article by API
+  // Get access token by the loginn API
+  const response = await request.post(
+    "https://conduit-api.bondaracademy.com/api/users/login",
+    {
+      data: { user: { email: "lanh.zensho@test.com", password: "123456789" } },
+    },
   );
-  await expect(page.locator("app-article-list p").first()).toContainText(
-    "This is a description",
+  const responseBody = await response.json();
+  const accessToken = responseBody.user.token;
+
+  // Create a article by the create API
+  const createArticleResponse = await request.post(
+    "https://conduit-api.bondaracademy.com/api/articles/",
+    {
+      headers: {
+        Authorization: `Token ${accessToken}`,
+      },
+      data: {
+        article: {
+          title: "the article title 123",
+          description: "the article description 123",
+          body: "the aticle content 123 ",
+          tagList: ["Zensho Holding", "Playwright"],
+        },
+      },
+    },
   );
+
+  expect(createArticleResponse.status()).toEqual(201);
+  const createArticleBody = await createArticleResponse.json();
+  console.log(createArticleBody);
+
+  // Delete the article
+  // Navigate to the article URL and delete Article
+  await page.goto(
+    `https://conduit.bondaracademy.com/article/${createArticleBody.article.slug}`,
+  );
+  await page
+    .locator(".banner")
+    .getByRole("button", { name: " Delete Article " })
+    .click();
+  await page.waitForResponse(
+    "https://conduit-api.bondaracademy.com/api/articles/*",
+  );
+
+  // Verify the article is not exsiting
+  await page.goto("https://conduit.bondaracademy.com/");
+  await expect(
+    page.locator("app-article-preview h1", {
+      hasText: "the article title 123",
+    }),
+  ).not.toBeVisible();
 });
 ```
+
+## Bài tập về nhà
+
+Bài tập lớn cuối khoá
+
+# Buổi 13: Sharing Authentication State & Fixture
+
+Mục tiêu:
+
+- Sử dụng login API để share authenticatiion cho API
+- Sử dụng login API để tạo đăng nhập tự động
 
 ## Sharing Authentication State
 
@@ -1242,164 +1313,6 @@ test("delete article", async ({ page, request }) => {
   await page.getByText("Global Feed").click();
 });
 ```
-
-⇒ Kết thúc buổi 12
-
-# Buổi 13, 14: Nâng Cao
-
-Quay lại Project code thứ 2
-
-## NPM Scripts and CLI Commands
-
-```json
-"scripts": {
-  "ng": "ng",
-  "start": "ng serve",
-  "pageObjects-chrome": "npx playwright test usePageObjects.spec.ts --project=chromium",
-  "pageObjects-firefox": "npx playwright test usePageObjects.spec.ts --project=firefox",
-  "pageObjects-all": "npm run pageObjects-chrome && npm run pageObjects-firefox"
-}
-```
-
-## Test Data Generator
-
-[https://fakerjs.dev/api/](https://fakerjs.dev/api/)
-
-Sử dụng Faker để gen data
-
-import faker ⇒ Tạo data để điền vào input Form
-
-## Test Retries
-
-Xem xét bỏ qua
-
-```text
-Retry OFF
-Retry ON
-Worker #1
-Worker #2
-```
-
-```ts
-export default defineConfig({
-  timeout: 40000,
-  globalTimeout: 60000,
-  expect: {
-    timeout: 2000,
-  },
-  testDir: "./tests",
-  fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 1,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: "html",
-  use: {
-    trace: "on-first-retry",
-  },
-});
-```
-
-## Parallel Execution
-
-Xem xét bỏ qua
-
-```ts
-test("parametrized methods", async ({ page }) => {
-  const pm = new PageManager(page);
-  const randomFullName = faker.person.fullName();
-  const randomEmail = `${randomFullName.replace(" ", "")}${faker.number.int(
-    1000,
-  )}@test.com`;
-
-  await pm.navigateTo().formLayoutsPage();
-  await pm
-    .onFormLayoutsPage()
-    .submitUsingTheGridFormWithCredentialsAndSelectOption(
-      "test@test.com",
-      "Welcome1",
-      "Option 2",
-    );
-  await page.screenshot({ path: "screenshots/formsLayoutsPage.png" });
-  const buffer = await page.screenshot();
-  console.log(buffer.toString("base64"));
-  await pm
-    .onFormLayoutsPage()
-    .submitInlineFormWithNameEmailAndCheckbox(
-      randomFullName,
-      randomEmail,
-      false,
-    );
-  await page
-    .locator("nb-card", { hasText: "Inline form" })
-    .screenshot({ path: "screenshots/inlineForm.png" });
-  await pm.navigateTo().datepickerPage();
-});
-```
-
-## Screenshots and Video
-
-```ts
-// playwright.config.ts
-export default defineConfig({
-  timeout: 40000,
-  globalTimeout: 60000,
-  expect: {
-    timeout: 2000,
-  },
-  use: {
-    video: {
-      mode: "on",
-      size: { width: 1920, height: 1080 },
-    },
-  },
-});
-```
-
-## Environment Variables (66)
-
-Hướng dẫn sử dụng biến môi trường như bài hướng dẫn
-
-Cách thứ 2 theo như Bookingcare. Thiết lập baseURL theo nhiều option
-
-```ts
-use: {
-  baseURL: 'http://localhost:4200/',
-  globalsQaURL: 'https://www.globalsqa.com/demo-site/draganddrop/',
-  // baseURL: process.env.DEV === '1' ? 'http://localhost:4200/'
-  //   : process.env.STAGING === '1' ? 'http://localhost:4202/'
-  //   : 'http://localhost:4201/',
-}
-```
-
-Xem xét bỏ qua nếu bài bị dài quá
-
-## Configuration File
-
-Giải thích về file config
-
-Global section và Project section
-
-Setup fullscreen trong file config
-
-Sử dụng 1 file config khác cho test
-
-```ts
-import { defineConfig, devices } from "@playwright/test";
-import type { TestOptions } from "./test-options";
-
-require("dotenv").config();
-
-export default defineConfig<TestOptions>({
-  use: {
-    globalsQaURL: "https://www.globalsqa.com/demo-site/draganddrop/",
-    baseURL: "http://localhost:4200/",
-  },
-});
-```
-
-Xem xét bỏ qua nếu bài bị dài quá
-
-⇒ Kết thúc buổi 13
 
 ## Fixture (quan trọng)
 
@@ -1573,6 +1486,165 @@ globalSetup: require.resolve('./global-setup.ts'),
 globalTeardown: require.resolve('./global-teardown.ts'),
 ```
 
+# Buổi 14: Working with data
+
+- Data Generator
+- Management data
+
+Quay lại Project code thứ 2
+
+## NPM Scripts and CLI Commands
+
+```json
+"scripts": {
+  "ng": "ng",
+  "start": "ng serve",
+  "pageObjects-chrome": "npx playwright test usePageObjects.spec.ts --project=chromium",
+  "pageObjects-firefox": "npx playwright test usePageObjects.spec.ts --project=firefox",
+  "pageObjects-all": "npm run pageObjects-chrome && npm run pageObjects-firefox"
+}
+```
+
+## Test Data Generator
+
+[https://fakerjs.dev/api/](https://fakerjs.dev/api/)
+
+Sử dụng Faker để gen data
+
+import faker ⇒ Tạo data để điền vào input Form
+
+## Test Retries
+
+Xem xét bỏ qua
+
+```text
+Retry OFF
+Retry ON
+Worker #1
+Worker #2
+```
+
+```ts
+export default defineConfig({
+  timeout: 40000,
+  globalTimeout: 60000,
+  expect: {
+    timeout: 2000,
+  },
+  testDir: "./tests",
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 1,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: "html",
+  use: {
+    trace: "on-first-retry",
+  },
+});
+```
+
+## Parallel Execution
+
+Xem xét bỏ qua
+
+```ts
+test("parametrized methods", async ({ page }) => {
+  const pm = new PageManager(page);
+  const randomFullName = faker.person.fullName();
+  const randomEmail = `${randomFullName.replace(" ", "")}${faker.number.int(
+    1000,
+  )}@test.com`;
+
+  await pm.navigateTo().formLayoutsPage();
+  await pm
+    .onFormLayoutsPage()
+    .submitUsingTheGridFormWithCredentialsAndSelectOption(
+      "test@test.com",
+      "Welcome1",
+      "Option 2",
+    );
+  await page.screenshot({ path: "screenshots/formsLayoutsPage.png" });
+  const buffer = await page.screenshot();
+  console.log(buffer.toString("base64"));
+  await pm
+    .onFormLayoutsPage()
+    .submitInlineFormWithNameEmailAndCheckbox(
+      randomFullName,
+      randomEmail,
+      false,
+    );
+  await page
+    .locator("nb-card", { hasText: "Inline form" })
+    .screenshot({ path: "screenshots/inlineForm.png" });
+  await pm.navigateTo().datepickerPage();
+});
+```
+
+## Screenshots and Video
+
+```ts
+// playwright.config.ts
+export default defineConfig({
+  timeout: 40000,
+  globalTimeout: 60000,
+  expect: {
+    timeout: 2000,
+  },
+  use: {
+    video: {
+      mode: "on",
+      size: { width: 1920, height: 1080 },
+    },
+  },
+});
+```
+
+## Environment Variables (66)
+
+Hướng dẫn sử dụng biến môi trường như bài hướng dẫn
+
+Cách thứ 2 theo như Bookingcare. Thiết lập baseURL theo nhiều option
+
+```ts
+use: {
+  baseURL: 'http://localhost:4200/',
+  globalsQaURL: 'https://www.globalsqa.com/demo-site/draganddrop/',
+  // baseURL: process.env.DEV === '1' ? 'http://localhost:4200/'
+  //   : process.env.STAGING === '1' ? 'http://localhost:4202/'
+  //   : 'http://localhost:4201/',
+}
+```
+
+Xem xét bỏ qua nếu bài bị dài quá
+
+## Configuration File
+
+Giải thích về file config
+
+Global section và Project section
+
+Setup fullscreen trong file config
+
+Sử dụng 1 file config khác cho test
+
+```ts
+import { defineConfig, devices } from "@playwright/test";
+import type { TestOptions } from "./test-options";
+
+require("dotenv").config();
+
+export default defineConfig<TestOptions>({
+  use: {
+    globalsQaURL: "https://www.globalsqa.com/demo-site/draganddrop/",
+    baseURL: "http://localhost:4200/",
+  },
+});
+```
+
+Xem xét bỏ qua nếu bài bị dài quá
+
+⇒ Kết thúc buổi 13
+
 ## Test Tags
 
 Link: https://playwright.dev/docs/test-annotations
@@ -1646,22 +1718,6 @@ test("input fields", async ({ page }, testInfo) => {
 });
 ```
 
-## Reporting
-
-// Bỏ qua
-
-## Visual Testing
-
-// Bỏ qua
-
-## Playwright with Docker Container
-
-// Bỏ qua
-
-## GitHub Actions and Argos CI
-
-// Bỏ qua
-
 # Buổi 15: Chữa bài tập lớn
 
 Tạo project 2 bài test độc lập test chức năng trên browser như sau:
@@ -1672,6 +1728,7 @@ Tạo project 2 bài test độc lập test chức năng trên browser như sau:
 Yêu cầu:
 
 - Viết code theo POM
+- Sử dụng sharing authen để làm việc với API
 - Sử dụng fixture để login
 - Sử dụng hook after xóa bài cho test 1 bằng API
 - Sử dụng hook before tạo bài cho test 2 bằng API
