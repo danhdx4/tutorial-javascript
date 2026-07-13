@@ -64,7 +64,7 @@ export class DatepickerComponent extends basePage {
         await this.dayContainer.getByText(end.expectedDate, { exact: true }).click();
     }
 
-    async verifyRangeDate(startValue: String, endValue){
+    async verifyRangeDate(startValue: String, endValue: string){
         await expect(this.rangeForm).toHaveValue(startValue + " - " + endValue);
     }
 }
