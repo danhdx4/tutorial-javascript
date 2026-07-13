@@ -1,0 +1,39 @@
+{
+  "articles": [
+    {
+      "slug": "thuy-test-api-automation",
+      "title": "Thuy test API with Playwright",
+      "description": "API testing practice",
+      "body": "Thuy is learning how to test APIs with Playwright and mock responses for frontend validation.",
+      "tagList": ["Thuy", "API", "Playwright", "Testing"],
+      "createdAt": "2026-07-13T00:00:00.000Z",
+      "updatedAt": "2026-07-13T00:00:00.000Z",
+      "favorited": false,
+      "favoritesCount": 123,
+      "author": {
+        "username": "Thuy NT",
+        "bio": "QA automation learner",
+        "image": "https://example.com/avatar.png",
+        "following": false
+      }
+    },
+    {
+      "slug": "thuy-test-api-second-article",
+      "title": "Thuy test API flow with mocked data",
+      "description": "Mocked API example for learning",
+      "body": "This article shows how to mock API responses and verify content rendered on the page using Playwright.",
+      "tagList": ["Mock API", "QA", "Automation", "Learning"],
+      "createdAt": "2026-07-13T01:00:00.000Z",
+      "updatedAt": "2026-07-13T01:00:00.000Z",
+      "favorited": true,
+      "favoritesCount": 456,
+      "author": {
+        "username": "Thuy NT",
+        "bio": "QA automation learner",
+        "image": "https://example.com/avatar.png",
+        "following": false
+      }
+    }
+  ],
+  "articlesCount": 2
+}
