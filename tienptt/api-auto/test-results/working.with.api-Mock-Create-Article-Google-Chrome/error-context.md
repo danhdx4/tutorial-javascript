@@ -12,7 +12,9 @@
 # Error details
 
 ```
-Error: expect(received).toBeTruthy()
+Error: Register failed: {"errors":{"username":["has already been taken"]}}
+
+expect(received).toBeTruthy()
 
 Received: false
 ```
@@ -23,105 +25,128 @@ Received: false
   1   | import { test, expect } from '@playwright/test';
   2   | 
   3   | test('Mock Create Article', async ({ page, request }) => {
-  4   | 
-  5   |   // Login bằng API
-  6   |   const loginResponse = await request.post(
-  7   |     'https://conduit-api.bondaracademy.com/api/users/login',
-  8   |     {
-  9   |       data: {
-  10  |         user: {
-  11  |           email: 'lanh@zensho.com',
-  12  |           password: '123456789'
-  13  |         }
-  14  |       }
-  15  |     }
-  16  |   );
-  17  | 
-  18  |   // In thông tin response để debug
-  19  |   console.log('Login Status:', loginResponse.status());
-  20  | 
-  21  |   const responseText = await loginResponse.text();
-  22  |   console.log('Login Response:', responseText);
-  23  | 
-  24  |   // Nếu login thất bại thì dừng test ngay
-> 25  |   expect(loginResponse.ok()).toBeTruthy();
-      |                              ^ Error: expect(received).toBeTruthy()
+  4   |   const timestamp = Date.now();
+  5   |   const email = `playwright-${timestamp}@example.com`;
+  6   |   const password = 'Test123456!';
+  7   |   const username = 'playwrightuser';
+  8   | 
+  9   |   // 1. Đăng ký tài khoản mới để tránh lỗi credentials cũ
+  10  |   const registerResponse = await request.post(
+  11  |     'https://conduit-api.bondaracademy.com/api/users',
+  12  |     {
+  13  |       data: {
+  14  |         user: {
+  15  |           username,
+  16  |           email,
+  17  |           password
+  18  |         }
+  19  |       }
+  20  |     }
+  21  |   );
+  22  | 
+  23  |   const registerText = await registerResponse.text();
+  24  |   console.log('Register Status:', registerResponse.status());
+  25  |   console.log('Register Response:', registerText);
   26  | 
-  27  |   // Parse response
-  28  |   const loginBody = JSON.parse(responseText);
-  29  |   const token = loginBody.user.token;
-  30  | 
-  31  |   // Lưu token trước khi mở website
-  32  |   await page.addInitScript((token) => {
-  33  |     localStorage.setItem('jwtToken', token);
-  34  |   }, token);
-  35  | 
-  36  |   // Mock Create Article
-  37  |   await page.route('**/api/articles', async (route) => {
-  38  | 
-  39  |     if (route.request().method() !== 'POST') {
-  40  |       await route.continue();
-  41  |       return;
-  42  |     }
-  43  | 
-  44  |     const requestBody = route.request().postDataJSON();
+> 27  |   expect(registerResponse.ok(), `Register failed: ${registerText}`).toBeTruthy();
+      |                                                                     ^ Error: Register failed: {"errors":{"username":["has already been taken"]}}
+  28  | 
+  29  |   // 2. Login bằng tài khoản vừa tạo
+  30  |   const loginResponse = await request.post(
+  31  |     'https://conduit-api.bondaracademy.com/api/users/login',
+  32  |     {
+  33  |       data: {
+  34  |         user: {
+  35  |           email,
+  36  |           password
+  37  |         }
+  38  |       }
+  39  |     }
+  40  |   );
+  41  | 
+  42  |   const loginText = await loginResponse.text();
+  43  |   console.log('Login Status:', loginResponse.status());
+  44  |   console.log('Login Response:', loginText);
   45  | 
-  46  |     console.log('Request Body:', requestBody);
+  46  |   expect(loginResponse.ok(), `Login failed: ${loginText}`).toBeTruthy();
   47  | 
-  48  |     await route.fulfill({
-  49  |       status: 201,
-  50  |       contentType: 'application/json',
-  51  |       body: JSON.stringify({
-  52  |         article: {
-  53  |           slug: 'mock-playwright',
-  54  |           title: requestBody.article.title,
-  55  |           description: requestBody.article.description,
-  56  |           body: requestBody.article.body,
-  57  |           tagList: requestBody.article.tagList ?? [],
-  58  |           createdAt: new Date().toISOString(),
-  59  |           updatedAt: new Date().toISOString(),
-  60  |           favorited: false,
-  61  |           favoritesCount: 0,
-  62  |           author: {
-  63  |             username: loginBody.user.username,
-  64  |             image: '',
-  65  |             following: false
-  66  |           }
-  67  |         }
-  68  |       })
-  69  |     });
-  70  | 
+  48  |   const loginBody = JSON.parse(loginText);
+  49  |   const token = loginBody.user.token;
+  50  | 
+  51  |   // 3. Set token vào localStorage trước khi mở page
+  52  |   await page.addInitScript((tokenValue) => {
+  53  |     window.localStorage.setItem('jwtToken', tokenValue);
+  54  |   }, token);
+  55  | 
+  56  |   // 4. Mock auth user + create article
+  57  |   await page.route('**/api/user', async (route) => {
+  58  |     await route.fulfill({
+  59  |       status: 200,
+  60  |       contentType: 'application/json',
+  61  |       body: JSON.stringify({
+  62  |         user: {
+  63  |           username,
+  64  |           email,
+  65  |           bio: null,
+  66  |           image: '',
+  67  |           following: false
+  68  |         }
+  69  |       })
+  70  |     });
   71  |   });
   72  | 
-  73  |   // Mở Editor
-  74  |   await page.goto('https://conduit.bondaracademy.com/editor');
-  75  | 
-  76  |   // Kiểm tra đã vào được Editor
-  77  |   await expect(page.getByPlaceholder('Article Title')).toBeVisible();
+  73  |   await page.route('**/api/articles', async (route) => {
+  74  |     if (route.request().method() !== 'POST') {
+  75  |       await route.continue();
+  76  |       return;
+  77  |     }
   78  | 
-  79  |   // Nhập dữ liệu
-  80  |   await page.getByPlaceholder('Article Title')
-  81  |     .fill('Playwright Mock API');
-  82  | 
-  83  |   await page.getByPlaceholder("What's this article about?")
-  84  |     .fill('Learn Mock API');
-  85  | 
-  86  |   await page.getByPlaceholder('Write your article (in markdown)')
-  87  |     .fill('This article is created by mock API.');
-  88  | 
-  89  |   await page.getByPlaceholder('Enter tags')
-  90  |     .fill('playwright');
-  91  | 
-  92  |   // Publish
-  93  |   await page.getByRole('button', {
-  94  |     name: 'Publish Article'
-  95  |   }).click();
-  96  | 
-  97  |   // Verify
-  98  |   await expect(page).toHaveURL(/mock-playwright/);
-  99  | 
-  100 |   await expect(page.getByRole('heading'))
-  101 |     .toContainText('Playwright Mock API');
-  102 | 
-  103 | });
+  79  |     const requestBody = route.request().postDataJSON();
+  80  |     console.log('Request Body:', requestBody);
+  81  | 
+  82  |     await route.fulfill({
+  83  |       status: 201,
+  84  |       contentType: 'application/json',
+  85  |       body: JSON.stringify({
+  86  |         article: {
+  87  |           slug: 'mock-playwright',
+  88  |           title: requestBody.article.title,
+  89  |           description: requestBody.article.description,
+  90  |           body: requestBody.article.body,
+  91  |           tagList: requestBody.article.tagList ?? [],
+  92  |           createdAt: new Date().toISOString(),
+  93  |           updatedAt: new Date().toISOString(),
+  94  |           favorited: false,
+  95  |           favoritesCount: 0,
+  96  |           author: {
+  97  |             username,
+  98  |             image: '',
+  99  |             following: false
+  100 |           }
+  101 |         }
+  102 |       })
+  103 |     });
+  104 |   });
+  105 | 
+  106 |   // 5. Mở Editor
+  107 |   await page.goto('https://conduit.bondaracademy.com/editor', {
+  108 |     waitUntil: 'domcontentloaded'
+  109 |   });
+  110 | 
+  111 |   // 6. Kiểm tra editor đã mở
+  112 |   await expect(page.getByPlaceholder('Article Title')).toBeVisible({ timeout: 20000 });
+  113 | 
+  114 |   // 7. Nhập dữ liệu
+  115 |   await page.getByPlaceholder('Article Title').fill('Playwright Mock API');
+  116 |   await page.getByPlaceholder("What's this article about?").fill('Learn Mock API');
+  117 |   await page.getByPlaceholder('Write your article (in markdown)').fill('This article is created by mock API.');
+  118 |   await page.getByPlaceholder('Enter tags').fill('playwright');
+  119 | 
+  120 |   // 8. Publish
+  121 |   await page.getByRole('button', { name: 'Publish Article' }).click();
+  122 | 
+  123 |   // 9. Verify
+  124 |   await expect(page).toHaveURL(/mock-playwright/);
+  125 |   await expect(page.getByRole('heading')).toContainText('Playwright Mock API');
+  126 | });
 ```
