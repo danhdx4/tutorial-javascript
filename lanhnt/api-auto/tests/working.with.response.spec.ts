@@ -48,6 +48,29 @@ test("Mocking API - Articles API", async ({ page }) => {
   await expect(firstArticle.locator('h1')).toHaveText('Automation Test with Playwright')
 })
 
-test('Modify API response - Articles API', async ({ page }) => {
-  // todo
-})
+test("Modify API response - Articles API", async ({ page }) => {
+  //Working with API
+  // 1. Chặn yêu cầu API
+  await page.route("**/api/articles*", async (route) => {
+    // 2. Thực hiện yêu cầu gốc và nhận phản hồi
+    const response = await route.fetch();
+    const responseBody = await response.json();
+
+    // 3. Sửa nội dung phản hồi
+    responseBody.articles[0].title = "This is a test title";
+    responseBody.articles[0].description = "This is a description";
+
+    // 4. Gửi phản hồi đã sửa đổi cho trình duyệt
+    await route.fulfill({
+      body: JSON.stringify(responseBody),
+    });
+  });
+
+  await expect(page.locator(".navbar-brand")).toHaveText("conduit");
+  await expect(page.locator("app-article-list h1").first()).toContainText(
+    "This is a test title",
+  );
+  await expect(page.locator("app-article-list p").first()).toContainText(
+    "This is a description",
+  );
+});
