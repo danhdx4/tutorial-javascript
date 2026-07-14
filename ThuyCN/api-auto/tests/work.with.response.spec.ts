@@ -10,8 +10,8 @@ test("has title", async ({ page }) => {
   await expect(page.locator(".navbar-brand")).toHaveText("conduit");
 });
 
-test("Mocking API - Articles API", async ({ page }) => {
-  await page.route('**/articles*', async (route) => {
+test("Mocking API", async ({ page }) => {
+  await page.route('**/api/articles*', async (route) => {
 
     await route.fulfill({
       body: JSON.stringify(articles),
