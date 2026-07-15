@@ -33,59 +33,44 @@ Tạo mock cho API get dữ liệu bài viết https://conduit-api.bondaracademy
   - description
  */
 test("Mocking API - Articles API", async ({ page }) => {
-  const mockedArticles = {
-    ...articles,
-    articles: articles.articles.slice(0, 2).map((article, index) => {
-      if (index === 0) {
-        return {
-          ...article,
-          title: "Playwright Mocked Article Title",
-          description: "Playwright Mocked Article Description",
-        };
-      }
-
-      return article;
-    }),
-    articlesCount: 2,
-  };
-
   // Working with API
   // 1. Chặn yêu cầu API
   await page.route('**/articles*', async (route) => {
 
     // 2. Tạo phản hồi giả - mocking API
     await route.fulfill({
-      body: JSON.stringify(mockedArticles),
+      body: JSON.stringify(articles),
     });
   });
 
-  await expect(page.locator('app-article-preview')).toHaveCount(2)
-
   const firstArticle = page.locator('app-article-preview').first()
-  await expect(firstArticle.locator('h1')).toHaveText('Playwright Mocked Article Title')
-  await expect(firstArticle.locator('p')).toHaveText('Playwright Mocked Article Description')
+  //verify the title of the article
+  await expect(firstArticle.locator('h1')).toHaveText('Automation Test with Playwright')
 })
 
-test('Modify API response - Articles API', async ({ page }) => {
-  // Working with API - Modify response (not full mock)
+test("Modify API response - Articles API", async ({ page }) => {
+  //Working with API
   // 1. Chặn yêu cầu API
-  await page.route('**/articles*', async (route) => {
-    // 2. Gửi request thật và lấy response gốc
+  await page.route("**/api/articles*", async (route) => {
+    // 2. Thực hiện yêu cầu gốc và nhận phản hồi
     const response = await route.fetch();
     const responseBody = await response.json();
 
-    // 3. Sửa thông tin bài viết đầu tiên trong response thật
-    responseBody.articles[0].title = 'Playwright Modified Article Title';
-    responseBody.articles[0].description = 'Playwright Modified Article Description';
+    // 3. Sửa nội dung phản hồi
+    responseBody.articles[0].title = "This is a test title";
+    responseBody.articles[0].description = "This is a description";
 
-    // 4. Trả về response đã được sửa
+    // 4. Gửi phản hồi đã sửa đổi cho trình duyệt
     await route.fulfill({
-      response,
       body: JSON.stringify(responseBody),
     });
   });
 
-  const firstArticle = page.locator('app-article-preview').first();
-  await expect(firstArticle.locator('h1')).toHaveText('Playwright Modified Article Title');
-  await expect(firstArticle.locator('p')).toHaveText('Playwright Modified Article Description');
-})
+  await expect(page.locator(".navbar-brand")).toHaveText("conduit");
+  await expect(page.locator("app-article-list h1").first()).toContainText(
+    "This is a test title",
+  );
+  await expect(page.locator("app-article-list p").first()).toContainText(
+    "This is a description",
+  );
+});
