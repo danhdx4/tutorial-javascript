@@ -30,7 +30,7 @@ export default defineConfig({
   //   // baseURL: 'http://localhost:3000',
 
   //   /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-  
+
 
   //   trace: 'on-first-retry',
   // },
@@ -39,6 +39,7 @@ export default defineConfig({
     headless: false,
     launchOptions: {
       slowMo: 1000,
+      executablePath: "D:\\drivers\\ChromiumPortable\\App\\Chromium\\chrome.exe",
     },
     trace: 'on-first-retry',
   },
@@ -50,9 +51,9 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
-    
+
     //  {
-   
+
     //     name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },
     //  },

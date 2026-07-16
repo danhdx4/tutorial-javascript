@@ -44,8 +44,8 @@ test.describe('Check man Dang ki', () => {
       registerData.invalidEmail.repeatPassword,
     );
     await registerPage.checkTerms();
-    await registerPage.clickRegister();
-    await expect(page.locator('text=Email should be the real one!')).toBeVisible();
+    await expect(registerPage.successMessage).not.toBeVisible();
+    await expect(registerPage.registerBtn).toBeDisabled();
   });
 
   test('Dang ky that bai khi mat khau khong khop', async ({ page }) => {

@@ -43,7 +43,7 @@ export const registerData = {
     },
     invalidEmail: {
         fullName: 'Tien PTT',
-        email: 'thuytien@123',
+        email: 'thuytien',
         password: '123456',
         repeatPassword: '123456'
     },

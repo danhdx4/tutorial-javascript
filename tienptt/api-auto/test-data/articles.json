@@ -1,0 +1,22 @@
+{
+  "articles": [
+    {
+      "slug": "tienptt",
+      "title": "tienptt",
+      "description": "baitapvenha",
+      "body": "Mock API bằng Playwright",
+      "tagList": [],
+      "createdAt": "2026-07-13T00:00:00.000Z",
+      "updatedAt": "2026-07-13T00:00:00.000Z",
+      "favorited": false,
+      "favoritesCount": 0,
+      "author": {
+        "username": "QuynhNT",
+        "bio": null,
+        "image": "",
+        "following": false
+      }
+    }
+  ],
+  "articlesCount": 1
+}
