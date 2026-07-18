@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import user from './.auth/user.json'
 
 /**
  * Read environment variables from file.
@@ -30,6 +31,7 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    extraHTTPHeaders: { 'Authorization': `Token ${user.user.token}` }
   },
 
   /* Configure projects for major browsers */
