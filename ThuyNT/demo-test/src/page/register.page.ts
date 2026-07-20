@@ -34,28 +34,7 @@ export class RegisterPage extends basePage {
         await expect(this.heading).toBeVisible();
     }
 
-    async fillFullName(name: string) {
-        await this.fullNameField.fill(name);
-    }
-
-    async fillEmail(email: string) {
-        await this.emailField.fill(email);
-    }
-
-    async fillPassword(password: string) {
-        await this.passwordField.fill(password);
-    }
-
-    async fillConfirmPassword(password: string) {
-        await this.confirmPasswordField.fill(password);
-    }
-
-    async acceptTerms() {
-        await this.agreeTermsCheckbox.check({ force: true });
-    }
-
     async submit() {
-        // Click the register button and wait for navigation to home page
         await Promise.all([
             this.page.waitForURL(PageUrl.HOME_URL),
             this.registerBtn.click(),
@@ -63,11 +42,11 @@ export class RegisterPage extends basePage {
     }
 
     async fillRegisterForm(data: { fullName?: string; email?: string; password?: string; confirmPassword?: string; acceptTerms?: boolean }) {
-        if (data.fullName !== undefined) await this.fillFullName(data.fullName);
-        if (data.email !== undefined) await this.fillEmail(data.email);
-        if (data.password !== undefined) await this.fillPassword(data.password);
-        if (data.confirmPassword !== undefined) await this.fillConfirmPassword(data.confirmPassword);
-        if (data.acceptTerms) await this.acceptTerms();
+        if (data.fullName !== undefined) await this.fullNameField.fill(data.fullName);
+        if (data.email !== undefined) await this.emailField.fill(data.email);
+        if (data.password !== undefined) await this.passwordField.fill(data.password);
+        if (data.confirmPassword !== undefined) await this.confirmPasswordField.fill(data.confirmPassword);
+        if (data.acceptTerms) await this.agreeTermsCheckbox.check({ force: true });
     }
 
     async verifyRegisterButtonStatus(enabled: boolean) {
