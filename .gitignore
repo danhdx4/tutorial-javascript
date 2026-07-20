@@ -4,15 +4,15 @@ note.txt
 **/.DS_Store
 danhdx/products-api/*
 lanhnt/mobile-auto
-<<<<<<< HEAD
+lanhnt/conduit-auto-test
 
 # Playwright
-node_modules/
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
-=======
+
+# Angular
 **/.angular/cache/
->>>>>>> 17ba8d2bb09934aec6d84d4a1f27cdf6278d569a
+
