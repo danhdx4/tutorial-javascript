@@ -1,17 +1,6 @@
-import { expect, test } from "@playwright/test";
+import { test, expect } from '../fixtures/auth-test'
 
 test.describe('Hanldle with article', () => {
-    test.beforeEach(async ({ page }) => {
-        await page.goto("https://conduit.bondaracademy.com/");
-
-        // login with the credentical
-        await page.getByRole('link', { name: ' Sign in ' }).click()
-        await page.getByPlaceholder('Email').fill('lanh.zensho@test.com')
-        await page.getByPlaceholder('Password').fill('123456789')
-        await page.getByRole('button', { name: ' Sign in ' }).click()
-        await expect(page.getByRole('link', { name: ' Sign in ' })).not.toBeVisible()
-    });
-
     test("Should be create a articel successfully", async ({ page, request }) => {
         // navigate to the creating article page
         await page.getByRole("link", { name: " New Article " }).click();
