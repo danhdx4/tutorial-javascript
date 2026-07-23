@@ -1,6 +1,7 @@
 import { Page as PlaywrightPage, expect } from "@playwright/test";
 import { Page } from "./base.page";
 import { PageUrl } from "../utils/constants";
+import { RegisterDataType } from "../test-data/resgister.data";
 
 export class RegisterPage extends Page {
     readonly pageUrl: string;
@@ -30,9 +31,9 @@ export class RegisterPage extends Page {
         await expect(this.titlePage).toHaveText('Sign up')
     }
 
-    async fillForm(username: string, email: string, password: string) {
-        await this.username.fill(username)
-        await this.email.fill(email)
-        await this.password.fill(password)
+    async fillForm(register: RegisterDataType) {
+        await this.username.fill(register.username)
+        await this.email.fill(register.email)
+        await this.password.fill(register.password)
     }
 }

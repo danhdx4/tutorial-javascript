@@ -1,26 +1,22 @@
 import { expect, test } from "@playwright/test";
 import { RegisterPage } from "../pages/register.page";
-import { registerData } from "../../test-data/register.data";
+import { registerData } from "../test-data/resgister.data";
 
 test.describe('register function', async () => {
     test('should be register successfully with valid data', async ({ page }) => {
-        const username = "lanh zensho"
-        const email = "lanh.zensho@test.com"
-        const password = "123456789"
         const registerPage = new RegisterPage(page)
         await registerPage.goto()
-        await registerPage.fillForm(username, email, password)
+        await registerPage.fillForm(registerData.valid)
         await expect(registerPage.signUpBtn).toBeEnabled()
-        //continue...
+        // await registerPage.signUpBtn.click({ force: true })
+
     })
 
     test('should be register fail with invalid data', async ({ page }) => {
-        const username = "lanh zensho"
-        const email = "lanh.zensho@test.com"
-        const password = ""
         const registerPage = new RegisterPage(page)
         await registerPage.goto()
-        await registerPage.fillForm(username, email, password)
+        await registerPage.fillForm(registerData.withoutPassword)
         await expect(registerPage.signUpBtn).toBeDisabled()
+        await registerPage.signUpBtn.click({ force: true })
     })
 })
