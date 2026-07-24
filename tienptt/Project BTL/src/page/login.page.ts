@@ -17,26 +17,45 @@ export class LoginPage extends BasePage {
 
         this.emailField = this.page.getByPlaceholder("Email");
         this.passwordField = this.page.getByPlaceholder("Password");
-        this.signInBtn = this.page.getByRole("button", { name: "Sign in" });
+        this.signInBtn = this.page.getByRole("button", {
+            name: "Sign in"
+        });
     }
 
-    // Action
+    // Navigate login page
     async goto() {
         const response = await this.page.goto(this.pageUrl);
+
         expect(response?.status()).toBeLessThan(400);
     }
 
+
+    // Fill username and password
     async fillCredential(email: string, password: string) {
         await this.emailField.fill(email);
         await this.passwordField.fill(password);
     }
 
+
+    // Click Sign in button
     async clickSignIn() {
         await this.signInBtn.click();
     }
 
+
+    // Login action
     async login(email: string, password: string) {
-        await this.fillCredential(email, password);
+
+        await this.fillCredential(
+            email,
+            password
+        );
+
         await this.clickSignIn();
+
+        // wait login completed
+        await this.page.waitForURL(
+            PageUrl.HOME_URL
+        );
     }
 }

@@ -1,46 +1,63 @@
-import { test, expect } from "@playwright/test";
-import { LoginPage } from "../page/login.page";
+import { test, expect } from "../fixtures/auth.fixture";
 import { HomePage } from "../page/home.page";
 import { EditorPage } from "../page/editor.page";
+import { ArticleApi } from "../api/article.api";
 
+let token = "";
+let slug = "";
 
-test.describe("Create Article", () => {
+test.beforeEach(async ({ request }) => {
+  // Login API để lấy token
+  const articleApi = new ArticleApi(request);
 
-    test("User should create article successfully", async ({ page }) => {
+  const loginResponse = await articleApi.login(
+    "tienptt1998@gmail.com",
+    "123456789"
+  );
 
-        // Login
-        const loginPage = new LoginPage(page);
+  token = loginResponse.user.token;
+});
 
-        await loginPage.goto();
+test.afterEach(async ({ request }) => {
+  if (slug) {
+    const articleApi = new ArticleApi(request);
 
-        await loginPage.login(
-            "tienptt1998@gmail.com",
-            "123456789"
-        );
+    await articleApi.deleteArticle(token, slug);
+  }
+});
 
+test("Create Article successfully", async ({ page }) => {
+  const homePage = new HomePage(page);
+  const editorPage = new EditorPage(page);
 
-        // Go to New Article
-        const homePage = new HomePage(page);
+  // Tạo title không bị trùng
+  const articleTitle = `Automation Test Article ${Date.now()}`;
 
-        await homePage.clickNewArticle();
+  const description =
+    "Article created by Playwright automation";
 
+  const body =
+    "This is a test article created for automation testing";
 
-        // Create Article
-        const editorPage = new EditorPage(page);
+  const tag = "playwright";
 
-        await editorPage.createArticle(
-            "Playwright Automation",
-            "Learn Playwright Testing",
-            "This is my first article",
-            "playwright"
-        );
+  // Click New Article
+  await homePage.clickNewArticle();
 
+  // Tạo bài viết
+  await editorPage.createArticle(
+    articleTitle,
+    description,
+    body,
+    tag
+  );
 
-        // Verify article created
-        await expect(
-            page.getByText("Playwright Automation")
-        ).toBeVisible();
+  // Chờ chuyển sang trang chi tiết bài viết
+  await page.waitForURL("**/article/**");
 
-    });
+  // Lưu slug để afterEach xóa bằng API
+  slug = page.url().split("/article/")[1];
 
+  // Verify tiêu đề
+  await expect(page.locator("h1")).toHaveText(articleTitle);
 });
