@@ -1,6 +1,8 @@
 import { test, expect } from "@playwright/test";
 import { RegisterPage } from "../pages/register.page";
 import { HomePage } from "../pages/home.page";
+import registerData from "../test-data/register.json";  
+
 
 test.describe("Register feature should work correctly", () => {
     test.beforeEach(async ({ page }) => {
@@ -13,7 +15,7 @@ test.describe("Register feature should work correctly", () => {
         const registerPage = new RegisterPage(page);
         const homePage = new HomePage(page);
 
-        const validName = "Auto User";
+        const validName = registerData[0].validName;
         const validEmail = `autouser_${Date.now()}@test.com`;
         const validPassword = "123456";
 
