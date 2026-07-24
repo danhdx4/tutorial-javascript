@@ -11,6 +11,7 @@ export class DatePickerPage extends Page {
     }
 
     /** Locators */
+    // Lanh note: Em tham khảo cách khai báo Locator trong folder code của chị nhé. Không cần phải khai báo qua hàm thế này
     get formPickerField(): Locator {
         return this.page.getByPlaceholder("Form Picker");
     }

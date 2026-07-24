@@ -1,8 +1,8 @@
 import { Page as PlaywrightPage, expect } from "@playwright/test";
-import { BasePage } from "./base.page";
+import { Page } from "./base.page";
 import { PageUrl } from "../utils/constants";
 
-export class HomePage extends BasePage {
+export class HomePage extends Page {
     readonly pageUrl: string;
 
     constructor(page: PlaywrightPage) {

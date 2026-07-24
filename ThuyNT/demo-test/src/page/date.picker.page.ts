@@ -31,6 +31,7 @@ export class DatepickerComponent extends basePage {
 
     async openDatePicker() {
         await this.formPicker.click();
+        // Lanh note: các hàm chỉ gọi 1 action thì không cần tạo hàm
     }
 
     async openRangeForm() {
@@ -51,6 +52,7 @@ export class DatepickerComponent extends basePage {
         await expect(this.formPicker).toHaveValue(expectedValue);
     }
 
+    // Lanh note: Đặt tên hàm là động từ, không sử dụng danh từ. Ví dụ: selectRangeDate
     async rangeDate(startDate : number, endDate: number){
         const today = getDateFromToday(startDate);
         await this.dayContainer.getByText(today.expectedDate, { exact: true }).click();
@@ -62,7 +64,7 @@ export class DatepickerComponent extends basePage {
         await this.dayContainer.getByText(end.expectedDate, { exact: true }).click();
     }
 
-    async verifyRangeDate(startValue: String, endValue){
+    async verifyRangeDate(startValue: String, endValue: string){
         await expect(this.rangeForm).toHaveValue(startValue + " - " + endValue);
     }
 }
