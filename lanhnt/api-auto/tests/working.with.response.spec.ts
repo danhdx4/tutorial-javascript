@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import tags from "../test-data/tags.json";
-import articles from '../test-data/articles.json'
+import tags from "../src/test-data/tags.json";
+import articles from '../src/test-data/articles.json'
 
 test.beforeEach(async ({ page }) => {
   await page.goto("https://conduit.bondaracademy.com/");

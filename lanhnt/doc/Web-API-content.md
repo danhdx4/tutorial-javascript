@@ -1391,13 +1391,46 @@ export { expect } from "@playwright/test";
 
 - Note: Thứ tự trình bày: Tạo src, fixtures/auth-test.ts, helpers/apiHelpers.ts, test/checkly.spec.ts, working.with.request.spec.ts, demo tính số giây thực hiện
 
-# Buổi 14: Test Data Generator
+# Buổi 14: Test Data Management in Testing
 
 [https://fakerjs.dev/api/](https://fakerjs.dev/api/)
 
-Sử dụng Faker để gen data
+## Nguyên tắc quản lý data
 
-import faker ⇒ Tạo data để điền vào input Form
+- Không hard code dữ liệu
+- Data test phải độc lập với dữ liệu có sẵn
+- Dọn dẹp data test sau mỗi lần test
+
+```ts
+import { faker } from "@faker-js/faker";
+
+export interface RegisterDataType {
+  username: string;
+  email: string;
+  password: string;
+}
+
+// object có key là string, value là RegisterDataType
+export const registerData: Record<string, RegisterDataType> = {
+  success: {
+    username: "lanh zensho",
+    email: "lanh.zensho@test.com",
+    password: "123456789",
+  },
+  emptypassword: {
+    username: "lanh zensho",
+    email: "lanh.zensho@test.com",
+    password: "",
+  },
+};
+
+// create base data
+export const baseData = {
+  username: faker.person.fullName(),
+  email: `${faker.person.fullName().replace(" ", "")}.${faker.number.int(1000)}.@test.com`,
+  password: "123456789",
+};
+```
 
 # Buổi 15: Chữa bài tập lớn
 
