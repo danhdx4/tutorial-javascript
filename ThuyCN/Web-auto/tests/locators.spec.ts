@@ -69,7 +69,7 @@ test("Locator for Using the Grid", async ({ page }) => {
     // Option2
     const radio2 = usingTheGrid.getByText('Option 2')
     // Disabled Option
-    const disabledButton = usingTheGrid.getByRole('checkbox', { name: 'Disabled Option'})
+    const disabledButton = usingTheGrid.getByRole('radio', { name: 'Disabled Option'})
     // Sign In Btn
     const btn = usingTheGrid.getByRole('button', { name: "Sign In"})
 
@@ -98,5 +98,5 @@ test("Locator for Basic form", async ({ page }) => {
     await btn.click();
 });
  
- 
+
  
