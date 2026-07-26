@@ -1,13 +1,9 @@
-import { Locator, Page as PlaywrightPage } from "@playwright/test";
+import { Page as PlaywrightPage } from "@playwright/test";
 
 export class Page {
-    readonly page: PlaywrightPage;
+  readonly page: PlaywrightPage;
 
-    constructor(page: PlaywrightPage) {
-        this.page = page;
-    }
-
-    /** Common Locators */
-
-    /** Common Functions */
+  constructor(page: PlaywrightPage) {
+    this.page = page;
+  }
 }
