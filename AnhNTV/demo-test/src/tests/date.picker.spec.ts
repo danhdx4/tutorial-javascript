@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { getDateFromToday } from "../utils/helper";
-import { DatePickerPage } from "../pages/date.picker.page";
+import { DatePickerPage } from "../pages/date-picker.page";
 
 test("date picker - form", async ({ page }) => {
     const datePickerPage = new DatePickerPage(page);

@@ -12,15 +12,13 @@ export class DatePickerPage {
     this.dayCells = page.locator('.range-cell.day-cell.ng-star-inserted');
   }
 
-  // async goto() {
-  //   await this.page.goto('http://localhost:4200/pages/forms/datepicker');==> AnhNTV: bỏ
-  //   Lanh note: Em đã định nghĩa baseURL trong file config rồi, thì không cần gọi ra đây nữa
- 
+  async goto(): Promise<void> {
+    await this.page.goto('/pages/forms/datepicker');
+  }
 
   // async openRangePicker() {
   //   await this.rangeInput.click();==> AnhNTV: bỏ
   //   Lanh note: các hàm chỉ gọi 1 action thì không cần thêm hàm
-
 
   async selectRange(daysAhead: number): Promise<string> {
     const { start, end, expected } = buildRange(daysAhead);
@@ -52,6 +50,10 @@ export class DatePickerPage {
   // async expectRangeValue(expected: string) {
   //   await expect(this.rangeInput).toHaveValue(expected); ==> Bỏ
   //   Lanh note: hàm này không có ý nghĩa, vì expected là giá trị mà em vừa chọn, nên chắc chắn nó sẽ bằng nhau
-  //   
+  //
   // }
-}
+
+  async expectRangeValue(expected: string) {
+    await expect(this.rangeInput).toHaveValue(expected);
+  }
+};
