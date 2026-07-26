@@ -45,9 +45,42 @@ test("Mocking API - Articles API", async ({ page }) => {
 
   const firstArticle = page.locator('app-article-preview').first()
   //verify the title of the article
-  await expect(firstArticle.locator('h1')).toHaveText('Automation Test with Playwright')
+  await expect(firstArticle.locator('h1')).toHaveText('XuanNT1')
 })
 
+<<<<<<< HEAD
+test('Modify API response - Articles API', async ({ page }) => {
+  await page.route('**/articles*', async (route) => {
+
+    // lấy API thật
+    const response = await route.fetch()
+    const body = await response.json()
+  
+    // chỉ lấy 2 bài
+    body.articles = body.articles.slice(0, 2)
+  
+    
+    body.articles[0].title = "XuanNT1"
+    body.articles[0].description = "Nguyễn Thị Xuân 1"
+  
+    body.articles[1].title = "XuanNT2"
+    body.articles[1].description = "Nguyễn Thị Xuân 2"
+  
+    // trả lại response mới
+    await route.fulfill({
+      body: JSON.stringify(body),
+    })
+  })
+  
+  const articlesList = page.locator('app-article-preview')
+  
+  // verify bài 1
+  await expect(articlesList.nth(0).locator('h1')).toHaveText('XuanNT1')
+  
+  // verify bài 2
+  await expect(articlesList.nth(1).locator('h1')).toHaveText('XuanNT2')
+})
+=======
 test("Modify API response - Articles API", async ({ page }) => {
   //Working with API
   // 1. Chặn yêu cầu API
@@ -74,3 +107,4 @@ test("Modify API response - Articles API", async ({ page }) => {
     "This is a description",
   );
 });
+>>>>>>> 0e3f0d9511beb8e92b9d825b0a1be1e20104973e

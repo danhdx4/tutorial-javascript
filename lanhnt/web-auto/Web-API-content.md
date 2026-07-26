@@ -104,7 +104,7 @@ Note:
 Xem thêm trong slide tham khảo
 
 ```html
-<div id="key" class="parent sibling">
+<div id="key" class="parent sibling"> 
   <button class="child">Click me</button>
 </div>
 ```
@@ -388,7 +388,7 @@ test.describe("Form Layouts page", () => {
 ```ts
 test("radio buttons", async ({ page }) => {
   const usingTheGridForm = page.locator("nb-card", {
-    hasText: "Using the Grid",
+    hasText: "Using the Grid",    
   });
 
   // await usingTheGridForm.getByLabel('Option 1').check({ force: true })
@@ -1526,7 +1526,7 @@ export const test = base.extend<TestOptions>({
   formLayoutsPage: async ({ page }, use) => {
     await page.goto("/");
     await page.getByText("Forms").click();
-    await page.getByText("Form Layouts").click();
+    await page.getByText("Form Layouts").click(); 
     await use("");
     console.log("Tear Down");
   },
