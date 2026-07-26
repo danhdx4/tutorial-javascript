@@ -1,0 +1,23 @@
+{
+    "articles": [
+        {
+            "slug": "Discover-Bondar-Academy:-Your-Gateway-to-Efficient-Learning-1",
+            "title": "Auto_test1",
+            "description": "Test for creating a new article",
+            "body": "This is the first testing",
+            "tagList": [
+                "tagtest1",
+                "tagtest2"
+            ]
+        },
+        {
+            "slug": "Discover-Bondar-Academy:-Your-Gateway-to-Efficient-Learning-1",
+            "title": "Auto_test2",
+            "description": "Test for creating a new article",
+            "body": "This is the second testing",
+            "tagList": [
+                "tagtest1",
+                "tagtest2"
+            ]
+        }
+]}

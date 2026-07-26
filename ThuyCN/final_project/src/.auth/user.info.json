@@ -1,0 +1,9 @@
+{
+  "user": {
+    "email": "thuytest@test.com",
+    "username": "thuy.test",
+    "bio": null,
+    "image": "https://conduit-api.bondaracademy.com/images/smiley-cyrus.jpeg",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1ODQ4N30sImlhdCI6MTc4NTA3MzE0MywiZXhwIjoxNzkwMjU3MTQzfQ.kNWnmIcaQkqlyBOwTIZVGN5ZF_odJOyhg7ez6Tx9y2o"
+  }
+}
