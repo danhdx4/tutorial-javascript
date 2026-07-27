@@ -4,7 +4,6 @@ note.txt
 **/.DS_Store
 danhdx/products-api/*
 lanhnt/mobile-auto
-lanhnt/conduit-auto-test
 
 # Playwright
 /test-results/
