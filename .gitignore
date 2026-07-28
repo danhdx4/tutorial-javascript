@@ -2,8 +2,7 @@
 note.txt
 **/node_modules
 **/.DS_Store
-danhdx/products-api/*
-lanhnt/mobile-auto
+danhdx/products-api/
 
 # Playwright
 /test-results/

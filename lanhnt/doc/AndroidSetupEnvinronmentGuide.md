@@ -4,7 +4,7 @@
 
 ### Công nghệ sử dụng
 
-- Java JDK 17
+- Java JDK 25
 - Android Studio
 - Android SDK API 35
 - Android Emulator
@@ -27,7 +27,7 @@
 
 ---
 
-## 2. Cài đặt Java JDK 17
+## 2. Cài đặt Java JDK 25
 
 ### Download
 
@@ -39,7 +39,7 @@ Chọn:
 
 - Operating System: Windows
 - Package Type: JDK
-- Version: 17 (LTS)
+- Version: 25 (LTS)
 
 ### Cài đặt
 
@@ -57,7 +57,7 @@ java -version
 Kết quả:
 
 ```bash
-openjdk version "17.x.x"
+openjdk version "25.x.x"
 ```
 
 ---
@@ -323,7 +323,7 @@ Nếu tất cả lệnh chạy thành công, môi trường đã sẵn sàng.
 
 ---
 
-## 2. Cài đặt Java JDK 17
+## 2. Cài đặt Java JDK 25
 
 ### Cài Homebrew (nếu chưa có)
 
@@ -335,10 +335,10 @@ Mở Terminal:
 
 ---
 
-### Cài JDK 17
+### Cài JDK 25
 
 ```bash
-brew install openjdk@17
+brew install openjdk@25
 ```
 
 ---
@@ -352,7 +352,7 @@ java -version
 Kết quả:
 
 ```bash
-openjdk version "17.x.x"
+openjdk version "25.x.x"
 ```
 
 ---
@@ -572,7 +572,7 @@ Nếu tất cả lệnh chạy thành công, môi trường đã sẵn sàng.
 
 # CHECKLIST HOÀN THÀNH
 
-□ Java JDK 17
+□ Java JDK 25
 
 □ Android Studio
 
