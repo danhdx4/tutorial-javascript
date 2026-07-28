@@ -6,8 +6,8 @@
 
 # Test info
 
-- Name: src\tests\register.spec.ts >> Register feature should work correctly >> Should not register when password and confirm password do not match
-- Location: ThuyNT\demo-test\src\tests\register.spec.ts:88:9
+- Name: src\tests\register.spec.ts >> Register feature should work correctly >> Should show an error when password format is invalid
+- Location: ThuyNT\demo-test\src\tests\register.spec.ts:71:9
 
 # Error details
 
@@ -16,6 +16,28 @@ Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:4200/auth/regi
 Call log:
   - navigating to "http://localhost:4200/auth/register", waiting until "load"
 
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e6]:
+    - heading "このサイトにアクセスできません" [level=1] [ref=e7]
+    - paragraph [ref=e8]:
+      - strong [ref=e9]: localhost
+      - text: で接続が拒否されました。
+    - generic [ref=e10]:
+      - paragraph [ref=e11]: 次をお試しください
+      - list [ref=e12]:
+        - listitem [ref=e13]: 接続を確認する
+        - listitem [ref=e14]:
+          - link "プロキシとファイアウォールを確認する" [ref=e15] [cursor=pointer]:
+            - /url: "#buttons"
+    - generic [ref=e16]: ERR_CONNECTION_REFUSED
+  - generic [ref=e17]:
+    - button "再読み込み" [ref=e19] [cursor=pointer]
+    - button "詳細" [ref=e20] [cursor=pointer]
 ```
 
 # Test source
