@@ -1,3 +1,4 @@
+//Chứa các hằng số URL
 export enum PageUrl {
   LOGIN = "https://conduit.bondaracademy.com/login",
 

@@ -8,7 +8,7 @@ export class LoginPage extends Page {
     super(page);
   }
 
-  // Locators
+  // Chứa Locators
   readonly emailTextbox = this.page.getByPlaceholder("Email");
   readonly passwordTextbox = this.page.getByPlaceholder("Password");
   readonly loginButton = this.page.getByRole("button", {
@@ -20,7 +20,7 @@ export class LoginPage extends Page {
     await this.page.goto(this.pageUrl);
   }
 
-  // Đăng nhập
+  // Đăng nhập bằng emai và password
   async login(email: string, password: string): Promise<void> {
     await this.emailTextbox.fill(email);
     await this.passwordTextbox.fill(password);

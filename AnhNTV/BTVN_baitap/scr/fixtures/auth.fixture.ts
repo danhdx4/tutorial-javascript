@@ -1,7 +1,7 @@
 import { test as base } from "@playwright/test";
 import { LoginPage } from "../pages/login.page";
 
-export const test = base.extend({
+export const test = base.extend({//Mở trang Login với tài khoản vananh217.tm@gmail.com / 12345678
     page: async ({ page }, use) => {
 
         const loginPage = new LoginPage(page);
@@ -13,7 +13,7 @@ export const test = base.extend({
             "12345678"
         );
 
-        await loginPage.verifyLoginSuccess();
+        await loginPage.verifyLoginSuccess();//Verify đăng nhập thành công rồi mới chạy test
 
         await use(page);
     }

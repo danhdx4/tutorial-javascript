@@ -5,7 +5,7 @@ export class ArticleApi {
 
     constructor(private request: APIRequestContext) {}
 
-    async createArticle(article: ArticleData) {
+    async createArticle(article: ArticleData) {//Tạo bài viết qua API Post
 
         const response = await this.request.post(
             "https://conduit-api.bondaracademy.com/api/articles",
@@ -21,7 +21,7 @@ export class ArticleApi {
         return await response.json();
     }
 
-    async deleteArticle(slug: string, token: string) {
+    async deleteArticle(slug: string, token: string) {//Xóa bài viết qua Deleted
 
         const response = await this.request.delete(
             `https://conduit-api.bondaracademy.com/api/articles/${slug}`,

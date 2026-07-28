@@ -2,6 +2,8 @@ import { expect, Page } from "@playwright/test";
 
 export class ArticlePage {
   constructor(private page: Page) {}
+  //Các thao tác liên quan đến bài viết
+  //Tạo bài viết mới gồm: Title, description, body
 
   async createArticle(title: string, description: string, body: string) {
     await this.page.getByText("New Article").click();
@@ -14,11 +16,11 @@ export class ArticlePage {
       this.page.getByRole("button", { name: "Publish Article" }).click(),
     ]);
   }
-
+//Kiểm tra bài viết đã được tạo
   async verifyArticle(title: string) {
     await expect(this.page.getByRole("heading", { name: title })).toBeVisible();
   }
-
+//Xóa bài viết
   async deleteArticle() {
     await this.page.getByRole("button", { name: "Delete Article" }).click();
   }

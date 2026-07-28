@@ -6,7 +6,7 @@ import { ArticleApi } from "../api/article.api";
 let slug = "";
 let token = "";
 
-test.beforeAll(async ({ request }) => {
+test.beforeAll(async ({ request }) => {//Đăng nhập qua API để lấy token 
 
     const response = await request.post(
         "https://conduit-api.bondaracademy.com/api/users/login",
@@ -20,13 +20,13 @@ test.beforeAll(async ({ request }) => {
         }
     );
 
-    const body = await response.json();
+    const body = await response.json();//chuyển kết quả thành Json
 
-    token = body.user.token;
+    token = body.user.token;//lưu token để dùng cho việc xóa bài viết sau
 
 });
 
-test.afterEach(async ({ request }) => {
+test.afterEach(async ({ request }) => {//Xóa bài viết khi tạo thành công
 
     if (slug) {
 
@@ -38,10 +38,10 @@ test.afterEach(async ({ request }) => {
 
 });
 
-test("Create Article", async ({ page }) => {
+test("Create Article", async ({ page }) => {//tự động đăng nhập bằng fixture
 
-    const articlePage = new ArticlePage(page);
-    const uniqueTitle = `${articleData.title} ${Date.now()}`;
+    const articlePage = new ArticlePage(page); //tạo object thao tác bài viết
+    const uniqueTitle = `${articleData.title} ${Date.now()}`;//tạo tiêu đề trành trùng lặp 
 
     await articlePage.createArticle(
         uniqueTitle,
@@ -49,8 +49,8 @@ test("Create Article", async ({ page }) => {
         articleData.body
     );
 
-    await articlePage.verifyArticle(uniqueTitle);
+    await articlePage.verifyArticle(uniqueTitle);//kiểm tra tiêu đề bài viết hiển thị 
 
-    slug = page.url().split("/").pop()!;
+    slug = page.url().split("/").pop()!;//lấy phần tử cuối cùng của mảng để xóa đúng
 
 });
