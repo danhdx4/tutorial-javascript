@@ -1,38 +1,25 @@
-import { test as base } from "playwright/test";
-import { APP_URL, TEST_USER } from "../utils/constants";
-import { getToken } from "../utils/apiHelpers";
+import { test as base } from '@playwright/test';
+import { TEST_USER } from '../test-data/user.data';
+import { APP_URL } from '../utils/constants';
 
 type AuthFixtures = {
-  login: void;
-  loginByAPI: void;
+    login: void;
 };
 
 export const test = base.extend<AuthFixtures>({
-  login: async ({ page }, use) => {
-    await page.goto(APP_URL);
-    await page.getByRole("link", { name: " Sign in " }).click();
-    await page.getByPlaceholder("Email").fill(TEST_USER.email);
-    await page.getByPlaceholder("Password").fill(TEST_USER.password);
-    await page.getByRole("button", { name: " Sign in " }).click();
-    await page.waitForResponse("**/api/users/login");
-    await page.reload();
-    await use();
-  },
+    login: async ({ page }, use) => {
+        // Set up the fixture.
+        await page.goto(APP_URL);
+        await page.getByRole('link', { name: ' Sign in ' }).click();
+        await page.getByPlaceholder('Email').fill(TEST_USER.email);
+        await page.getByPlaceholder('Password').fill(TEST_USER.password);
+        await page.getByRole('button', { name: ' Sign in ' }).click();
+        await page.waitForResponse('**/api/users/login');
+        await page.reload();
 
-  loginByAPI: [
-    async ({ page, request }, use) => {
-      const token = await getToken(request);
-      await page.goto(APP_URL);
-      await page.evaluate((jwt: string) => {
-        localStorage.setItem("jwtToken", jwt);
-      }, token);
-      await page.reload();
-
-      await use();
-
-      await page.evaluate(() => localStorage.clear());
+        // Use the fixture value in the test.
+        await use();
     },
-  ],
 });
 
-export { expect } from "playwright/test";
+export { expect } from '@playwright/test';

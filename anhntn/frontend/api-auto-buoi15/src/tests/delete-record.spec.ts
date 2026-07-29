@@ -1,7 +1,8 @@
-import { test } from "../fixtures/auth-test";
-import { ArticlePage } from "../pages/article.page";
-import { HomePage } from "../pages/home.page";
-import { createArticleByApi, getToken, isApiReachable } from "../utils/apiHelpers";
+import { test } from '../fixtures/auth-test';
+import { ArticlePage } from '../pages/article.page';
+import { HomePage } from '../pages/home.page';
+import { makeDeleteSeedArticleData } from '../test-data/article-data';
+import { createArticleByApi, getToken, isApiReachable } from '../utils/apiHelpers';
 
 test.describe("Buoi 15 - Delete ban ghi", () => {
   let seededSlug = "";
@@ -18,15 +19,11 @@ test.describe("Buoi 15 - Delete ban ghi", () => {
 
   test.beforeEach(async ({ request }) => {
     const now = Date.now();
-    seededTitle = `Buoi15 Delete ${now}`;
+    const seedArticleData = makeDeleteSeedArticleData(now);
+    seededTitle = seedArticleData.title;
     const accessToken = await getToken(request);
 
-    const seededArticle = await createArticleByApi(request, accessToken, {
-      title: seededTitle,
-      description: `Description ${now}`,
-      body: `Body ${now}`,
-      tagList: ["api", "setup"],
-    });
+    const seededArticle = await createArticleByApi(request, accessToken, seedArticleData);
 
     seededSlug = seededArticle.slug;
   });

@@ -1,7 +1,8 @@
-import { test, expect } from "../fixtures/auth-test";
-import { EditorPage } from "../pages/editor.page";
-import { HomePage } from "../pages/home.page";
-import { deleteArticleByApi, getToken, isApiReachable } from "../utils/apiHelpers";
+import { test, expect } from '../fixtures/auth-test';
+import { EditorPage } from '../pages/editor.page';
+import { HomePage } from '../pages/home.page';
+import { makeCreateArticleData } from '../test-data/article-data';
+import { deleteArticleByApi, getToken, isApiReachable } from '../utils/apiHelpers';
 
 test.describe("Buoi 15 - Tao ban ghi", () => {
   let createdSlug = "";
@@ -26,12 +27,7 @@ test.describe("Buoi 15 - Tao ban ghi", () => {
   test("TC01 - Tao ban ghi tren browser", async ({ page, login }) => {
     login;
     const now = Date.now();
-    const article = {
-      title: `Buoi15 Create ${now}`,
-      description: `Mo ta ${now}`,
-      body: `Noi dung bai viet ${now}`,
-      tags: "playwright",
-    };
+    const article = makeCreateArticleData(now);
 
     const editorPage = new EditorPage(page);
     const homePage = new HomePage(page);
