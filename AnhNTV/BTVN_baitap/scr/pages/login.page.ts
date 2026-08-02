@@ -7,13 +7,10 @@ export class LoginPage extends Page {
   constructor(page: PlaywrightPage) {
     super(page);
   }
-<<<<<<< HEAD
 
   // Chứa Locators
-=======
 //dùng để xử lý đăng nhập
   // Locators
->>>>>>> eb1242e (add)
   readonly emailTextbox = this.page.getByPlaceholder("Email");
   readonly passwordTextbox = this.page.getByPlaceholder("Password");
   readonly loginButton = this.page.getByRole("button", {
