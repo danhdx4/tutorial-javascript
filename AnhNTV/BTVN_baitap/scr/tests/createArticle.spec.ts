@@ -28,7 +28,7 @@ test.beforeAll(async ({ request }) => {//Đăng nhập qua API để lấy token
 
 test.afterEach(async ({ request }) => {//Xóa bài viết khi tạo thành công
 
-    if (slug) {
+    if (slug) {//kiểm tra xem bài viết tạo thành công không
 
         const articleApi = new ArticleApi(request);
 

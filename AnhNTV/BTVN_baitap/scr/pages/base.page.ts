@@ -7,3 +7,5 @@ export class Page {
     this.page = page;
   }
 }
+
+//Lưu đối tượng page của Playwright

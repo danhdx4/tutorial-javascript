@@ -2,8 +2,12 @@ import { expect, Page } from "@playwright/test";
 
 export class ArticlePage {
   constructor(private page: Page) {}
+<<<<<<< HEAD
   //Các thao tác liên quan đến bài viết
   //Tạo bài viết mới gồm: Title, description, body
+=======
+  //tạo bài viết và thao tác với bài viết
+>>>>>>> eb1242e (add)
 
   async createArticle(title: string, description: string, body: string) {
     await this.page.getByText("New Article").click();
