@@ -1,0 +1,13 @@
+{
+    "articles": 
+        {
+            "slug": "Discover-Bondar-Academy:-Your-Gateway-to-Efficient-Learning-1",
+            "title": "New Article Test",
+            "description": "Creat new article for testing",
+            "body": "Happy test",
+            "tagList": [
+                "tag1"
+            ]
+        }
+        
+        }
